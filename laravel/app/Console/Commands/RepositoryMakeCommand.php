@@ -39,6 +39,7 @@ class RepositoryMakeCommand extends Command
     return $rootNamespace . '\Repositories';
   }
 
+  
   /**
    * 生成に使うスタブファイルを取得する
    * @return string
