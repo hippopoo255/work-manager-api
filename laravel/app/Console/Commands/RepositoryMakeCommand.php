@@ -29,6 +29,11 @@ class RepositoryMakeCommand extends Command
     parent::handle();
   }
 
+  /**
+   * Generator側がクラス生成に使うnamespaceを決めてあげる
+   * @param string $rootNamespace
+   * @return string
+   */
   protected function getDefaultNamespace($rootNamespace)
   {
     return $rootNamespace . '\Repositories';

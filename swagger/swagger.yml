@@ -1,0 +1,190 @@
+---
+openapi: 3.0.2
+info:
+  description:
+    "主な機能：\
+    \     議事録の記録 \
+    スケジュール管理・共有 \
+    ファイル共有 \
+    チャット \
+    Todo管理等 \
+    \ key `special-key` to test the authorization     filters."
+  version: "1.0.0"
+  title: "業務支援システム"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "apiteam@swagger.io"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+servers:
+  - url: http://localhost:8080/api
+    description: Laravelで作ったローカルserver
+tags:
+  - name: "user"
+    description: "employees"
+  - name: "admin"
+    description: "system administrator"
+paths:
+  /user/current:
+    get:
+      tags:
+        - "user"
+      description: "return user by userId"
+      responses:
+        "200":
+          description: "successfull operation"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/user"
+        "400":
+          description: "NG"
+  /login:
+    post:
+      tags:
+        - "user"
+      description: "return auth by login_id and password"
+      parameters:
+        - name: "login_id"
+          in: "query"
+          description: "The login_id for login in clear text"
+          schema:
+            type: "string"
+          required: true
+        - name: "password"
+          in: "query"
+          description: "The password for login in clear text"
+          schema:
+            type: "string"
+          required: true
+      responses:
+        "200":
+          description: "successfull operation"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/user"
+        "400":
+          description: "Invalid login_id or password supplied"
+  /logout:
+    post:
+      tags:
+        - "user"
+      description: "return logout by login_id and password"
+      responses:
+        "200":
+          description: "successfull operation"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        "400":
+          description: "NG"
+  /admin/current:
+    get:
+      tags:
+        - "admin"
+      description: "return current admin"
+      responses:
+        "200":
+          description: "successfull operation"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Admin"
+        "400":
+          description: "NG"
+  /admin/login:
+    post:
+      tags:
+        - admin
+      description: "return admin auth by login_id and password"
+      parameters:
+        - name: "login_id"
+          in: "query"
+          description: "The login_id for login in clear text"
+          schema:
+            type: "string"
+          required: true
+        - name: "password"
+          in: "query"
+          description: "The password for login in clear text"
+          schema:
+            type: "string"
+          required: true
+      responses:
+        "200":
+          description: "successfull operation"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Admin"
+        "400":
+          description: "Invalid login_id or password supplied"
+  /admin/logout:
+    post:
+      tags:
+        - "admin"
+      description: "return logout by login_id and password"
+      responses:
+        "200":
+          description: "successfull operation"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        "400":
+          description: "NG"
+components:
+  schemas:
+    user:
+      title: User
+      description: Userのスキーマ
+      required:
+        - id
+        - full_name
+        - created_at
+        - updated_at
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        full_name:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+    Admin:
+      title: Admin
+      description: Adminのスキーマ
+      required:
+        - id
+        - full_name
+        - created_at
+        - updated_at
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        full_name:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string

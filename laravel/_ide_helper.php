@@ -3763,133 +3763,6 @@
         {
                         return \Illuminate\Cookie\CookieJar::hasMacro($name);
         }
-                    /**
-         * Determine if a cookie exists on the request.
-         *
-         * @param string $key
-         * @return bool 
-         * @static 
-         */ 
-        public static function has($key)
-        {
-                        return \Illuminate\Support\Facades\Cookie::has($key);
-        }
-                    /**
-         * Retrieve a cookie from the request.
-         *
-         * @param string|null $key
-         * @param mixed $default
-         * @return string|array|null 
-         * @static 
-         */ 
-        public static function get($key = null, $default = null)
-        {
-                        return \Illuminate\Support\Facades\Cookie::get($key, $default);
-        }
-                    /**
-         * Run a Closure when the facade has been resolved.
-         *
-         * @param \Closure $callback
-         * @return void 
-         * @static 
-         */ 
-        public static function resolved($callback)
-        {            //Method inherited from \Illuminate\Support\Facades\Facade         
-                        \Illuminate\Support\Facades\Cookie::resolved($callback);
-        }
-                    /**
-         * Convert the facade into a Mockery spy.
-         *
-         * @return \Mockery\MockInterface 
-         * @static 
-         */ 
-        public static function spy()
-        {            //Method inherited from \Illuminate\Support\Facades\Facade         
-                        return \Illuminate\Support\Facades\Cookie::spy();
-        }
-                    /**
-         * Initiate a partial mock on the facade.
-         *
-         * @return \Mockery\MockInterface 
-         * @static 
-         */ 
-        public static function partialMock()
-        {            //Method inherited from \Illuminate\Support\Facades\Facade         
-                        return \Illuminate\Support\Facades\Cookie::partialMock();
-        }
-                    /**
-         * Initiate a mock expectation on the facade.
-         *
-         * @return \Mockery\Expectation 
-         * @static 
-         */ 
-        public static function shouldReceive()
-        {            //Method inherited from \Illuminate\Support\Facades\Facade         
-                        return \Illuminate\Support\Facades\Cookie::shouldReceive();
-        }
-                    /**
-         * Hotswap the underlying instance behind the facade.
-         *
-         * @param mixed $instance
-         * @return void 
-         * @static 
-         */ 
-        public static function swap($instance)
-        {            //Method inherited from \Illuminate\Support\Facades\Facade         
-                        \Illuminate\Support\Facades\Cookie::swap($instance);
-        }
-                    /**
-         * Get the root object behind the facade.
-         *
-         * @return mixed 
-         * @static 
-         */ 
-        public static function getFacadeRoot()
-        {            //Method inherited from \Illuminate\Support\Facades\Facade         
-                        return \Illuminate\Support\Facades\Cookie::getFacadeRoot();
-        }
-                    /**
-         * Clear a resolved facade instance.
-         *
-         * @param string $name
-         * @return void 
-         * @static 
-         */ 
-        public static function clearResolvedInstance($name)
-        {            //Method inherited from \Illuminate\Support\Facades\Facade         
-                        \Illuminate\Support\Facades\Cookie::clearResolvedInstance($name);
-        }
-                    /**
-         * Clear all of the resolved instances.
-         *
-         * @return void 
-         * @static 
-         */ 
-        public static function clearResolvedInstances()
-        {            //Method inherited from \Illuminate\Support\Facades\Facade         
-                        \Illuminate\Support\Facades\Cookie::clearResolvedInstances();
-        }
-                    /**
-         * Get the application instance behind the facade.
-         *
-         * @return \Illuminate\Contracts\Foundation\Application 
-         * @static 
-         */ 
-        public static function getFacadeApplication()
-        {            //Method inherited from \Illuminate\Support\Facades\Facade         
-                        return \Illuminate\Support\Facades\Cookie::getFacadeApplication();
-        }
-                    /**
-         * Set the application instance.
-         *
-         * @param \Illuminate\Contracts\Foundation\Application $app
-         * @return void 
-         * @static 
-         */ 
-        public static function setFacadeApplication($app)
-        {            //Method inherited from \Illuminate\Support\Facades\Facade         
-                        \Illuminate\Support\Facades\Cookie::setFacadeApplication($app);
-        }
          
     }
             /**
@@ -14552,6 +14425,70 @@
      
 }
 
+    namespace Intervention\Image\Facades { 
+            /**
+     * 
+     *
+     */ 
+        class Image {
+                    /**
+         * Overrides configuration settings
+         *
+         * @param array $config
+         * @return self 
+         * @static 
+         */ 
+        public static function configure($config = [])
+        {
+                        /** @var \Intervention\Image\ImageManager $instance */
+                        return $instance->configure($config);
+        }
+                    /**
+         * Initiates an Image instance from different input types
+         *
+         * @param mixed $data
+         * @return \Intervention\Image\Image 
+         * @static 
+         */ 
+        public static function make($data)
+        {
+                        /** @var \Intervention\Image\ImageManager $instance */
+                        return $instance->make($data);
+        }
+                    /**
+         * Creates an empty image canvas
+         *
+         * @param int $width
+         * @param int $height
+         * @param mixed $background
+         * @return \Intervention\Image\Image 
+         * @static 
+         */ 
+        public static function canvas($width, $height, $background = null)
+        {
+                        /** @var \Intervention\Image\ImageManager $instance */
+                        return $instance->canvas($width, $height, $background);
+        }
+                    /**
+         * Create new cached image and run callback
+         * (requires additional package intervention/imagecache)
+         *
+         * @param \Closure $callback
+         * @param int $lifetime
+         * @param boolean $returnObj
+         * @return \Image 
+         * @static 
+         */ 
+        public static function cache($callback, $lifetime = null, $returnObj = false)
+        {
+                        /** @var \Intervention\Image\ImageManager $instance */
+                        return $instance->cache($callback, $lifetime, $returnObj);
+        }
+         
+    }
+     
+}
+
     namespace Illuminate\Http { 
             /**
      * 
@@ -17627,6 +17564,7 @@ namespace  {
             class Validator extends \Illuminate\Support\Facades\Validator {}
             class View extends \Illuminate\Support\Facades\View {}
             class Flare extends \Facade\Ignition\Facades\Flare {}
+            class Image extends \Intervention\Image\Facades\Image {}
      
 }
 

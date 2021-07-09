@@ -1,7 +1,25 @@
 version: 2.1
 orbs:
-  slack: circleci/slack@4.1.1
+  slack: circleci/slack@4.4.2
 
+commands:
+  notify_slack_fail:
+    steps:
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
+
+  notify_slack_pass:
+    steps:
+      - slack/notify:
+          event: pass
+          template: basic_success_1
+
+  notify_slack_deploy:
+    steps:
+      - slack/notify:
+          event: pass
+          template: success_tagged_deploy_1
 jobs:
   build:
     docker:
@@ -15,6 +33,7 @@ jobs:
           key: k1-repo-{{ .Environment.CIRCLE_SHA1 }}
           paths:
             - ~/repo
+      - notify_slack_fail
 
   test:
     docker:
@@ -25,10 +44,10 @@ jobs:
           MYSQL_PASSWORD: ""
           MYSQL_PORT: 3306
 
-      - image: mysql:5.7
+      - image: circleci/mysql:5.7
         environment:
-          MYSQL_DATABASE: $TEST_DB_NAME
-          MYSQL_ALLOW_EMPTY_PASSWORD: true
+          MYSQL_DATABASE: "job_support_test"
+          MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
           MYSQL_ROOT_HOST: "%"
 
     working_directory: ~/repo
@@ -42,7 +61,8 @@ jobs:
           command: |
             sudo apt update
             sudo apt install -y libpng-dev
-            sudo docker-php-ext-install zip gd
+            sudo docker-php-ext-install zip gd pdo_mysql
+            sudo docker-php-ext-enable pdo_mysql
       # Download and cache dependencies
       - restore_cache:
           keys:
@@ -78,19 +98,8 @@ jobs:
           working_directory: laravel
           command: |
             composer phpstan
-
-  notify:
-    docker:
-      - image: "cimg/base:stable"
-    steps:
-      - slack/notify:
-          channel: random
-          event: fail
-          mentions: "@kaba_farm"
-          template: basic_fail_1
-      - slack/notify:
-          event: pass
-          template: success_tagged_deploy_1
+      - notify_slack_fail
+      - notify_slack_pass
 
   deploy:
     docker:
@@ -172,6 +181,8 @@ jobs:
               --cluster $ECS_CLUSTER_NAME \
               --service $ECS_FRONT_SERVICE_NAME \
               --task-definition $ECS_FRONT_TASK_NAME
+      - notify_slack_fail
+      - notify_slack_deploy
 
 workflows:
   version: 2
@@ -186,5 +197,4 @@ workflows:
             - test
           filters:
             branches:
-              only: master
-      - notify
+              only: main

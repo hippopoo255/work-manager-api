@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::name('admin.')->group(function(){
   // 認証中の管理ユーザーを返却
-  Route::get('/currentAdmin', 'AdminController@currentAdmin')->name('currentAdmin');
+  Route::get('/admin/current', 'AdminController@currentAdmin')->name('currentAdmin');
   // 管理者認証手続
   Route::namespace('Auth')->group(function() {
     Route::post('/register', 'RegisterController@register')->name('register');
