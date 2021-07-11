@@ -11,6 +11,7 @@ services:
       - ./docker/nginx/logs:/etc/nginx/logs
       - ./docker/nginx/conf.d:/etc/nginx/conf.d
       - ${PROJECT_PATH}:/var/www/laravel
+      - ./swagger:/var/www/laravel/public/swagger
     ports:
       - ${WEB_PORT}:80
     links:

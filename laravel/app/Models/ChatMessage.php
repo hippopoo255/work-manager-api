@@ -32,6 +32,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ChatMessageImage[] $images
  * @property-read int|null $images_count
+ * @property-read \App\Models\User|null $to
  */
 class ChatMessage extends Model
 {

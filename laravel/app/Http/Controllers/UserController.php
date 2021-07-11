@@ -16,28 +16,7 @@ class UserController extends Controller
   }
 
   /**
-   * @OA\Get(
-   *   path="/user/current",
-   *   summary="現在のユーザーを返す",
-   *   tags={"user"},
-   *   @OA\Response(
-   *     response=200,
-   *     description="OK",
-   *     @OA\JsonContent(ref="#/components/schemas/User"),
-   *   ),
-   *   @OA\Response(
-   *     response="default",
-   *     description="Unexpected Error",
-   *     @OA\JsonContent(
-   *       type="object",
-   *       @OA\Property(
-   *         property="message",
-   *         type="string",
-   *         description="レスポンスパラメータの例を記載"
-   *       )
-   *     )
-   *   )
-   * )
+   * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\JsonResponse|\Illuminate\Http\Response
    */
   public function currentUser()
   {

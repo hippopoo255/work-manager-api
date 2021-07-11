@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "53b9358f4376cfcc9d10b74d95ebbd4b",
+    "content-hash": "9ef1a6dbc94c2ac1367a3c8b2ecc0fa7",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -6787,6 +6787,49 @@
                 "source": "https://github.com/justinrainbow/json-schema/tree/5.2.10"
             },
             "time": "2020-05-27T16:41:55+00:00"
+        },
+        {
+            "name": "mmal/openapi-validator",
+            "version": "0.9.12",
+            "source": {
+                "type": "git",
+                "url": "https://gitlab.com/mmalawski/openapi-validator.git",
+                "reference": "d8fc4a948dbb209f5212328236fc38f2d1176e39"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://gitlab.com/api/v4/projects/mmalawski%2Fopenapi-validator/repository/archive.zip?sha=d8fc4a948dbb209f5212328236fc38f2d1176e39",
+                "reference": "d8fc4a948dbb209f5212328236fc38f2d1176e39",
+                "shasum": ""
+            },
+            "require": {
+                "justinrainbow/json-schema": "^5.2",
+                "php": ">=7.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.13",
+                "phpunit/phpunit": "^6.5",
+                "symfony/yaml": "^3.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Mmal\\OpenapiValidator\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "proprietary"
+            ],
+            "description": "Validates data against provide openapi spec",
+            "keywords": [
+                "openapi",
+                "swagger"
+            ],
+            "support": {
+                "issues": "https://gitlab.com/api/v4/projects/9591553/issues"
+            },
+            "time": "2020-10-12T10:19:42+00:00"
         },
         {
             "name": "mockery/mockery",

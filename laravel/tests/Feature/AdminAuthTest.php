@@ -4,6 +4,8 @@ namespace Tests\Feature;
 
 use App\Models\Admin;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Mmal\OpenapiValidator\Validator;
+use Symfony\Component\Yaml\Yaml;
 use Tests\TestCase;
 
 class AdminAuthTest extends TestCase
@@ -27,6 +29,9 @@ class AdminAuthTest extends TestCase
     $response->assertOk()->assertJson([
       'id' => $this->admin->id
     ]);
+    // APIの仕様とデータ形式が一致している
+    $result = parent::$openApiValidator->validate('getCurrentAdmin', 200, json_decode($response->getContent(), true));
+    $this->assertFalse($result->hasErrors(), $result);
   }
   /**
    * @test
@@ -36,6 +41,9 @@ class AdminAuthTest extends TestCase
   {
     $response = $this->getJson(route('admin.currentAdmin'));
     $response->assertOk()->assertExactJson([]);
+    // APIの仕様とデータ形式が一致している
+    $result = parent::$openApiValidator->validate('getCurrentAdmin', 200, json_decode($response->getContent(), true));
+    $this->assertFalse($result->hasErrors(), $result);
   }
   /**
    * @test
@@ -61,6 +69,10 @@ class AdminAuthTest extends TestCase
       'id' => $expectAdmin->id,
       'email' => $expectAdmin->email,
     ]);
+
+    // APIの仕様とデータ形式が一致している
+    $result = parent::$openApiValidator->validate('postAdminLogin', 200, json_decode($response->getContent(), true));
+    $this->assertFalse($result->hasErrors(), $result);
   }
   /**
    * @test
@@ -97,6 +109,10 @@ class AdminAuthTest extends TestCase
     $response->assertStatus(422)->assertJsonValidationErrors([
       'login_id'
     ]);
+
+    // APIの仕様とデータ形式が一致している
+    $result = parent::$openApiValidator->validate('postAdminLogin', 422, json_decode($response->getContent(), true));
+    $this->assertFalse($result->hasErrors(), $result);
   }
   /**
    * @test
@@ -127,6 +143,10 @@ class AdminAuthTest extends TestCase
   {
     $response = $this->actingAs($this->admin, 'admin')->postJson(route('admin.logout'));
     $response->assertOk()->assertExactJson([]);
+
+    // APIの仕様とデータ形式が一致している
+    $result = parent::$openApiValidator->validate('postAdminLogout', 200, json_decode($response->getContent(), true));
+    $this->assertFalse($result->hasErrors(), $result);
   }
 
   /**
@@ -137,5 +157,8 @@ class AdminAuthTest extends TestCase
   {
     $response = $this->postJson(route('admin.logout'));
     $response->assertUnauthorized();
+    // APIの仕様とデータ形式が一致している
+    $result = parent::$openApiValidator->validate('postAdminLogout', 401, json_decode($response->getContent(), true));
+    $this->assertFalse($result->hasErrors(), $result);
   }
 }

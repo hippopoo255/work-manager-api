@@ -28,6 +28,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|ChatRoom whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ChatRoom whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property-read int|null $members_count
  */
 class ChatRoom extends Model
 {

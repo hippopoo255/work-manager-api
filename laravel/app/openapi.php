@@ -15,7 +15,7 @@ namespace App;
  *
  * @OA\Server(
  *  description="OpenApi host",
- *  url="http://localhost:8080"
+ *  url="http://localhost:8080/api"
  * )
  *
  * @OA\Tag(
@@ -26,7 +26,7 @@ namespace App;
 
 /**
  * @OA\Schema(
- *   schema="user",
+ *   schema="User",
  *   type="object",
  *   description="ユーザー",
  *   required={"id","full_name","created_at","updated_at"},
@@ -56,6 +56,7 @@ namespace App;
  *   @OA\Property(
  *     property="file_path",
  *     type="string",
+ *     nullable=true,
  *     example="users/test1.jpg",
  *     description="ファイルパス"
  *   ),
@@ -75,77 +76,3 @@ namespace App;
  *   )
  * )
  */
-
-/**
- * @OA\Schema(
- *   title="User",
- *   description="ユーザーのスキーマ",
- *   type="object",
- *   required={"id","full_name","created_at","updated_at"},
- * )
- */
-class User
-{
-  /**
-   * ユーザID
-   * @var integer
-   * @OA\Property(
-   *   example=1,
-   * )
-   */
-  public $id;
-
-  /**
-   * ユーザーフルネーム
-   * @var string
-   * @OA\Property(
-   *   example="テスト 太郎",
-   * )
-   */
-  public $full_name;
-
-  /**
-   * 名
-   * @var string
-   * @OA\Property(
-   *   example="太郎",
-   * )
-   */
-  public $first_name;
-
-  /**
-   * 姓
-   * @var string
-   * @OA\Property(
-   *   example="テスト",
-   * )
-   */
-  public $last_name;
-
-  /**
-   * 画像パス
-   * @var string
-   * @OA\Property(
-   *   example="user/user.jpg",
-   * )
-   */
-  public $file_path;
-
-  /**
-   * 作成日時
-   * @var string
-   * @OA\Property(
-   *   example="2021-12-31 23:59:59",
-   * )
-   */
-  public $created_at;
-
-  /**
-   * 更新日時
-   * @var string
-   * @OA\Property(
-   *   example="2021-12-31 23:59:59",
-   * )
-   */
-  public $updated_at;
-}

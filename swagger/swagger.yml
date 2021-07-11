@@ -1,19 +1,40 @@
-openapi: 3.0.0
+---
+openapi: 3.0.2
 info:
-  title: 業務支援システム
-  description: "主な機能：\n   議事録の記録\n   スケジュール管理・共有\n   ファイル共有\n   チャット\n   Todo管理等"
-  version: 1.0.0
+  description:
+    "主な機能：\
+    \     議事録の記録 \
+    スケジュール管理・共有 \
+    ファイル共有 \
+    チャット \
+    Todo管理等 \
+    \ key `special-key` to test the authorization     filters."
+  version: "1.0.0"
+  title: "業務支援システム"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "apiteam@swagger.io"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
 servers:
-  -
-    url: 'http://localhost:8080'
-    description: 'OpenApi host'
+  - url: http://localhost:8080/api
+    description: Laravelのローカルserver
+tags:
+  - name: "user"
+    description: "employees"
+  - name: "admin"
+    description: "system administrator"
+  - name: "chat_room"
+    description: "chat room"
+
 paths:
   /user/current:
     get:
       tags:
         - user
       summary: 現在のユーザーを返す
-      operationId: bf6ef126d7726fa13fdb0f3ef545f7cd
+      operationId: getCurrentUser
       responses:
         '200':
           description: OK
@@ -26,88 +47,379 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  message: { description: レスポンスパラメータの例を記載, type: string }
-                type: object
+                $ref: '#/components/schemas/DefaultError'
+  /login:
+    post:
+      tags:
+        - user
+      description: 'return auth by login_id and password'
+      operationId: postLogin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginBody'
+      responses:
+        '200':
+          description: OK
+          headers:
+            Set-Cookie:
+              description: laravel_session
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        '422':
+          description: 'Invalid Data Error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidError'
+        default:
+          description: 'Unexpected Error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+  /logout:
+    post:
+      tags:
+        - user
+      description: 'return logout by login_id and password'
+      operationId: postLogout
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyItem'
+        '401':
+          description: 'Unauthorized Error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+        default:
+          description: 'Unexpected Error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+  # admin auth
+  /admin/current:
+    get:
+      tags:
+        - admin
+      description: 'return current admin'
+      operationId: getCurrentAdmin
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Admin'
+        default:
+          description: 'Unexpected Error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+  /admin/login:
+    post:
+      tags:
+        - admin
+      description: 'return admin auth by login_id and password'
+      operationId: postAdminLogin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginBody'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Admin'
+        '422':
+          description: 'Invalid Data Error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidError'
+        default:
+          description: 'Unexpected Error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+  /admin/logout:
+    post:
+      tags:
+        - 'admin'
+      description: 'return logout by login_id and password'
+      operationId: postAdminLogout
+      responses:
+        '200':
+          description: 'successfull operation'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyItem'
+        '401':
+          description: 'Unauthorized Error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+        default:
+          description: 'Unexpected Error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+  # mypages
+  /author/chat_room:
+    get:
+      security:
+        - cookieAuth: []
+      tags:
+        - "chat_room"
+      operationId: getChatRoom
+      description: "chat rooms user joined"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ChatRoom"
+        default:
+          description: 'Unexpected Error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+
 components:
   schemas:
-    user:
-      description: ユーザー
-      required:
-        - id
-        - full_name
-        - created_at
-        - updated_at
-      properties:
-        id:
-          description: ユーザーID
-          type: integer
-        full_name:
-          description: フルネーム
-          type: string
-          example: 'テスト 太郎'
-        first_name:
-          description: 名
-          type: string
-          example: 太郎
-        last_name:
-          description: 姓
-          type: string
-          example: テスト
-        file_path:
-          description: ファイルパス
-          type: string
-          example: users/test1.jpg
-        created_at:
-          description: 作成日時
-          type: string
-          format: datetime
-          example: '2021-12-31 12:00:00'
-        updated_at:
-          description: 更新日時
-          type: string
-          format: datetime
-          example: '2021-12-31 12:00:00'
+    DefaultError:
+      title: DefaultError
+      description: 'DefaultError'
       type: object
+      properties:
+        message:
+          description: エラーメッセージ
+          type: string
+    InvalidError:
+      title: InvalidError
+      description: 'InvalidError'
+      type: object
+      properties:
+        message:
+          description: エラーメッセージ
+          type: string
+        errors:
+          description: フォームアイテムごとのエラーメッセージ
+          type: object
+          additionalProperties: {}
+    EmptyItem:
+      title: EmptyItem
+      description: データがないときの空配列
+      type: array
+      example: []
+      items: {}
+    LoginBody:
+      title: LoginBody
+      description: ログインIDとパスワードのフォーム
+      required:
+        - login_id
+        - password
+      type: object
+      properties:
+        login_id:
+          type: string
+          example: 'testman1'
+        password:
+          type: string
+          format: password
+          example: 'password'
     User:
       title: User
-      description: ユーザーのスキーマ
+      anyOf:
+        - type: array
+          example: []
+          items: []
+          description: 未認証時のデータ
+        - type: object
+          description: 認証時のデータ
+          required:
+            - id
+            - full_name
+            - created_at
+            - updated_at
+          properties:
+            id:
+              description: ユーザーID
+              type: integer
+            full_name:
+              description: フルネーム
+              type: string
+              example: 'テスト 太郎'
+            first_name:
+              description: 名
+              type: string
+              example: 太郎
+            last_name:
+              description: 姓
+              type: string
+              example: テスト
+            file_path:
+              nullable: true
+              description: ファイルパス
+              type: string
+              example: users/test1.jpg
+            created_at:
+              description: 作成日時
+              type: string
+              format: datetime
+              example: '2021-12-31 12:00:00'
+            updated_at:
+              description: 更新日時
+              type: string
+              format: datetime
+              example: '2021-12-31 12:00:00'
+    Admin:
+      title: Admin
+      anyOf:
+        - type: array
+          example: []
+          items: []
+          description: 未認証時のデータ
+        - type: object
+          description: 認証時のデータ
+          required:
+            - id
+            - full_name
+            - created_at
+            - updated_at
+          properties:
+            id:
+              description: ユーザーID
+              type: integer
+            full_name:
+              description: フルネーム
+              type: string
+              example: '管理者 太郎'
+            first_name:
+              description: 名
+              type: string
+              example: 太郎
+            last_name:
+              description: 姓
+              type: string
+              example: 管理者
+            file_path:
+              nullable: true
+              description: ファイルパス
+              type: string
+              example: admins/test1.jpg
+            created_at:
+              description: 作成日時
+              type: string
+              format: datetime
+              example: '2021-12-31 12:00:00'
+            updated_at:
+              description: 更新日時
+              type: string
+              format: datetime
+              example: '2021-12-31 12:00:00'
+    ChatRoom:
+      title: ChatRoom
+      description: チャットルーム
       required:
         - id
-        - full_name
+        - name
+        - members
+        - messages
         - created_at
         - updated_at
+      type: object
       properties:
         id:
-          description: ユーザID
           type: integer
-          example: 1
-        full_name:
-          description: ユーザーフルネーム
+          format: int64
+        name:
           type: string
-          example: 'テスト 太郎'
-        first_name:
-          description: 名
-          type: string
-          example: 太郎
-        last_name:
-          description: 姓
-          type: string
-          example: テスト
-        file_path:
-          description: 画像パス
-          type: string
-          example: user/user.jpg
+        members:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+        messages:
+          type: array
+          items:
+            $ref: "#/components/schemas/ChatMessage"
         created_at:
-          description: 作成日時
           type: string
-          example: '2021-12-31 23:59:59'
         updated_at:
-          description: 更新日時
           type: string
-          example: '2021-12-31 23:59:59'
+    ChatMessage:
+      title: ChatMessage
+      description: チャットメッセージ
+      required:
+        - id
+        # - to
+        - written_by
+        - body
+        - created_at
+        - updated_at
       type: object
-tags:
-  -
-    name: user
-    description: user
+      properties:
+        id:
+          type: integer
+          format: int64
+        body:
+          type: string
+        written_by:
+          $ref: '#/components/schemas/User'
+        to:
+          $ref: '#/components/schemas/User'
+        images:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatMessageImage'
+        created_at:
+          type: string
+        updated_at:
+          type: string
+    ChatMessageImage:
+      title: ChatMessageImage
+      description: チャット画像
+      required:
+        - id
+        - file_path
+        - created_at
+        - updated_at
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        chat_message_id:
+          type: integer
+          format: int64
+        file_path:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string

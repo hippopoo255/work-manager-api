@@ -2,9 +2,12 @@
 
 namespace Tests\Feature;
 
+use App\Http\Controllers\UserController;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use Symfony\Component\Yaml\Yaml;
+use Mmal\OpenapiValidator\Validator;
 
 class UserAuthTest extends TestCase
 {
@@ -27,6 +30,9 @@ class UserAuthTest extends TestCase
     $response->assertOk()->assertJson([
       'id' => $this->user->id
     ]);
+    // APIの仕様とデータ形式が一致している
+    $result = parent::$openApiValidator->validate('getCurrentUser', 200, json_decode($response->getContent(), true));
+    $this->assertFalse($result->hasErrors(), $result);
   }
 
   /**
@@ -37,6 +43,9 @@ class UserAuthTest extends TestCase
   {
     $response = $this->getJson(route('currentUser'));
     $response->assertOk()->assertExactJson([]);
+    // APIの仕様とデータ形式が一致している
+    $result = parent::$openApiValidator->validate('getCurrentUser', 200, json_decode($response->getContent(), true));
+    $this->assertFalse($result->hasErrors(), $result);
   }
 
   /**
@@ -65,7 +74,12 @@ class UserAuthTest extends TestCase
       'id' => $expectUser->id,
       'email' => $expectUser->email,
     ]);
+
+    $result = parent::$openApiValidator->validate('postLogin', 200, json_decode($response->getContent(), true));
+    $this->assertFalse($result->hasErrors(), $result);
+
   }
+
   /**
    * @test
    * @group auth
@@ -103,6 +117,9 @@ class UserAuthTest extends TestCase
     $response->assertStatus(422)->assertJsonValidationErrors([
       'login_id'
     ]);
+    // APIの仕様とデータ形式が一致している
+    $result = parent::$openApiValidator->validate('postLogin', 422, json_decode($response->getContent(), true));
+    $this->assertFalse($result->hasErrors(), $result);
   }
   /**
    * @test
@@ -135,6 +152,9 @@ class UserAuthTest extends TestCase
   {
     $response = $this->actingAs($this->user)->postJson(route('logout'));
     $response->assertOk()->assertExactJson([]);
+    // APIの仕様とデータ形式が一致している
+    $result = parent::$openApiValidator->validate('postLogout', 200, json_decode($response->getContent(), true));
+    $this->assertFalse($result->hasErrors(), $result);
   }
   /**
    * @test
@@ -144,5 +164,8 @@ class UserAuthTest extends TestCase
   {
     $response = $this->postJson(route('logout'));
     $response->assertUnauthorized();
+    // APIの仕様とデータ形式が一致している
+    $result = parent::$openApiValidator->validate('postLogout', 401, json_decode($response->getContent(), true));
+    $this->assertFalse($result->hasErrors(), $result);
   }
 }
