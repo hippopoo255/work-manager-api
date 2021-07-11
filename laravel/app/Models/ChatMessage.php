@@ -55,6 +55,14 @@ class ChatMessage extends Model
   /**
    * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
    */
+  public function to()
+  {
+    return $this->belongsTo(User::class, 'mentioned_to', 'id');
+  }
+
+  /**
+   * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+   */
   public function chatRoom()
   {
     return $this->belongsTo(ChatRoom::class, 'chat_room_id', 'id');

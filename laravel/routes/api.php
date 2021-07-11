@@ -29,6 +29,7 @@ Route::group(['middleware' => 'api'], function () {
 
   // 一般認証が必要なAPI
   Route::middleware('auth')->group(function() {
-
+    // チャットルーム
+    Route::get('/author/chat_room', 'ChatRoomController@findByOwner')->name('chatRoom.findByOwner');
   });
 });

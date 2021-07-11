@@ -25,6 +25,8 @@ tags:
     description: "employees"
   - name: "admin"
     description: "system administrator"
+  - name: "chat_room"
+    description: "shat room"
 paths:
   /user/current:
     get:
@@ -45,22 +47,20 @@ paths:
       tags:
         - "user"
       description: "return auth by login_id and password"
-      parameters:
-        - name: "login_id"
-          in: "query"
-          description: "The login_id for login in clear text"
-          schema:
-            type: "string"
-          required: true
-        - name: "password"
-          in: "query"
-          description: "The password for login in clear text"
-          schema:
-            type: "string"
-          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/login_body'
       responses:
         "200":
           description: "successfull operation"
+          headers:
+            Set-Cookie:
+              description: laravel_session
+              schema:
+                type: string
           content:
             application/json:
               schema:
@@ -94,7 +94,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Admin"
+                $ref: "#/components/schemas/admin"
         "400":
           description: "NG"
   /admin/login:
@@ -121,7 +121,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Admin"
+                $ref: "#/components/schemas/admin"
         "400":
           description: "Invalid login_id or password supplied"
   /admin/logout:
@@ -140,11 +140,75 @@ paths:
                   type: string
         "400":
           description: "NG"
+  /author/chat_room:
+    get:
+      security:
+        - cookieAuth: []
+      tags:
+        - "chat_room"
+      description: "chat rooms user joined"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/chat_room"
+        "400":
+          description: NG
+
 components:
+  securitySchemes:
+    cookieAuth:
+      description: Session Auth
+      type: apiKey
+      in: cookie
+      name: _session
   schemas:
+    login_body:
+      title: login_body
+      description: ログインIDとパスワードのフォーム
+      required:
+        - login_id
+        - password
+      type: object
+      properties:
+        login_id:
+          type: string
+          example: 'testman1'
+        password:
+          type: string
+          example: 'password'
     user:
       title: User
       description: Userのスキーマ
+      required:
+        - id
+        - full_name
+        - created_at
+        - updated_at
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        full_name:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        file_name:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+    admin:
+      title: Admin
+      description: Adminのスキーマ
       required:
         - id
         - full_name
@@ -165,12 +229,14 @@ components:
           type: string
         updated_at:
           type: string
-    Admin:
-      title: Admin
-      description: Adminのスキーマ
+    chat_room:
+      title: ChatRoom
+      description: チャットルーム
       required:
         - id
-        - full_name
+        - name
+        - members
+        - messages
         - created_at
         - updated_at
       type: object
@@ -178,11 +244,66 @@ components:
         id:
           type: integer
           format: int64
-        full_name:
+        name:
           type: string
-        first_name:
+        members:
+          type: array
+          items:
+            $ref: '#/components/schemas/user'
+        messages:
+          type: array
+          items:
+            $ref: "#/components/schemas/chat_message"
+        created_at:
           type: string
-        last_name:
+        updated_at:
+          type: string
+    chat_message:
+      title: ChatMessage
+      description: チャットメッセージ
+      required:
+        - id
+        # - to
+        - written_by
+        - body
+        - created_at
+        - updated_at
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        body:
+          type: string
+        written_by:
+          $ref: '#/components/schemas/user'
+        to:
+          $ref: '#/components/schemas/user'
+        images:
+          type: array
+          items:
+            $ref: '#/components/schemas/chat_message_image'
+        created_at:
+          type: string
+        updated_at:
+          type: string
+    chat_message_image:
+      title: ChatImage
+      description: チャット画像
+      required:
+        - id
+        - file_path
+        - created_at
+        - updated_at
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        chat_message_id:
+          type: integer
+          format: int64
+        file_path:
           type: string
         created_at:
           type: string

@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \App\Models\User $createdBy
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ChatMessage[] $messages
  * @property-read int|null $messages_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $sharedMembers
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $members
  * @property-read int|null $shared_members_count
  * @method static \Illuminate\Database\Eloquent\Builder|ChatRoom newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ChatRoom newQuery()
@@ -48,7 +48,7 @@ class ChatRoom extends Model
   /**
    * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
    */
-  public function sharedMembers()
+  public function members()
   {
     return $this->belongsToMany(User::class, 'chat_room_shares', 'chat_room_id', 'shared_with')
       ->withTimestamps()->withPivot('shared_by');
