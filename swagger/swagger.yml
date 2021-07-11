@@ -1,311 +1,113 @@
----
-openapi: 3.0.2
+openapi: 3.0.0
 info:
-  description:
-    "主な機能：\
-    \     議事録の記録 \
-    スケジュール管理・共有 \
-    ファイル共有 \
-    チャット \
-    Todo管理等 \
-    \ key `special-key` to test the authorization     filters."
-  version: "1.0.0"
-  title: "業務支援システム"
-  termsOfService: "http://swagger.io/terms/"
-  contact:
-    email: "apiteam@swagger.io"
-  license:
-    name: "Apache 2.0"
-    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+  title: 業務支援システム
+  description: "主な機能：\n   議事録の記録\n   スケジュール管理・共有\n   ファイル共有\n   チャット\n   Todo管理等"
+  version: 1.0.0
 servers:
-  - url: http://localhost:8080/api
-    description: Laravelで作ったローカルserver
-tags:
-  - name: "user"
-    description: "employees"
-  - name: "admin"
-    description: "system administrator"
-  - name: "chat_room"
-    description: "shat room"
+  -
+    url: 'http://localhost:8080'
+    description: 'OpenApi host'
 paths:
   /user/current:
     get:
       tags:
-        - "user"
-      description: "return user by userId"
+        - user
+      summary: 現在のユーザーを返す
+      operationId: bf6ef126d7726fa13fdb0f3ef545f7cd
       responses:
-        "200":
-          description: "successfull operation"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/user"
-        "400":
-          description: "NG"
-  /login:
-    post:
-      tags:
-        - "user"
-      description: "return auth by login_id and password"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/login_body'
-      responses:
-        "200":
-          description: "successfull operation"
-          headers:
-            Set-Cookie:
-              description: laravel_session
-              schema:
-                type: string
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/user"
-        "400":
-          description: "Invalid login_id or password supplied"
-  /logout:
-    post:
-      tags:
-        - "user"
-      description: "return logout by login_id and password"
-      responses:
-        "200":
-          description: "successfull operation"
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-        "400":
-          description: "NG"
-  /admin/current:
-    get:
-      tags:
-        - "admin"
-      description: "return current admin"
-      responses:
-        "200":
-          description: "successfull operation"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/admin"
-        "400":
-          description: "NG"
-  /admin/login:
-    post:
-      tags:
-        - admin
-      description: "return admin auth by login_id and password"
-      parameters:
-        - name: "login_id"
-          in: "query"
-          description: "The login_id for login in clear text"
-          schema:
-            type: "string"
-          required: true
-        - name: "password"
-          in: "query"
-          description: "The password for login in clear text"
-          schema:
-            type: "string"
-          required: true
-      responses:
-        "200":
-          description: "successfull operation"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/admin"
-        "400":
-          description: "Invalid login_id or password supplied"
-  /admin/logout:
-    post:
-      tags:
-        - "admin"
-      description: "return logout by login_id and password"
-      responses:
-        "200":
-          description: "successfull operation"
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-        "400":
-          description: "NG"
-  /author/chat_room:
-    get:
-      security:
-        - cookieAuth: []
-      tags:
-        - "chat_room"
-      description: "chat rooms user joined"
-      responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/chat_room"
-        "400":
-          description: NG
-
+                $ref: '#/components/schemas/User'
+        default:
+          description: 'Unexpected Error'
+          content:
+            application/json:
+              schema:
+                properties:
+                  message: { description: レスポンスパラメータの例を記載, type: string }
+                type: object
 components:
-  securitySchemes:
-    cookieAuth:
-      description: Session Auth
-      type: apiKey
-      in: cookie
-      name: _session
   schemas:
-    login_body:
-      title: login_body
-      description: ログインIDとパスワードのフォーム
-      required:
-        - login_id
-        - password
-      type: object
-      properties:
-        login_id:
-          type: string
-          example: 'testman1'
-        password:
-          type: string
-          example: 'password'
     user:
-      title: User
-      description: Userのスキーマ
+      description: ユーザー
       required:
         - id
         - full_name
         - created_at
         - updated_at
-      type: object
       properties:
         id:
+          description: ユーザーID
           type: integer
-          format: int64
         full_name:
+          description: フルネーム
           type: string
+          example: 'テスト 太郎'
         first_name:
+          description: 名
           type: string
+          example: 太郎
         last_name:
+          description: 姓
           type: string
-        file_name:
-          type: string
-        created_at:
-          type: string
-        updated_at:
-          type: string
-    admin:
-      title: Admin
-      description: Adminのスキーマ
-      required:
-        - id
-        - full_name
-        - created_at
-        - updated_at
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-        full_name:
-          type: string
-        first_name:
-          type: string
-        last_name:
-          type: string
-        created_at:
-          type: string
-        updated_at:
-          type: string
-    chat_room:
-      title: ChatRoom
-      description: チャットルーム
-      required:
-        - id
-        - name
-        - members
-        - messages
-        - created_at
-        - updated_at
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-        name:
-          type: string
-        members:
-          type: array
-          items:
-            $ref: '#/components/schemas/user'
-        messages:
-          type: array
-          items:
-            $ref: "#/components/schemas/chat_message"
-        created_at:
-          type: string
-        updated_at:
-          type: string
-    chat_message:
-      title: ChatMessage
-      description: チャットメッセージ
-      required:
-        - id
-        # - to
-        - written_by
-        - body
-        - created_at
-        - updated_at
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-        body:
-          type: string
-        written_by:
-          $ref: '#/components/schemas/user'
-        to:
-          $ref: '#/components/schemas/user'
-        images:
-          type: array
-          items:
-            $ref: '#/components/schemas/chat_message_image'
-        created_at:
-          type: string
-        updated_at:
-          type: string
-    chat_message_image:
-      title: ChatImage
-      description: チャット画像
-      required:
-        - id
-        - file_path
-        - created_at
-        - updated_at
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-        chat_message_id:
-          type: integer
-          format: int64
+          example: テスト
         file_path:
+          description: ファイルパス
           type: string
+          example: users/test1.jpg
         created_at:
+          description: 作成日時
           type: string
+          format: datetime
+          example: '2021-12-31 12:00:00'
         updated_at:
+          description: 更新日時
           type: string
+          format: datetime
+          example: '2021-12-31 12:00:00'
+      type: object
+    User:
+      title: User
+      description: ユーザーのスキーマ
+      required:
+        - id
+        - full_name
+        - created_at
+        - updated_at
+      properties:
+        id:
+          description: ユーザID
+          type: integer
+          example: 1
+        full_name:
+          description: ユーザーフルネーム
+          type: string
+          example: 'テスト 太郎'
+        first_name:
+          description: 名
+          type: string
+          example: 太郎
+        last_name:
+          description: 姓
+          type: string
+          example: テスト
+        file_path:
+          description: 画像パス
+          type: string
+          example: user/user.jpg
+        created_at:
+          description: 作成日時
+          type: string
+          example: '2021-12-31 23:59:59'
+        updated_at:
+          description: 更新日時
+          type: string
+          example: '2021-12-31 23:59:59'
+      type: object
+tags:
+  -
+    name: user
+    description: user

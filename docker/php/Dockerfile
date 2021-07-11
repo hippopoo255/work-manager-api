@@ -3,6 +3,7 @@ FROM php:7.3.0RC6-fpm-alpine3.8
 ARG TZ
 
 COPY ./docker/php/php.ini /usr/local/etc/php/
+COPY ./swagger/ /var/www/laravel/public/swagger/
 COPY ./laravel/ /var/www/laravel/
 WORKDIR /var/www/laravel
 

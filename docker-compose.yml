@@ -27,6 +27,7 @@ services:
         TZ: ${TZ}
     volumes:
       - ${PROJECT_PATH}:/var/www/laravel
+      - ./swagger:/var/www/laravel/public/swagger
     links:
       - db_master
     environment:

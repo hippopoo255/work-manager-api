@@ -19,7 +19,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $first_name 名
  * @property string|null $last_name_kana セイ
  * @property string|null $first_name_kana メイ
- * @property string|null $file_name 画像
+ * @property string|null $file_path 画像
  * @property string $email
  * @property \Illuminate\Support\Carbon|null $email_verified_at
  * @property string $password
@@ -89,7 +89,7 @@ class User extends Authenticatable
     'first_name',
     'last_name_kana',
     'first_name_kana',
-    'file_name',
+    'file_path',
     'email',
     'user_code',
     'role_id',
