@@ -49,6 +49,9 @@ use Illuminate\Support\Facades\Auth;
  * @property-read \App\Models\Role $role
  * @method static \Illuminate\Database\Eloquent\Builder|MeetingRecord whereRoleId($value)
  * @property-read bool $is_editable
+ * @property-read bool $is_pin
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $pinedUsers
+ * @property-read int|null $pined_users_count
  */
 class MeetingRecord extends Model implements RelationalDeleteInterface
 {

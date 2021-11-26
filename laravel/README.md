@@ -1,3 +1,20 @@
+# Auth0について
+
+現在テストログインについて未対応のため、Auth0退避中
+
+### Auth0で認証状態を検証したいとき
+
+```bash:
+composer require auth0/login:~6.0
+```
+
+```bash:
+php artisan vendor:publish --provider "Auth0\Login\LoginServiceProvider"
+```
+
+--- 
+
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
 <p align="center">

@@ -17,6 +17,7 @@ use Faker\Factory;
 | model instances for testing / seeding your application's database.
 |
 */
+
 $faker = Factory::create('ja_JP');
 $factory->define(User::class, function ($faker) {
   return [

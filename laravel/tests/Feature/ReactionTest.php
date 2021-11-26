@@ -15,7 +15,7 @@ class ReactionTest extends TestCase
      */
     public function testExample()
     {
-        $response = $this->get('/');
+        $response = $this->get('/api');
 
         $response->assertStatus(200);
     }

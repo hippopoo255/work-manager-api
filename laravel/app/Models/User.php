@@ -90,6 +90,10 @@ use App\Notifications\MailResetPasswordNotification;
  * @property-read int|null $joined_meetings_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\NotifyValidation[] $notifyValidations
  * @property-read int|null $notify_validations_count
+ * @property string $sub sub
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\MeetingRecord[] $pinedMeetingRecords
+ * @property-read int|null $pined_meeting_records_count
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereSub($value)
  */
 class User extends Authenticatable
 {
@@ -117,6 +121,7 @@ class User extends Authenticatable
     'created_by',
     'updated_by',
     'deleted_by',
+    'sub',
   ];
 
   protected $appends = [

@@ -52,6 +52,7 @@ use Illuminate\Support\Carbon;
  * @property-read bool $is_warning
  * @property-read string $status
  * @property-read bool $too_over
+ * @property-read bool $is_clear
  */
 class Task extends Model implements ModelInterface
 {
