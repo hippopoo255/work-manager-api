@@ -180,7 +180,8 @@ return [
     App\Providers\RouteServiceProvider::class,
     App\Providers\RepositoryServiceProvider::class,
     App\Providers\QueryServiceProvider::class,
-
+    // ↓Laravel側でAuth0を使ったログイン・ログアウト等するときはこのコメントアウトを外す
+    // Auth0\Login\LoginServiceProvider::class,
   ],
 
   /*
@@ -233,6 +234,8 @@ return [
     'URL' => Illuminate\Support\Facades\URL::class,
     'Validator' => Illuminate\Support\Facades\Validator::class,
     'View' => Illuminate\Support\Facades\View::class,
+    // ↓必須ではないがファサードを使いたい場合
+    // 'Auth0' => Auth0\Login\Facade\Auth0::class,
   ],
 
 ];

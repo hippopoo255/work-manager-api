@@ -27,6 +27,10 @@ use App\Services\Supports\StrSupportTrait;
  * @method static \Illuminate\Database\Eloquent\Builder|Activity whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Activity whereUserId($value)
  * @mixin \Eloquent
+ * @property int|null $model_id モデルID
+ * @property-read \App\Models\ActionType|null $actionType
+ * @property-read string $replaced_link
+ * @method static \Illuminate\Database\Eloquent\Builder|Activity whereModelId($value)
  */
 class Activity extends Model implements ModelInterface
 {

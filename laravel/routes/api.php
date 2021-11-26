@@ -21,7 +21,9 @@ Route::group(['middleware' => 'api'], function () {
   // 認証中の一般ユーザーを返却
   Route::get('/user/current', 'UserController@currentUser')->name('currentUser');
   Route::get('/user/current/chat_rooms', 'UserController@withChatRooms')->name('withChatRooms');
-
+  Route::get('/private', function (Request $request) {
+    return response()->json(["message" => "welcome to private endpoint!"]);
+  })->middleware('jwt');
   Route::get('/meeting_place', 'MeetingPlaceController@index')->name('meetingPlace.index');
   Route::get('/meeting_record/ids', 'MeetingRecordController@ids')->name('meetingRecord.ids');
 

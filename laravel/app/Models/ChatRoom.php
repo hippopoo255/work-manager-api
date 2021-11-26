@@ -40,6 +40,7 @@ use Illuminate\Support\Carbon;
  * @property-read mixed $unread_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\LastRead[] $lastReads
  * @property-read int|null $last_reads_count
+ * @property-read Carbon $latest_message_date
  */
 class ChatRoom extends Model implements RelationalDeleteInterface
 {

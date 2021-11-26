@@ -74,6 +74,10 @@ return [
       'driver' => 'eloquent',
       'model' => App\Models\User::class,
     ],
+    // Laravel側でAuth0によるログイン・ログアウト・新規登録をするときはこの設定を使う
+    // 'users' => [
+    //   'driver' => 'auth0'
+    // ],
     'admins' => [
       'driver' => 'eloquent',
       'model' => App\Models\Admin::class,
