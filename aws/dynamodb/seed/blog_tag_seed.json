@@ -1,0 +1,180 @@
+{
+  "tags": [
+    {
+      "PutRequest": {
+        "Item": {
+          "id": { "S": "1" },
+          "name": {
+            "S": "HTML"
+          },
+          "created_at": {
+            "S": "2021-11-30T12:05Z"
+          },
+          "updated_at": {
+            "S": "2021-11-30T12:05Z"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "id": { "S": "2" },
+          "name": {
+            "S": "CSS"
+          },
+          "created_at": {
+            "S": "2021-11-30T12:05Z"
+          },
+          "updated_at": {
+            "S": "2021-11-30T12:05Z"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "id": { "S": "3" },
+          "name": {
+            "S": "JavaScript"
+          },
+          "created_at": {
+            "S": "2021-11-30T12:05Z"
+          },
+          "updated_at": {
+            "S": "2021-11-30T12:05Z"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "id": { "S": "4" },
+          "name": {
+            "S": "PHP"
+          },
+          "created_at": {
+            "S": "2021-11-30T12:05Z"
+          },
+          "updated_at": {
+            "S": "2021-11-30T12:05Z"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "id": { "S": "5" },
+          "name": {
+            "S": "Java"
+          },
+          "created_at": {
+            "S": "2021-11-30T12:05Z"
+          },
+          "updated_at": {
+            "S": "2021-11-30T12:05Z"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "id": { "S": "6" },
+          "name": {
+            "S": "Ruby"
+          },
+          "created_at": {
+            "S": "2021-11-30T12:05Z"
+          },
+          "updated_at": {
+            "S": "2021-11-30T12:05Z"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "id": { "S": "7" },
+          "name": {
+            "S": "Python"
+          },
+          "created_at": {
+            "S": "2021-11-30T12:05Z"
+          },
+          "updated_at": {
+            "S": "2021-11-30T12:05Z"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "id": { "S": "8" },
+          "name": {
+            "S": "Go"
+          },
+          "created_at": {
+            "S": "2021-11-30T12:05Z"
+          },
+          "updated_at": {
+            "S": "2021-11-30T12:05Z"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "id": { "S": "9" },
+          "name": {
+            "S": "C#"
+          },
+          "created_at": {
+            "S": "2021-11-30T12:05Z"
+          },
+          "updated_at": {
+            "S": "2021-11-30T12:05Z"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "id": { "S": "10" },
+          "name": {
+            "S": "Scalar"
+          },
+          "created_at": {
+            "S": "2021-11-30T12:05Z"
+          },
+          "updated_at": {
+            "S": "2021-11-30T12:05Z"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "id": { "S": "11" },
+          "name": {
+            "S": "Rust"
+          },
+          "created_at": {
+            "S": "2021-11-30T12:05Z"
+          },
+          "updated_at": {
+            "S": "2021-11-30T12:05Z"
+          }
+        }
+      }
+    }
+  ]
+}
