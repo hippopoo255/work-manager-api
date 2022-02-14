@@ -13,7 +13,7 @@ class CreateMeetingRecordsTable extends Migration
   {
     Schema::create('meeting_records', function (Blueprint $table) {
       $table->id();
-      $table->unsignedBigInteger('recorded_by')->comment('議事録作成者');
+      $table->unsignedBigInteger('created_by')->comment('議事録作成者');
       $table->unsignedBigInteger('place_id')->nullable()->comment('開催場所');
       $table->unsignedBigInteger('role_id')->default(1)->comment('権限ID');
       $table->dateTime('meeting_date')->comment('開催日');
@@ -25,7 +25,7 @@ class CreateMeetingRecordsTable extends Migration
       $table->timestamps();
       $table->softDeletes();
 
-      $table->foreign('recorded_by')->references('id')->on('users')
+      $table->foreign('created_by')->references('id')->on('users')
         ->onUpdate('cascade')
         ->onDelete('no action');
       $table->foreign('updated_by')->references('id')->on('users')
@@ -47,7 +47,7 @@ class CreateMeetingRecordsTable extends Migration
       $table->dropForeign('meeting_records_place_id_foreign');
       $table->dropForeign('meeting_records_deleted_by_foreign');
       $table->dropForeign('meeting_records_updated_by_foreign');
-      $table->dropForeign('meeting_records_recorded_by_foreign');
+      $table->dropForeign('meeting_records_created_by_foreign');
     });
     Schema::dropIfExists('meeting_records');
   }

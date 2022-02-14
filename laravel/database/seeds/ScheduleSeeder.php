@@ -16,14 +16,14 @@ class ScheduleSeeder extends Seeder
     DB::table('schedule_shares')->truncate();
     DB::table('schedules')->truncate();
     $users = User::all();
-    $users->each(function($user) {
+    $users->each(function ($user) {
       $schedules = factory(Schedule::class, 10)->create([
-        'scheduled_by' => $user->id,
+        'created_by' => $user->id,
       ]);
-      $schedules->each(function($schedule) {
+      $schedules->each(function ($schedule) {
         $schedule->sharedMembers()->sync([
-          $schedule->scheduled_by => [
-            'shared_by' => $schedule->scheduled_by,
+          $schedule->created_by => [
+            'shared_by' => $schedule->created_by,
             'is_editable' => 1,
           ],
         ]);

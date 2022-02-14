@@ -16,7 +16,7 @@ class BlogController extends Controller
    */
   private $service;
   private $perPage = 15;
-  private $loads = ['writtenBy', 'comments.writtenBy','likes','images','tags'];
+  private $loads = ['createdBy', 'comments.createdBy', 'likes', 'images', 'tags'];
 
 
   public function __construct(Service $service)

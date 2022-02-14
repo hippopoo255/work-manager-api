@@ -54,7 +54,7 @@ class ChatMessagePolicy
    */
   public function update(User $user, ChatMessage $chatMessage)
   {
-    return $chatMessage->written_by === $user->id;
+    return $chatMessage->created_by === $user->id;
   }
 
   /**
@@ -66,7 +66,7 @@ class ChatMessagePolicy
    */
   public function delete(User $user, ChatMessage $chatMessage)
   {
-    return $chatMessage->written_by === $user->id;
+    return $chatMessage->created_by === $user->id;
   }
 
   /**

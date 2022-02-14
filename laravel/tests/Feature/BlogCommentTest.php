@@ -18,7 +18,7 @@ class BlogCommentTest extends TestCase
   {
     parent::setUp();
     $this->blog = factory(Blog::class)->create([
-      'written_by' => $this->user->id,
+      'created_by' => $this->user->id,
     ]);
   }
 
@@ -30,7 +30,7 @@ class BlogCommentTest extends TestCase
   {
     $count = BlogComment::count();
     $expects = [
-      'written_by' => $this->user->id,
+      'created_by' => $this->user->id,
       'body' => 'This is my first blog.',
     ];
     $response = $this->actingAs($this->user)->postJson(route('blogComment.store', $this->blog), $expects);
@@ -40,7 +40,7 @@ class BlogCommentTest extends TestCase
       'id' => $comment->id,
       'body' => $expects['body'],
     ]);
-    $this->assertDatabaseCount('blog_comments', $count+1);
+    $this->assertDatabaseCount('blog_comments', $count + 1);
 
     $result = parent::$openApiValidator->validate('postBlogIdComment', 201, json_decode($response->getContent(), true));
     $this->assertFalse($result->hasErrors(), $result);
@@ -53,12 +53,12 @@ class BlogCommentTest extends TestCase
   public function should_投稿バリデーションエラー()
   {
     $invalid = [
-      'written_by' => 12345, // レコードに存在しないユーザID
+      'created_by' => 12345, // レコードに存在しないユーザID
       'body' => Str::random(141), // 制限字数を1文字超えている
     ];
     $response = $this->actingAs($this->user)->postJson(route('blogComment.store', $this->blog), $invalid);
     $response->assertStatus(422)->assertJsonValidationErrors([
-      'written_by', 'body'
+      'created_by', 'body'
     ]);
 
     $result = parent::$openApiValidator->validate('postBlogIdComment', 422, json_decode($response->getContent(), true));
@@ -72,14 +72,14 @@ class BlogCommentTest extends TestCase
   public function should_コメントの更新()
   {
     $comment = BlogComment::create([
-      'written_by' => $this->user->id,
+      'created_by' => $this->user->id,
       'blog_id' => $this->blog->id,
       'body' => Str::random(64),
     ]);
 
     $count = BlogComment::count();
     $expects = [
-      'written_by' => $this->user->id,
+      'created_by' => $this->user->id,
       'body' => $comment->body . '_update',
     ];
     $response = $this->actingAs($this->user)->putJson(route('blogComment.update', [
@@ -104,13 +104,13 @@ class BlogCommentTest extends TestCase
   public function should_コメント投稿者以外のユーザは編集禁止()
   {
     $comment = BlogComment::create([
-      'written_by' => $this->user->id,
+      'created_by' => $this->user->id,
       'blog_id' => $this->blog->id,
       'body' => Str::random(64),
     ]);
     $badUser = User::where('id', '!=', $this->user->id)->first();
     $willDenied = [
-      'written_by' => $badUser->id,
+      'created_by' => $badUser->id,
       'body' => $comment->body . '_update',
     ];
     $response = $this->actingAs($badUser)->putJson(route('blogComment.update', [
@@ -134,7 +134,7 @@ class BlogCommentTest extends TestCase
   public function should_コメント投稿者によるコメントの削除()
   {
     $comment = BlogComment::create([
-      'written_by' => $this->user->id,
+      'created_by' => $this->user->id,
       'blog_id' => $this->blog->id,
       'body' => Str::random(64),
     ]);
@@ -160,7 +160,7 @@ class BlogCommentTest extends TestCase
   {
     $commentWriter = User::where('id', '!=', $this->user->id)->first();
     $comment = BlogComment::create([
-      'written_by' => $commentWriter->id,
+      'created_by' => $commentWriter->id,
       'blog_id' => $this->blog->id,
       'body' => Str::random(64),
     ]);
@@ -185,7 +185,7 @@ class BlogCommentTest extends TestCase
   public function should_ブログまたはコメント投稿者以外によるコメントの削除禁止()
   {
     $comment = BlogComment::create([
-      'written_by' => $this->user->id,
+      'created_by' => $this->user->id,
       'blog_id' => $this->blog->id,
       'body' => Str::random(64),
     ]);

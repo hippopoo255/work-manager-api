@@ -10,6 +10,22 @@ use Illuminate\Support\Facades\Auth;
 
 abstract class CommonModel extends Model
 {
+  //   public function __construct(array $attributes = [])
+  //   {
+  //     parent::__construct($attributes);
+  //
+  //     if (!\Arr::get($this->attributes, 'organization_id')) {
+  //       $this->setOrganizationId();
+  //     }
+  //   }
+  //
+  //   /**
+  //    * 組織IDを代入する
+  //    */
+  //   private function setOrganizationId()
+  //   {
+  //     $this->attributes['organization_id'] = Auth::user()->organization_id;
+  //   }
   /**
    * @return $this
    */
@@ -23,7 +39,7 @@ abstract class CommonModel extends Model
     }
 
     if ($this instanceof RelationalDeleteInterface) {
-      foreach($this->getDeleteRelations() as $relation) {
+      foreach ($this->getDeleteRelations() as $relation) {
         if ($relation instanceof Collection) {
           $relation->each(function (Model $child) {
             $child->customDelete();

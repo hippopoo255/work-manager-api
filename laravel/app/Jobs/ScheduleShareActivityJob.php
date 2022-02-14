@@ -51,12 +51,12 @@ class ScheduleShareActivityJob implements ShouldQueue
   {
     $actionType = $this->actionTypeRepository->findBy('key', ActionType::SCHEDULE_SHARED_KEY);
     $content = $this->replaceAttribute($actionType[0]->template_message, [
-      'from' => $this->schedule->scheduledBy->full_name,
+      'from' => $this->schedule->createdBy->full_name,
       'body' => \Str::limit($this->schedule->title, 15, '（...）'),
     ]);
 
     $this->schedule->sharedMembers->each(function ($member) use ($actionType, $content) {
-      if ($this->schedule->scheduled_by !== $member->id) {
+      if ($this->schedule->created_by !== $member->id) {
         $this->activityRepository->save([
           'action_type_id' => $actionType[0]->id,
           'model_id' => $this->schedule->id,

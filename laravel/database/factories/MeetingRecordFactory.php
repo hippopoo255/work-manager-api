@@ -10,7 +10,7 @@ use Faker\Factory;
 $faker = Factory::create('ja_JP');
 $factory->define(MeetingRecord::class, function ($faker) {
   return [
-    'recorded_by' => $faker->randomNumber,
+    'created_by' => $faker->randomNumber,
     'place_id' => array_random(MeetingPlace::all()->pluck('id')->toArray()),
     'meeting_date' => $faker->dateTimeThisYear,
     'title' => $faker->word . '会議',

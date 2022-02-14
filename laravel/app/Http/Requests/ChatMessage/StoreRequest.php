@@ -30,7 +30,7 @@ class StoreRequest extends FormRequest
   public function rules()
   {
     return [
-      'written_by' => 'required|integer|' . Rule::in(User::pluck('id')->toArray()),
+      'created_by' => 'required|integer|' . Rule::in(User::pluck('id')->toArray()),
       'mentioned_to' => 'nullable|integer|' . Rule::in(User::pluck('id')->toArray()),
       'body' => 'required|string',
       'files' => 'nullable|array|max:4',
@@ -45,7 +45,7 @@ class StoreRequest extends FormRequest
   public function attributes()
   {
     return [
-      'written_by' => '投稿者',
+      'created_by' => '投稿者',
       'mentioned_to' => '送信相手',
       'body' => 'メッセージ',
       'files' => '画像',
@@ -56,7 +56,7 @@ class StoreRequest extends FormRequest
   public function messages()
   {
     return [
-      'written_by.in' => '投稿者のデータが正しくありません',
+      'created_by.in' => '投稿者のデータが正しくありません',
       'mentioned_to' => '送信相手のデータが正しくありません',
       'files.*.mimes' => ':attributeの形式が正しくありませんでした'
     ];

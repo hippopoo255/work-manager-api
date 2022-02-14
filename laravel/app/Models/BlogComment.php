@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * App\Models\BlogComment
  *
  * @property int $id
- * @property int $written_by 投稿者
+ * @property int $created_by 投稿者
  * @property int $blog_id ブログID
  * @property string $body コメント
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -27,11 +27,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|BlogComment whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|BlogComment whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|BlogComment whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|BlogComment whereWrittenBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|BlogComment whereCreatedBy($value)
  * @method static \Illuminate\Database\Query\Builder|BlogComment withTrashed()
  * @method static \Illuminate\Database\Query\Builder|BlogComment withoutTrashed()
  * @mixin \Eloquent
- * @property-read \App\Models\User $writtenBy
+ * @property-read \App\Models\User $createdBy
  */
 class BlogComment extends Model
 {
@@ -40,13 +40,13 @@ class BlogComment extends Model
   protected $table = 'blog_comments';
 
   protected $fillable = [
-    'written_by',
+    'created_by',
     'blog_id',
     'body',
   ];
 
   const RELATIONS_ARRAY = [
-    'writtenBy',
+    'createdBy',
   ];
 
   /**
@@ -60,8 +60,8 @@ class BlogComment extends Model
   /**
    * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
    */
-  public function writtenBy()
+  public function createdBy()
   {
-    return $this->belongsTo(User::class, 'written_by', 'id');
+    return $this->belongsTo(User::class, 'created_by', 'id');
   }
 }

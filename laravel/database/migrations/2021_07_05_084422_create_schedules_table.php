@@ -15,7 +15,7 @@ class CreateSchedulesTable extends Migration
   {
     Schema::create('schedules', function (Blueprint $table) {
       $table->id();
-      $table->unsignedBigInteger('scheduled_by')->comment('予定作成者');
+      $table->unsignedBigInteger('created_by')->comment('予定作成者');
       $table->string('title')->comment('予定の内容');
       $table->dateTime('start')->comment('開始日時');
       $table->dateTime('end')->comment('終了日時');
@@ -26,7 +26,7 @@ class CreateSchedulesTable extends Migration
       $table->timestamps();
       $table->softDeletes();
 
-      $table->foreign('scheduled_by')->references('id')->on('users')
+      $table->foreign('created_by')->references('id')->on('users')
         ->onUpdate('cascade')
         ->onDelete('no action');
     });
@@ -40,7 +40,7 @@ class CreateSchedulesTable extends Migration
   public function down()
   {
     Schema::table('schedules', function (Blueprint $table) {
-      $table->dropForeign('schedules_scheduled_by_foreign');
+      $table->dropForeign('schedules_created_by_foreign');
     });
     Schema::dropIfExists('schedules');
   }

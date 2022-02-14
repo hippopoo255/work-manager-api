@@ -22,13 +22,13 @@ class DocumentFileRepository extends EloquentRepository implements DocumentFileR
   public function attachWithMembers(array $params, DocumentFolder $documentFolder, $id = null): Model
   {
     if (is_null($id)) {
-      $params['uploaded_by'] = Auth::user()->id;
+      $params['created_by'] = Auth::user()->id;
     }
     $documentFile = parent::attach($params, $documentFolder, 'files', $id);
     if (isset($params['sharedMembers'])) {
       $documentFile->sharedMembers()->sync($params['sharedMembers']);
     }
-    $documentFile->load(['uploadedBy', 'folder', 'sharedMembers']);
+    $documentFile->load(['createdBy', 'folder', 'sharedMembers']);
     return $documentFile;
   }
 
@@ -43,7 +43,7 @@ class DocumentFileRepository extends EloquentRepository implements DocumentFileR
     if (isset($params['sharedMembers'])) {
       $model->sharedMembers()->sync($params['sharedMembers']);
     }
-    return $model->load(['uploadedBy', 'folder', 'sharedMembers']);;
+    return $model->load(['createdBy', 'folder', 'sharedMembers']);;
   }
 
   /**
@@ -52,7 +52,7 @@ class DocumentFileRepository extends EloquentRepository implements DocumentFileR
    */
   public function findPublicName($id): string
   {
-    if($model = $this->find($id)){
+    if ($model = $this->find($id)) {
       return $model->public_name;
     }
     return '';

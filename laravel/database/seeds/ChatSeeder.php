@@ -37,7 +37,7 @@ class ChatSeeder extends Seeder
       });
       factory(ChatMessage::class)->create([
         'chat_room_id' => $room->id,
-        'written_by' => $manager->id,
+        'created_by' => $manager->id,
       ]);
     });
   }

@@ -9,7 +9,7 @@ use Faker\Factory;
 $faker = Factory::create('ja_JP');
 $factory->define(Blog::class, function ($faker) {
   return [
-    'written_by' => $faker->numberBetween(1, 10),
+    'created_by' => $faker->numberBetween(1, 10),
     'title' => $faker->lastName,
     'body' => $faker->realText,
   ];

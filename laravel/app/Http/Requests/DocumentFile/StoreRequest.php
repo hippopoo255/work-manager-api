@@ -28,19 +28,19 @@ class StoreRequest extends FormRequest
   public function rules()
   {
     return [
-      'uploaded_by' => 'required|integer|'.Rule::in(User::pluck('id')->toArray()),
+      'created_by' => 'required|integer|' . Rule::in(User::pluck('id')->toArray()),
       'is_public' => 'nullable|boolean',
-      'file' => 'required|file|max:'.self::MAX_FILE_SIZE,
+      'file' => 'required|file|max:' . self::MAX_FILE_SIZE,
       'sharedMembers' => 'nullable|array',
       'sharedMembers.*.is_editable' => 'required|boolean',
-      'sharedMembers.*.shared_by' => 'nullable|integer|'.Rule::in(User::pluck('id')->toArray()),
+      'sharedMembers.*.shared_by' => 'nullable|integer|' . Rule::in(User::pluck('id')->toArray()),
     ];
   }
 
   public function attributes()
   {
     return [
-      'uploaded_by' => 'アップロード者のID',
+      'created_by' => 'アップロード者のID',
       'file' => 'ファイル',
       'is_public' => '公開設定',
       'sharedMembers.*.is_editable' => '編集権限',

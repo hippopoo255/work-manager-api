@@ -17,7 +17,7 @@ class CreateMeetingDecisionsTable extends Migration
       $table->id();
       $table->unsignedBigInteger('meeting_record_id')->comment('議事録ID');
       $table->unsignedBigInteger('decided_by')->nullable()->comment('決定者');
-      $table->unsignedBigInteger('written_by')->comment('入力者');
+      $table->unsignedBigInteger('created_by')->comment('入力者');
       $table->string('subject')->nullable()->comment('議題');
       $table->string('body')->comment('決定内容');
 
@@ -30,7 +30,7 @@ class CreateMeetingDecisionsTable extends Migration
       $table->foreign('decided_by')->references('id')->on('users')
         ->onUpdate('cascade')
         ->onDelete('no action');
-      $table->foreign('written_by')->references('id')->on('users')
+      $table->foreign('created_by')->references('id')->on('users')
         ->onUpdate('cascade')
         ->onDelete('no action');
     });
@@ -43,9 +43,9 @@ class CreateMeetingDecisionsTable extends Migration
    */
   public function down()
   {
-    Schema::table('meeting_decisions', function(Blueprint $table){
+    Schema::table('meeting_decisions', function (Blueprint $table) {
       $table->dropForeign('meeting_decisions_decided_by_foreign');
-      $table->dropForeign('meeting_decisions_written_by_foreign');
+      $table->dropForeign('meeting_decisions_created_by_foreign');
       $table->dropForeign('meeting_decisions_meeting_record_id_foreign');
     });
     Schema::dropIfExists('meeting_decisions');

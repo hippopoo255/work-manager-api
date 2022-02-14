@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
  * App\Models\MeetingRecord
  *
  * @property int $id
- * @property int $recorded_by 議事録作成者
+ * @property int $created_by 議事録作成者
  * @property int|null $place_id 開催場所
  * @property \Illuminate\Support\Carbon $meeting_date 開催日
  * @property string $title 会議名
@@ -24,7 +24,7 @@ use Illuminate\Support\Facades\Auth;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $members
  * @property-read int|null $members_count
  * @property-read \App\Models\MeetingPlace|null $place
- * @property-read \App\Models\User $recordedBy
+ * @property-read \App\Models\User $createdBy
  * @method static \Illuminate\Database\Eloquent\Builder|MeetingRecord newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|MeetingRecord newQuery()
  * @method static \Illuminate\Database\Query\Builder|MeetingRecord onlyTrashed()
@@ -35,7 +35,7 @@ use Illuminate\Support\Facades\Auth;
  * @method static \Illuminate\Database\Eloquent\Builder|MeetingRecord whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|MeetingRecord whereMeetingDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|MeetingRecord wherePlaceId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|MeetingRecord whereRecordedBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|MeetingRecord whereCreatedBy($value)
  * @method static \Illuminate\Database\Eloquent\Builder|MeetingRecord whereSummary($value)
  * @method static \Illuminate\Database\Eloquent\Builder|MeetingRecord whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|MeetingRecord whereUpdatedAt($value)
@@ -62,13 +62,13 @@ class MeetingRecord extends Model implements RelationalDeleteInterface
     'decisions',
     'place',
     'members',
-    'recordedBy',
+    'createdBy',
   ];
 
   protected $table = 'meeting_records';
 
   protected $fillable = [
-    'recorded_by',
+    'created_by',
     'updated_by',
     'deleted_by',
     'place_id',
@@ -98,9 +98,9 @@ class MeetingRecord extends Model implements RelationalDeleteInterface
   /**
    * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
    */
-  public function recordedBy()
+  public function createdBy()
   {
-    return $this->belongsTo(User::class, 'recorded_by', 'id');
+    return $this->belongsTo(User::class, 'created_by', 'id');
   }
   /**
    * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -162,7 +162,7 @@ class MeetingRecord extends Model implements RelationalDeleteInterface
   public function getIsEditableAttribute(): bool
   {
     if (Auth::check()) {
-      return $this->recorded_by === Auth::user()->id;
+      return $this->created_by === Auth::user()->id;
     }
     return false;
   }

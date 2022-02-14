@@ -59,7 +59,7 @@ class ScheduleService extends Service
   public function findByOwner($ownerId): array
   {
     $owner = $this->userRepository->find($ownerId);
-    $schedules = $owner->sharedSchedules->load(['sharedMembers', 'scheduledBy']);
+    $schedules = $owner->sharedSchedules->load(['sharedMembers', 'createdBy']);
     return $schedules->map(function ($schedule) {
       if (!$schedule->is_show) {
         return [
@@ -86,7 +86,7 @@ class ScheduleService extends Service
     $newSchedule = $this->repository()->saveWithMembers($params, 'sharedMembers');
 
     Notification::send($newSchedule->sharedMembers->filter(function ($member) use ($newSchedule) {
-      return NotifySupport::shouldSend($member, $newSchedule->scheduled_by, ActionType::SCHEDULE_SHARED_KEY);
+      return NotifySupport::shouldSend($member, $newSchedule->created_by, ActionType::SCHEDULE_SHARED_KEY);
     }), new ScheduleSharedNotification($newSchedule));
     $this->jobSupport->dispatch($newSchedule);
 

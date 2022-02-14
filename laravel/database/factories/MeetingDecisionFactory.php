@@ -13,7 +13,7 @@ $factory->define(MeetingDecision::class, function ($faker) {
   return [
     'meeting_record_id' => $faker->randomNumber,
     'decided_by' => $faker->numberBetween(1, 10),
-    'written_by' => $faker->numberBetween(1, 10),
+    'created_by' => $faker->numberBetween(1, 10),
     'subject' => '決定内容件名',
     'body' => '決定内容xxxxxxxxxx',
   ];

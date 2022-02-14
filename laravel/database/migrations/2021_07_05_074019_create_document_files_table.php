@@ -15,7 +15,7 @@ class CreateDocumentFilesTable extends Migration
   {
     Schema::create('document_files', function (Blueprint $table) {
       $table->id();
-      $table->unsignedBigInteger('uploaded_by')->comment('アップロード者');
+      $table->unsignedBigInteger('created_by')->comment('アップロード者');
       $table->unsignedBigInteger('folder_id')->comment('フォルダID');
       $table->string('file_path')->comment('ファイルパス');
       $table->string('is_public')->default(0)->comment('公開設定');
@@ -24,7 +24,7 @@ class CreateDocumentFilesTable extends Migration
       $table->timestamps();
       $table->softDeletes();
 
-      $table->foreign('uploaded_by')->references('id')->on('users')
+      $table->foreign('created_by')->references('id')->on('users')
         ->onUpdate('cascade')
         ->onDelete('no action');
 
@@ -40,9 +40,9 @@ class CreateDocumentFilesTable extends Migration
    */
   public function down()
   {
-    Schema::table('document_files', function(Blueprint $table){
+    Schema::table('document_files', function (Blueprint $table) {
       $table->dropForeign('document_files_folder_id_foreign');
-      $table->dropForeign('document_files_uploaded_by_foreign');
+      $table->dropForeign('document_files_created_by_foreign');
     });
     Schema::dropIfExists('document_files');
   }

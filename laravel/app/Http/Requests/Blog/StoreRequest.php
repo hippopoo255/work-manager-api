@@ -30,7 +30,7 @@ class StoreRequest extends FormRequest
   public function rules()
   {
     return [
-      'written_by' => 'nullable|integer|' . Rule::in(User::pluck('id')->toArray()),
+      'created_by' => 'nullable|integer|' . Rule::in(User::pluck('id')->toArray()),
       'title' => 'required|string|max:140',
       'body' => 'required|string',
       'images' => 'nullable|array',
@@ -43,7 +43,7 @@ class StoreRequest extends FormRequest
   public function attributes()
   {
     return [
-      'written_by' => '投稿者のID',
+      'created_by' => '投稿者のID',
       'title' => 'タイトル',
       'body' => '本文',
       'images.*.file' => '画像データ',

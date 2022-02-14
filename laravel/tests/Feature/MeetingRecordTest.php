@@ -48,7 +48,7 @@ class MeetingRecordTest extends TestCase
   public function should_議事録の投稿()
   {
     $expects = [
-      'recorded_by' => $this->user->id,
+      'created_by' => $this->user->id,
       'place_id' => array_random(MeetingPlace::pluck('id')->toArray()),
       'meeting_date' => Carbon::now()->format('Y/m/d H:i'),
       'title' => '会議名',
@@ -96,7 +96,7 @@ class MeetingRecordTest extends TestCase
   public function should_バリデーションエラー()
   {
     $willDenied = [
-      'recorded_by' => 134, // usersテーブルにないID
+      'created_by' => 134, // usersテーブルにないID
       'place_id' => 9999, // placesテーブルにないID
       'meeting_date' => Carbon::now()->format('Y-m-d H:i'), // フォーマットが違う
       'title' => Str::random(81), // 80文字を超えている
@@ -104,7 +104,7 @@ class MeetingRecordTest extends TestCase
       'meeting_decisions' => [
         [
           'decided_by' => 134,  // usersテーブルにないID
-          'written_by' => 134,  // usersテーブルにないID
+          'created_by' => 134,  // usersテーブルにないID
           'subject' => Str::random(81), // 80文字を超えている
           'body' => Str::random(141), // 140文字を超えている
           // タスク
@@ -124,13 +124,13 @@ class MeetingRecordTest extends TestCase
 
     $response = $this->actingAs($this->user)->postJson(route('meetingRecord.store'), $willDenied);
     $response->assertStatus(422)->assertJsonValidationErrors([
-      'recorded_by',
+      'created_by',
       'place_id',
       'meeting_date',
       'title',
       'members.0',
       'meeting_decisions.0.decided_by',
-      'meeting_decisions.0.written_by',
+      'meeting_decisions.0.created_by',
       'meeting_decisions.0.subject',
       'meeting_decisions.0.body',
       'meeting_decisions.0.tasks.0.owner_id',
@@ -161,7 +161,7 @@ class MeetingRecordTest extends TestCase
   public function should_未認証時に議事録を追加しようとするとunauthorizedを返却する()
   {
     $expects = [
-      'recorded_by' => $this->user->id,
+      'created_by' => $this->user->id,
       'place_id' => array_random(MeetingPlace::pluck('id')->toArray()),
       'meeting_date' => Carbon::now()->format('Y/m/d H:i'),
       'title' => '会議名',
@@ -183,14 +183,14 @@ class MeetingRecordTest extends TestCase
   public function should_議事録の更新()
   {
     $meetingRecord = factory(MeetingRecord::class)->create([
-      'recorded_by' => $this->user->id,
+      'created_by' => $this->user->id,
     ]);
     $members = User::pluck('id')->shuffle()->splice(0, 2)->all();
     $meetingRecord->members()->sync($members);
     $meetingDecisions = factory(MeetingDecision::class, 2)->create([
       'meeting_record_id' => $meetingRecord->id,
       'decided_by' => $this->user->id,
-      'written_by' => $this->user->id,
+      'created_by' => $this->user->id,
     ]);
     factory(Task::class, 2)->create([
       'meeting_decision_id' => $meetingDecisions->first()->id,
@@ -198,7 +198,7 @@ class MeetingRecordTest extends TestCase
       'created_by' => $this->user->id,
     ]);
     $expects = [
-      'recorded_by' => $meetingRecord->recorded_by,
+      'created_by' => $meetingRecord->created_by,
       'place_id' => $meetingRecord->place_id,
       'meeting_date' => Carbon::make($meetingRecord->meeting_date)->format('Y/m/d H:i'),
       'title' => $meetingRecord->title . '_update',
@@ -268,17 +268,17 @@ class MeetingRecordTest extends TestCase
   public function should_投稿者以外の更新リクエストにはForbiddenを返却する()
   {
     $meetingRecord = factory(MeetingRecord::class)->create([
-      'recorded_by' => $this->user->id,
+      'created_by' => $this->user->id,
     ]);
     $willDenied = [
-      'recorded_by' => $meetingRecord->recorded_by,
+      'created_by' => $meetingRecord->created_by,
       'place_id' => $meetingRecord->place_id,
       'meeting_date' => Carbon::make($meetingRecord->meeting_date)->format('Y/m/d H:i'),
       'title' => $meetingRecord->title . '_update',
       'summary' => $meetingRecord->summary . '_update',
       'members' => $meetingRecord->members->pluck('id')->toArray(),
     ];
-    $user = User::where('id', '!=', $meetingRecord->recorded_by)->first();
+    $user = User::where('id', '!=', $meetingRecord->created_by)->first();
     $response = $this->actingAs($user)->putJson(route('meetingRecord.update', $meetingRecord->id), $willDenied);
     $response->assertForbidden();
 
@@ -319,7 +319,7 @@ class MeetingRecordTest extends TestCase
   public function should_議事録の削除()
   {
     $meetingRecord = MeetingRecord::orderBy('id', 'desc')->first();
-    $user = User::find($meetingRecord->recorded_by);
+    $user = User::find($meetingRecord->created_by);
     $response = $this->actingAs($user)->deleteJson(route('meetingRecord.destroy', $meetingRecord->id));
     $response->assertOk()->assertJsonStructure([
       'data',
@@ -347,7 +347,7 @@ class MeetingRecordTest extends TestCase
   public function should_投稿者以外の削除リクエストにはForbiddenを返却する()
   {
     $meetingRecord = MeetingRecord::orderBy('id', 'desc')->first();
-    $exceptUser = User::where('id', '!=', $meetingRecord->recorded_by)->first();
+    $exceptUser = User::where('id', '!=', $meetingRecord->created_by)->first();
     $response = $this->actingAs($exceptUser)->deleteJson(route('meetingRecord.destroy', $meetingRecord->id));
     $response->assertForbidden();
     $this->assertDatabaseHas('meeting_records', [
@@ -370,7 +370,7 @@ class MeetingRecordTest extends TestCase
         'id' => $decision->id,
         'flag' => $index > 0 ? ProcessFlag::value('delete') : ProcessFlag::value('update'),
         'decided_by' => $decision->decided_by,
-        'written_by' => $decision->written_by,
+        'created_by' => $decision->created_by,
         'subject' => $index > 0 ? $decision->subject : $decision->subject . '_update',
         'body' => $index > 0 ? $decision->body : $decision->body . '_update',
         // タスク
@@ -387,7 +387,7 @@ class MeetingRecordTest extends TestCase
     return [
       [
         'decided_by' => array_random(User::pluck('id')->toArray()),
-        'written_by' => $this->user->id,
+        'created_by' => $this->user->id,
         'subject' => 'this is a new subject from expects.',
         'body' => 'this is a new body of the decision from expects.',
         // タスク

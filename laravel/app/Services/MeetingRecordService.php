@@ -105,9 +105,9 @@ class MeetingRecordService extends Service
     return $this->repository()->find($id, [
       'members',
       'decisions.decidedBy',
-      'decisions.writtenBy',
+      'decisions.createdBy',
       'decisions.tasks',
-      'recordedBy',
+      'createdBy',
       'place',
     ]);
   }
@@ -129,7 +129,7 @@ class MeetingRecordService extends Service
     $meetingRecord->load(MeetingRecord::RELATIONS_ARRAY);
 
     Notification::send($meetingRecord->members->filter(function ($member) use ($meetingRecord) {
-      return NotifySupport::shouldSend($member, $meetingRecord->recorded_by, ActionType::MEETING_RECORD_JOINED_KEY);
+      return NotifySupport::shouldSend($member, $meetingRecord->created_by, ActionType::MEETING_RECORD_JOINED_KEY);
     }), new MeetingRecordJoinedNotification($meetingRecord));
 
     $this->jobSupport->dispatch($meetingRecord);
@@ -197,7 +197,7 @@ class MeetingRecordService extends Service
     if ($id === null) {
       $id = Auth::user()->id;
     }
-    $user = $this->userRepository->find($id, ['joinedMeetings.recordedBy', 'joinedMeetings.place']);
+    $user = $this->userRepository->find($id, ['joinedMeetings.createdBy', 'joinedMeetings.place']);
     return $user->joinedMeetings->sortByDesc('id')->splice(0, 5)->all();
   }
 

@@ -68,12 +68,12 @@ def lambda_handler(event, context):
   try:
     tags = create_tags(request_inputs['tags'])
     now = now_str()
-    updateExpression = "set #title = :title, #body = :body, #status = :status, #writtenBy = :writtenBy, #tags = :tags, #updated_at = :updated_at, #created_at = "
+    updateExpression = "set #title = :title, #body = :body, #status = :status, #createdBy = :createdBy, #tags = :tags, #updated_at = :updated_at, #created_at = "
     expressionAttributeNames = {
       '#title': 'title',
       '#body': 'body',
       '#status': 'status',
-      '#writtenBy': 'writtenBy',
+      '#createdBy': 'createdBy',
       '#tags': 'tags',
       '#updated_at': 'updated_at', 
       '#created_at': 'created_at', 
@@ -82,7 +82,7 @@ def lambda_handler(event, context):
       ':title': request_inputs['title'],
       ':body': request_inputs['body'],
       ':status': request_inputs['status'],
-      ':writtenBy': request_inputs['writtenBy'],
+      ':createdBy': request_inputs['createdBy'],
       ':tags': tags,
       ':updated_at': now,
     }

@@ -52,7 +52,7 @@ class DocumentFileTest extends TestCase
   {
     Storage::fake('s3');
     $expects = [
-      'uploaded_by' => $this->members[0]['id'],
+      'created_by' => $this->members[0]['id'],
       'file' => UploadedFile::fake()->image('test.png'),
       'sharedMembers' => $this->membersData,
     ];
@@ -73,7 +73,7 @@ class DocumentFileTest extends TestCase
    */
   public function should_投稿時のバリデーションエラー()
   {
-    // 必須項目"file"と"uploaded_by"がない
+    // 必須項目"file"と"created_by"がない
     $expects = [
       'sharedMembers' => [
         [0 => 'invalid data'],/* 必須項目"is_editable"がない */
@@ -81,7 +81,7 @@ class DocumentFileTest extends TestCase
     ];
     $response = $this->actingAs($this->members[0])->postJson(route('documentFile.store', $this->documentFolder), $expects);
     $response->assertStatus(422)->assertJsonValidationErrors([
-      'file', 'uploaded_by', 'sharedMembers.0.is_editable'
+      'file', 'created_by', 'sharedMembers.0.is_editable'
     ]);
     $result = parent::$openApiValidator->validate('postDocumentFile', 422, json_decode($response->getContent(), true));
     $this->assertFalse($result->hasErrors(), $result);
@@ -94,7 +94,7 @@ class DocumentFileTest extends TestCase
   public function should_共有者以外は限定公開のファイル閲覧禁止()
   {
     $file = factory(DocumentFile::class)->create([
-      'uploaded_by' => $this->members[0],
+      'created_by' => $this->members[0],
     ]);
     $file->sharedMembers()->sync($this->membersData);
     $badUser = User::whereNotIn('id', array_keys($this->membersData))->get()->first();
@@ -115,7 +115,7 @@ class DocumentFileTest extends TestCase
   public function should_ファイル閲覧()
   {
     $file = factory(DocumentFile::class)->create([
-      'uploaded_by' => $this->members[0],
+      'created_by' => $this->members[0],
     ]);
     $file->sharedMembers()->sync($this->membersData);
     $response = $this->actingAs($this->user)->getJson(route('documentFile.show', [
@@ -137,13 +137,13 @@ class DocumentFileTest extends TestCase
   public function should_共有者以外の更新禁止()
   {
     $file = factory(DocumentFile::class)->create([
-      'uploaded_by' => $this->members[0],
+      'created_by' => $this->members[0],
     ]);
     $file->sharedMembers()->sync($this->membersData);
     $badUser = User::whereNotIn('id', array_keys($this->membersData))->get()->first();
     $willDenied = [
       'original_name' => $file->original_name . '_update',
-      'uploaded_by' => $badUser->id,
+      'created_by' => $badUser->id,
     ];
     $response = $this->actingAs($badUser)->putJson(route('documentFile.update', [
       'folder_id' => $this->documentFolder->id,
@@ -162,12 +162,12 @@ class DocumentFileTest extends TestCase
   public function should_共有者でも編集権限がないメンバーによる更新禁止()
   {
     $file = factory(DocumentFile::class)->create([
-      'uploaded_by' => $this->members[0],
+      'created_by' => $this->members[0],
     ]);
     $file->sharedMembers()->sync($this->membersData);
     $willDenied = [
       'original_name' => $file->original_name . '_update',
-      'uploaded_by' => $this->user->id,
+      'created_by' => $this->user->id,
     ];
     $response = $this->actingAs($this->user)->putJson(route('documentFile.update', [
       'folder_id' => $this->documentFolder->id,
@@ -186,12 +186,12 @@ class DocumentFileTest extends TestCase
   public function should_編集権限を持つメンバーによる更新()
   {
     $file = factory(DocumentFile::class)->create([
-      'uploaded_by' => $this->members[0],
+      'created_by' => $this->members[0],
     ]);
     $file->sharedMembers()->sync($this->membersData);
     $expects = [
       'original_name' => $file->original_name . '_update',
-      'uploaded_by' => $file->uploaded_by,
+      'created_by' => $file->created_by,
     ];
     $response = $this->actingAs($this->members[0])->putJson(route('documentFile.update', [
       'folder_id' => $this->documentFolder->id,
@@ -213,7 +213,7 @@ class DocumentFileTest extends TestCase
   public function should_編集権限のないメンバーによる削除禁止()
   {
     $file = factory(DocumentFile::class)->create([
-      'uploaded_by' => $this->members[0],
+      'created_by' => $this->members[0],
     ]);
     $file->sharedMembers()->sync($this->membersData);
     $count = DocumentShare::count();
@@ -238,7 +238,7 @@ class DocumentFileTest extends TestCase
   {
     Storage::fake('s3');
     $file = factory(DocumentFile::class)->create([
-      'uploaded_by' => $this->members[0],
+      'created_by' => $this->members[0],
     ]);
     $file->sharedMembers()->sync($this->membersData);
     $response = $this->actingAs($this->members[0])->deleteJson(route('documentFile.destroy', [

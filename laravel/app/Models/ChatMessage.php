@@ -13,14 +13,14 @@ use App\Contracts\Models\RelationalDeleteInterface;
  *
  * @property int $id
  * @property int $chat_room_id ルームID
- * @property int $written_by 投稿者
+ * @property int $created_by 投稿者
  * @property int|null $mentioned_to メンション相手
  * @property string $body メッセージ
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property string|null $deleted_at
  * @property-read \App\Models\ChatRoom $chatRoom
- * @property-read \App\Models\User $writtenBy
+ * @property-read \App\Models\User $createdBy
  * @method static \Illuminate\Database\Eloquent\Builder|ChatMessage newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ChatMessage newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ChatMessage query()
@@ -31,7 +31,7 @@ use App\Contracts\Models\RelationalDeleteInterface;
  * @method static \Illuminate\Database\Eloquent\Builder|ChatMessage whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ChatMessage whereMentionedTo($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ChatMessage whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ChatMessage whereWrittenBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ChatMessage whereCreatedBy($value)
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ChatMessageImage[] $images
  * @property-read int|null $images_count
@@ -54,7 +54,7 @@ class ChatMessage extends Model implements RelationalDeleteInterface
 
   protected $fillable = [
     'chat_room_id',
-    'written_by',
+    'created_by',
     'mentioned_to',
     'body',
   ];
@@ -64,7 +64,7 @@ class ChatMessage extends Model implements RelationalDeleteInterface
   ];
 
   const RELATIONS_ARRAY = [
-    'writtenBy',
+    'createdBy',
     'to',
     'chatMessageReads',
     'images'
@@ -73,9 +73,9 @@ class ChatMessage extends Model implements RelationalDeleteInterface
   /**
    * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
    */
-  public function writtenBy()
+  public function createdBy()
   {
-    return $this->belongsTo(User::class, 'written_by', 'id');
+    return $this->belongsTo(User::class, 'created_by', 'id');
   }
 
   /**
@@ -123,7 +123,7 @@ class ChatMessage extends Model implements RelationalDeleteInterface
    */
   public function getMineAttribute(): bool
   {
-    return !Auth::check() ? false : Auth::user()->id === $this->written_by;
+    return !Auth::check() ? false : Auth::user()->id === $this->created_by;
   }
 
   public function getDeleteRelations(): array

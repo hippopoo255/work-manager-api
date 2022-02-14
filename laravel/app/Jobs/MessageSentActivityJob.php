@@ -42,12 +42,12 @@ class MessageSentActivityJob implements ShouldQueue
   {
     $actionType = $this->actionTypeRepository->findBy('key', ActionType::MESSAGE_SENT_KEY);
     $content = $this->replaceAttribute($actionType[0]->template_message, [
-      'from' => $this->chatMessage->writtenBy->full_name,
+      'from' => $this->chatMessage->createdBy->full_name,
       'body' => \Str::limit($this->chatMessage->body, 15, '（...）'),
     ]);
 
     $this->chatMessage->chatRoom->members->each(function ($member) use ($actionType, $content) {
-      if ($this->chatMessage->written_by !== $member->id) {
+      if ($this->chatMessage->created_by !== $member->id) {
         $this->activityRepository->save([
           'action_type_id' => $actionType[0]->id,
           'model_id' => $this->chatMessage->chatRoom->id,

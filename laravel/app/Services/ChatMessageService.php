@@ -72,7 +72,7 @@ class ChatMessageService extends Service
     broadcast(new MessageSent($newMessage, 'store'))->toOthers();
 
     Notification::send($newMessage->chatRoom->members->filter(function ($member) use ($newMessage) {
-      return NotifySupport::shouldSend($member, $newMessage->written_by, ActionType::MESSAGE_SENT_KEY);
+      return NotifySupport::shouldSend($member, $newMessage->created_by, ActionType::MESSAGE_SENT_KEY);
     }), new MessageSentNotification($this->messageArr($newMessage)));
     $this->jobSupport->dispatch($newMessage);
 
@@ -131,7 +131,7 @@ class ChatMessageService extends Service
   private function messageArr(ChatMessage $chatMessage): array
   {
     return [
-      'sent_user' => $chatMessage->writtenBy->full_name,
+      'sent_user' => $chatMessage->createdBy->full_name,
       'chat_room_id' => $chatMessage->chatRoom->id,
       'chat_room_name' => $chatMessage->chatRoom->name,
       'created_at' => $chatMessage->created_at,

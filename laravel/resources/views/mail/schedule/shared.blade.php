@@ -1,7 +1,7 @@
 @component('mail::message')
 {{ $notifiable->full_name }}さん<br />
 {{ config('app.name') }}をご利用いただきありがとうございます。<br />
-{{ $schedule->scheduledBy->full_name }}さんより新しいスケジュールが共有されました。<br />
+{{ $schedule->createdBy->full_name }}さんより新しいスケジュールが共有されました。<br />
 
 # スケジュール概要
 

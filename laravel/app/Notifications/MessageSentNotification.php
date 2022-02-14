@@ -17,7 +17,7 @@ class MessageSentNotification extends Notification implements ShouldQueue
    * Create a new notification instance.
    * @param  array  $chatMessage
    * [
-   *   'sent_user' => $chatMessage->writtenBy->full_name,
+   *   'sent_user' => $chatMessage->createdBy->full_name,
    *   'chat_room_id' => $chatMessage->chatRoom->id,
    *   'chat_room_name' => $chatMessage->chatRoom->name,
    *   'created_at' => $chatMessage->created_at,

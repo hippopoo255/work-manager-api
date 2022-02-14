@@ -85,6 +85,7 @@ abstract class EloquentQuery extends CommonAbstractQuery
   {
     $query = $this->builder()->with($relation);
     $likely = isset($params['likely']) ? (bool) $params['likely'] : true;
+
     foreach ($params as $column => $val) {
       if ($column === 'keyword') {
         $query = $this->searchByKeywords($query, $val);

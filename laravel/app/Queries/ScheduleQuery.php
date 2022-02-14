@@ -12,7 +12,7 @@ class ScheduleQuery extends EloquentQuery implements ScheduleQueryInterface
   public function __construct(Schedule $model)
   {
     $this->setBuilder($model);
-    $this->setColumns(['scheduled_by', 'title', 'start', 'end', 'color']);
+    $this->setColumns(['created_by', 'title', 'start', 'end', 'color']);
     $this->setRelationTargets([
       'sharedMembers' => [
         'family_name',

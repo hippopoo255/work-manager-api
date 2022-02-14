@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int $id
  * @property int $meeting_record_id 議事録ID
  * @property int|null $decided_by 決定者
- * @property int $written_by 入力者
+ * @property int $created_by 入力者
  * @property string|null $subject 議題
  * @property string $body 決定内容
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -20,7 +20,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \App\Models\User|null $decidedBy
  * @property-read \App\Models\MeetingRecord $meetingRecord
- * @property-read \App\Models\User $writtenBy
+ * @property-read \App\Models\User $createdBy
  * @method static \Illuminate\Database\Eloquent\Builder|MeetingDecision newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|MeetingDecision newQuery()
  * @method static \Illuminate\Database\Query\Builder|MeetingDecision onlyTrashed()
@@ -33,7 +33,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|MeetingDecision whereMeetingRecordId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|MeetingDecision whereSubject($value)
  * @method static \Illuminate\Database\Eloquent\Builder|MeetingDecision whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|MeetingDecision whereWrittenBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|MeetingDecision whereCreatedBy($value)
  * @method static \Illuminate\Database\Query\Builder|MeetingDecision withTrashed()
  * @method static \Illuminate\Database\Query\Builder|MeetingDecision withoutTrashed()
  * @mixin \Eloquent
@@ -49,7 +49,7 @@ class MeetingDecision extends CommonModel implements RelationalDeleteInterface
   protected $fillable = [
     'meeting_record_id',
     'decided_by',
-    'written_by',
+    'created_by',
     'subject',
     'body',
   ];
@@ -57,16 +57,16 @@ class MeetingDecision extends CommonModel implements RelationalDeleteInterface
   const RELATIONS_ARRAY = [
     'tasks',
     'decidedBy',
-    'writtenBy',
+    'createdBy',
   ];
 
   /**
    * 議事録登録者
    * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
    */
-  public function writtenBy()
+  public function createdBy()
   {
-    return $this->belongsTo(User::class, 'written_by', 'id');
+    return $this->belongsTo(User::class, 'created_by', 'id');
   }
   /**
    * 決定者
@@ -99,6 +99,4 @@ class MeetingDecision extends CommonModel implements RelationalDeleteInterface
       $this->tasks
     ];
   }
-
-
 }

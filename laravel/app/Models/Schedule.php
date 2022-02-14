@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
  * App\Models\Schedule
  *
  * @property int $id
- * @property int $scheduled_by 予定作成者
+ * @property int $created_by 予定作成者
  * @property string $title 予定の内容
  * @property int $start 開始日時
  * @property int $end 終了日時
@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Auth;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \App\Models\User $scheduledBy
+ * @property-read \App\Models\User $createdBy
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $sharedMembers
  * @property-read int|null $shared_members_count
  * @method static \Illuminate\Database\Eloquent\Builder|Schedule newModelQuery()
@@ -34,7 +34,7 @@ use Illuminate\Support\Facades\Auth;
  * @method static \Illuminate\Database\Eloquent\Builder|Schedule whereEndDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Schedule whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Schedule whereIsPublic($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Schedule whereScheduledBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Schedule whereCreatedBy($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Schedule whereStartDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Schedule whereUpdatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|Schedule withTrashed()
@@ -56,7 +56,7 @@ class Schedule extends Model implements ModelInterface
 
   protected $table = 'schedules';
   protected $fillable = [
-    'scheduled_by',
+    'created_by',
     'title',
     'start',
     'end',
@@ -78,7 +78,7 @@ class Schedule extends Model implements ModelInterface
 
   const RELATIONS_ARRAY = [
     'sharedMembers',
-    'scheduledBy',
+    'createdBy',
   ];
 
   protected $appends = [
@@ -89,9 +89,9 @@ class Schedule extends Model implements ModelInterface
   /**
    * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
    */
-  public function scheduledBy()
+  public function createdBy()
   {
-    return $this->belongsTo(User::class, 'scheduled_by', 'id');
+    return $this->belongsTo(User::class, 'created_by', 'id');
   }
   /**
    * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany

@@ -13,12 +13,12 @@ class MeetingRecordQuery extends EloquentQuery implements MeetingRecordQueryInte
   public function __construct(MeetingRecord $model)
   {
     $this->setBuilder($model);
-    $this->setColumns(['title', 'summary', 'recorded_by', 'meeting_date']);
+    $this->setColumns(['title', 'summary', 'created_by', 'meeting_date']);
     $this->setRelationTargets([
       'place' => [
         'name',
       ],
-      'recordedBy' => [
+      'createdBy' => [
         'user_code',
         'given_name',
         'family_name',

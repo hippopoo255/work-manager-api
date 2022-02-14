@@ -6,11 +6,12 @@ use App\Contracts\Models\ModelInterface;
 use App\Contracts\Models\RelationalDeleteInterface;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Abstracts\CommonModel as Model;
+
 /**
  * App\Models\Blog
  *
  * @property int $id
- * @property int $written_by 投稿者
+ * @property int $created_by 投稿者
  * @property string $title タイトル
  * @property string $body 本文
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -24,7 +25,7 @@ use App\Models\Abstracts\CommonModel as Model;
  * @property-read int|null $likes_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\BlogTag[] $tags
  * @property-read int|null $tags_count
- * @property-read \App\Models\User $writtenBy
+ * @property-read \App\Models\User $createdBy
  * @method static \Illuminate\Database\Eloquent\Builder|Blog newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Blog newQuery()
  * @method static \Illuminate\Database\Query\Builder|Blog onlyTrashed()
@@ -35,7 +36,7 @@ use App\Models\Abstracts\CommonModel as Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Blog whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Blog whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Blog whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Blog whereWrittenBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Blog whereCreatedBy($value)
  * @method static \Illuminate\Database\Query\Builder|Blog withTrashed()
  * @method static \Illuminate\Database\Query\Builder|Blog withoutTrashed()
  * @mixin \Eloquent
@@ -47,25 +48,25 @@ class Blog extends Model implements RelationalDeleteInterface
   protected $table = 'blogs';
 
   protected $fillable = [
-    'written_by',
+    'created_by',
     'title',
     'body',
   ];
 
   const RELATIONS_ARRAY = [
-    'comments.writtenBy',
+    'comments.createdBy',
     'tags',
     'images',
     'likes',
-    'writtenBy'
+    'createdBy'
   ];
 
   /**
    * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
    */
-  public function writtenBy()
+  public function createdBy()
   {
-    return $this->belongsTo(User::class, 'written_by', 'id');
+    return $this->belongsTo(User::class, 'created_by', 'id');
   }
 
   /**

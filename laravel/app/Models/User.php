@@ -170,7 +170,7 @@ class User extends Authenticatable
    */
   public function blogs()
   {
-    return $this->hasMany(Blog::class, 'written_by', 'id');
+    return $this->hasMany(Blog::class, 'created_by', 'id');
   }
 
   /**

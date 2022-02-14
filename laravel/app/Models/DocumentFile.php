@@ -11,7 +11,7 @@ use Illuminate\Support\Str;
  * App\Models\DocumentFile
  *
  * @property int $id
- * @property int $uploaded_by アップロード者
+ * @property int $created_by アップロード者
  * @property int $folder_id フォルダID
  * @property string $file_path ファイルパス
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -20,7 +20,7 @@ use Illuminate\Support\Str;
  * @property-read \App\Models\DocumentFolder $folder
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $sharedMembers
  * @property-read int|null $shared_members_count
- * @property-read \App\Models\User $uploadedBy
+ * @property-read \App\Models\User $createdBy
  * @method static \Illuminate\Database\Eloquent\Builder|DocumentFile newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|DocumentFile newQuery()
  * @method static \Illuminate\Database\Query\Builder|DocumentFile onlyTrashed()
@@ -31,7 +31,7 @@ use Illuminate\Support\Str;
  * @method static \Illuminate\Database\Eloquent\Builder|DocumentFile whereFolderId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|DocumentFile whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|DocumentFile whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|DocumentFile whereUploadedBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|DocumentFile whereCreatedBy($value)
  * @method static \Illuminate\Database\Query\Builder|DocumentFile withTrashed()
  * @method static \Illuminate\Database\Query\Builder|DocumentFile withoutTrashed()
  * @mixin \Eloquent
@@ -46,22 +46,22 @@ class DocumentFile extends Model
 
   protected $table = 'document_files';
   protected $fillable = [
-    'uploaded_by',
+    'created_by',
     'folder_id',
     'file_path',
     'original_name',
   ];
 
   const RELATIONS_ARRAY = [
-    'uploadedBy', 'sharedMembers'
+    'createdBy', 'sharedMembers'
   ];
 
   /**
    * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
    */
-  public function uploadedBy()
+  public function createdBy()
   {
-    return $this->belongsTo(User::class, 'uploaded_by', 'id');
+    return $this->belongsTo(User::class, 'created_by', 'id');
   }
 
   /**
@@ -88,5 +88,4 @@ class DocumentFile extends Model
   {
     $this->attributes['public_name'] = \Crypt::decrypt($fileName);
   }
-
 }

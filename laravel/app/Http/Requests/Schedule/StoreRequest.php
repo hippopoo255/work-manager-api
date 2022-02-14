@@ -26,7 +26,7 @@ class StoreRequest extends FormRequest
   public function rules()
   {
     return [
-      'scheduled_by' => 'required|integer|' . Rule::in(User::pluck('id')->toArray()),
+      'created_by' => 'required|integer|' . Rule::in(User::pluck('id')->toArray()),
       'title' => 'required|string|max:140',
       'start' => 'required|date_format:Y/m/d H:i',
       'end' => 'required|date_format:Y/m/d H:i',
@@ -43,7 +43,7 @@ class StoreRequest extends FormRequest
   public function attributes()
   {
     return [
-      'scheduled_by' => '予定作成者のID',
+      'created_by' => '予定作成者のID',
       'title' => '内容',
       'start' => '予定開始日',
       'end' => '予定終了日',

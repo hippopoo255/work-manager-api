@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Auth;
 class MeetingRecordController extends Controller
 {
   private $perPage = 10;
-  private $relation = ['recordedBy', 'place', 'decisions', 'members'];
+  private $relation = ['createdBy', 'place', 'decisions', 'members'];
   private $service;
 
   public function __construct(MeetingRecordService $service)

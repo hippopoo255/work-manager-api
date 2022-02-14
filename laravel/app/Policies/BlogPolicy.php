@@ -53,7 +53,7 @@ class BlogPolicy
    */
   public function update(User $user, Blog $blog)
   {
-    return $blog->written_by === $user->id;
+    return $blog->created_by === $user->id;
   }
 
   /**
@@ -65,6 +65,6 @@ class BlogPolicy
    */
   public function delete(User $user, Blog $blog)
   {
-    return $blog->written_by === $user->id;
+    return $blog->created_by === $user->id;
   }
 }

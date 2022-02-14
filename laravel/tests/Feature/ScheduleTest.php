@@ -22,7 +22,7 @@ class ScheduleTest extends TestCase
   {
     parent::setUp();
     $this->schedule = factory(Schedule::class)->create([
-      'scheduled_by' => $this->user->id,
+      'created_by' => $this->user->id,
     ]);
 
     $this->members = User::where('id', '!=', $this->user->id)
@@ -64,7 +64,7 @@ class ScheduleTest extends TestCase
       ];
     }
     $expects = [
-      'scheduled_by' => $this->user->id,
+      'created_by' => $this->user->id,
       'title' => 'This is a schedule',
       'start' => Carbon::today()->format('Y/m/d H:i'),
       'end' => Carbon::today()->addHour()->format('Y/m/d H:i'),
@@ -92,7 +92,7 @@ class ScheduleTest extends TestCase
   {
     $this->schedule->sharedMembers()->sync($this->membersData);
     $willDenied = [
-      'scheduled_by' => $this->user->id,
+      'created_by' => $this->user->id,
       'title' => $this->schedule . '_update',
       'start' => Carbon::today()->format('Y/m/d H:i'),
       'end' => Carbon::today()->addHour()->format('Y/m/d H:i'),
@@ -129,7 +129,7 @@ class ScheduleTest extends TestCase
     $updatedMembersData = $this->membersData;
     array_pop($updatedMembersData);
     $expects = [
-      'scheduled_by' => $this->schedule->scheduled_by,
+      'created_by' => $this->schedule->created_by,
       'title' => $this->schedule->title . '_update',
       'start' => Carbon::today()->format('Y/m/d H:i'),
       'end' => Carbon::today()->addHour()->format('Y/m/d H:i'),

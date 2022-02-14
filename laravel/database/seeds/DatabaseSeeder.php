@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
     Model::unguard();
     $this->setFKCheckOff();
 
+    $this->call(PrefectureSeeder::class);
     $this->call(DepartmentSeeder::class);
     $this->call(RoleSeeder::class);
     $this->call(PrioritySeeder::class);
@@ -24,6 +25,7 @@ class DatabaseSeeder extends Seeder
     $this->call(MeetingPlaceSeeder::class);
     $this->call(UserSeeder::class);
     $this->call(AdminSeeder::class);
+    $this->call(OrganizationSeeder::class);
     $this->call(BlogSeeder::class);
     $this->call(MeetingSeeder::class);
     $this->call(TaskSeeder::class);

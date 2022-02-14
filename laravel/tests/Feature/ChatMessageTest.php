@@ -25,7 +25,7 @@ class ChatMessageTest extends ChatRoomTest
   {
     $expects = [
       'body' => 'This is a message.',
-      'written_by' => $this->user->id,
+      'created_by' => $this->user->id,
     ];
     $response = $this->actingAs($this->user)->postJson(route('chatMessage.store', $this->chatRoom), $expects);
     $new = $this->chatRoom->messages->first();
@@ -51,7 +51,7 @@ class ChatMessageTest extends ChatRoomTest
     $badUser = User::whereNotIn('id', array_keys($this->membersData))->get()->first();
     $willDenied = [
       'body' => 'This is a message.',
-      'written_by' => $badUser->id,
+      'created_by' => $badUser->id,
     ];
     $response = $this->actingAs($badUser)->postJson(route('chatMessage.store', $this->chatRoom), $willDenied);
     $response->assertForbidden();
@@ -68,13 +68,13 @@ class ChatMessageTest extends ChatRoomTest
   {
     $chatMessage = factory(ChatMessage::class)->create([
       'body' => 'This is a message.',
-      'written_by' => $this->user->id,
+      'created_by' => $this->user->id,
       'chat_room_id' => $this->chatRoom->id,
     ]);
 
-    $badUser = User::whereNotIn('id', [$chatMessage->written_by])->get()->first();
+    $badUser = User::whereNotIn('id', [$chatMessage->created_by])->get()->first();
     $willDenied = [
-      'written_by' => $this->user->id,
+      'created_by' => $this->user->id,
       'body' => 'update_' . $chatMessage->body,
     ];
 
@@ -97,12 +97,12 @@ class ChatMessageTest extends ChatRoomTest
   {
     $chatMessage = factory(ChatMessage::class)->create([
       'body' => 'This is a message.',
-      'written_by' => $this->user->id,
+      'created_by' => $this->user->id,
       'chat_room_id' => $this->chatRoom->id,
     ]);
     $count = ChatMessage::count();
     $expects = [
-      'written_by' => $this->user->id,
+      'created_by' => $this->user->id,
       'body' => 'update_' . $chatMessage->body,
     ];
     $response = $this->actingAs($this->user)->putJson(route('chatMessage.update', [
@@ -130,11 +130,11 @@ class ChatMessageTest extends ChatRoomTest
   {
     $chatMessage = factory(ChatMessage::class)->create([
       'body' => 'This is a message.',
-      'written_by' => $this->user->id,
+      'created_by' => $this->user->id,
       'chat_room_id' => $this->chatRoom->id,
     ]);
 
-    $badUser = User::whereNotIn('id', [$chatMessage->written_by])->get()->first();
+    $badUser = User::whereNotIn('id', [$chatMessage->created_by])->get()->first();
 
     $response = $this->actingAs($badUser)->deleteJson(route('chatMessage.destroy', [
       'chat_room_id' => $this->chatRoom,
@@ -154,15 +154,14 @@ class ChatMessageTest extends ChatRoomTest
   {
     $chatMessage = factory(ChatMessage::class)->create([
       'body' => 'This is a message.',
-      'written_by' => $this->user->id,
+      'created_by' => $this->user->id,
       'chat_room_id' => $this->chatRoom->id,
     ]);
 
     $response = $this->actingAs($this->user)->deleteJson(route('chatMessage.destroy', [
       'chat_room_id' => $this->chatRoom,
       'id' => $chatMessage,
-    ]))
-    ;
+    ]));
     $response->assertNoContent();
     $this->assertSoftDeleted('chat_messages', [
       'id' => $chatMessage->id,
@@ -171,5 +170,4 @@ class ChatMessageTest extends ChatRoomTest
     $result = parent::$openApiValidator->validate('deleteChatMessageId', 204, json_decode($response->getContent(), true));
     $this->assertFalse($result->hasErrors(), $result);
   }
-
 }

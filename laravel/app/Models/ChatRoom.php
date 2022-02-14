@@ -61,7 +61,7 @@ class ChatRoom extends Model implements RelationalDeleteInterface
   const RELATIONS_ARRAY = [
     'lastReads',
     'members',
-    'messages.writtenBy',
+    'messages.createdBy',
     'messages.to',
     'messages.images',
     'messages.chatMessageReads',

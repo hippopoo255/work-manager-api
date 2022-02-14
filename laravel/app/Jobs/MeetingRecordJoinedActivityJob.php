@@ -51,12 +51,12 @@ class MeetingRecordJoinedActivityJob implements ShouldQueue
   {
     $actionType = $this->actionTypeRepository->findBy('key', ActionType::MEETING_RECORD_JOINED_KEY);
     $content = $this->replaceAttribute($actionType[0]->template_message, [
-      'from' => $this->meetingRecord->recordedBy->full_name,
+      'from' => $this->meetingRecord->createdBy->full_name,
       'body' => \Str::limit($this->meetingRecord->title, 15, '（...）'),
     ]);
 
     $this->meetingRecord->members->each(function ($member) use ($actionType, $content) {
-      if ($this->meetingRecord->recorded_by !== $member->id) {
+      if ($this->meetingRecord->created_by !== $member->id) {
         $this->activityRepository->save([
           'action_type_id' => $actionType[0]->id,
           'model_id' => $this->meetingRecord->id,

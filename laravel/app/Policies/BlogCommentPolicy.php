@@ -30,7 +30,7 @@ class BlogCommentPolicy
    */
   public function update(User $user, BlogComment $blogComment)
   {
-    return $blogComment->written_by === $user->id;
+    return $blogComment->created_by === $user->id;
   }
 
   /**
@@ -42,7 +42,7 @@ class BlogCommentPolicy
    */
   public function delete(User $user, BlogComment $blogComment)
   {
-    return $blogComment->written_by === $user->id ||
-      $blogComment->blog->written_by === $user->id;
+    return $blogComment->created_by === $user->id ||
+      $blogComment->blog->created_by === $user->id;
   }
 }

@@ -19,7 +19,7 @@ class BlogQuery extends EloquentQuery implements BlogQueryInterface
       'comments' => [
         'body',
       ],
-      'writtenBy' => [
+      'createdBy' => [
         'name',
       ],
     ]);

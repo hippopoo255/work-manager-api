@@ -53,7 +53,7 @@ class MeetingRecordPolicy
    */
   public function update(User $user, MeetingRecord $meetingRecord)
   {
-    return $user->id === $meetingRecord->recorded_by;
+    return $user->id === $meetingRecord->created_by;
   }
 
   /**
@@ -65,7 +65,7 @@ class MeetingRecordPolicy
    */
   public function delete(User $user, MeetingRecord $meetingRecord)
   {
-    return $user->id === $meetingRecord->recorded_by;
+    return $user->id === $meetingRecord->created_by;
   }
 
   /**

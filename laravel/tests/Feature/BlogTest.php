@@ -191,7 +191,7 @@ class BlogTest extends TestCase
   public function should_投稿者以外の更新禁止()
   {
     $blog = factory(Blog::class)->create([
-      'written_by' => $this->user->id,
+      'created_by' => $this->user->id,
     ]);
     $badUser = User::where('id', '!=', $this->user->id)->first();
     $willDenied = [
@@ -217,10 +217,10 @@ class BlogTest extends TestCase
   {
     Storage::fake('s3');
     $blog = factory(Blog::class)->create([
-      'written_by' => $this->user->id,
+      'created_by' => $this->user->id,
     ]);
     $invalid = [
-      'written_by' => 12345,  // レコードに存在しないユーザーID
+      'created_by' => 12345,  // レコードに存在しないユーザーID
       'title' => Str::random(141),  // 制限文字数を1文字超えている
       'tags' => [12345], // レコードに存在しないタグID
       'images' => [
@@ -233,7 +233,7 @@ class BlogTest extends TestCase
     ];
     $response = $this->actingAs($this->user)->putJson(route('blog.update', $blog), $invalid);
     $response->assertJsonValidationErrors([
-      'written_by', 'title', 'body', 'tags.0', 'images.0.id', 'images.0.file', 'images.0.flag',
+      'created_by', 'title', 'body', 'tags.0', 'images.0.id', 'images.0.file', 'images.0.flag',
     ]);
     $this->assertDatabaseMissing('blogs', [
       'id' => $blog->id,
@@ -251,11 +251,11 @@ class BlogTest extends TestCase
   public function should_ブログの削除()
   {
     $blog = factory(Blog::class)->create([
-      'written_by' => $this->user->id,
+      'created_by' => $this->user->id,
     ]);
     $commentUser = User::where('id', '!=', $this->user->id)->first();
     $blog->comments()->create([
-      'written_by' => $commentUser->id,
+      'created_by' => $commentUser->id,
       'body' => 'Hi, I\'m' . $commentUser->given_name,
     ]);
     $response = $this->actingAs($this->user)->deleteJson(route('blog.destroy', $blog));
@@ -277,7 +277,7 @@ class BlogTest extends TestCase
   public function should_投稿者以外によるブログの削除禁止()
   {
     $blog = factory(Blog::class)->create([
-      'written_by' => $this->user->id,
+      'created_by' => $this->user->id,
     ]);
     $badUser = User::where('id', '!=', $this->user->id)->first();
     $response = $this->actingAs($badUser)->deleteJson(route('blog.destroy', $blog));

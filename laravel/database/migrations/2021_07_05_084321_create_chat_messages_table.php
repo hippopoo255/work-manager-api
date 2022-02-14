@@ -16,7 +16,7 @@ class CreateChatMessagesTable extends Migration
     Schema::create('chat_messages', function (Blueprint $table) {
       $table->id();
       $table->unsignedBigInteger('chat_room_id')->comment('ルームID');
-      $table->unsignedBigInteger('written_by')->comment('投稿者');
+      $table->unsignedBigInteger('created_by')->comment('投稿者');
       $table->unsignedBigInteger('mentioned_to')->nullable()->comment('メンション相手');
       $table->text('body')->comment('メッセージ');
 
@@ -26,7 +26,7 @@ class CreateChatMessagesTable extends Migration
       $table->foreign('chat_room_id')->references('id')->on('chat_rooms')
         ->onUpdate('cascade')
         ->onDelete('cascade');
-      $table->foreign('written_by')->references('id')->on('users')
+      $table->foreign('created_by')->references('id')->on('users')
         ->onUpdate('cascade')
         ->onDelete('no action');
       $table->foreign('mentioned_to')->references('id')->on('users')
@@ -42,8 +42,8 @@ class CreateChatMessagesTable extends Migration
    */
   public function down()
   {
-    Schema::table('chat_messages', function(Blueprint $table){
-      $table->dropForeign('chat_messages_written_by_foreign');
+    Schema::table('chat_messages', function (Blueprint $table) {
+      $table->dropForeign('chat_messages_created_by_foreign');
       $table->dropForeign('chat_messages_mentioned_to_foreign');
       $table->dropForeign('chat_messages_chat_room_id_foreign');
     });

@@ -43,9 +43,9 @@ class ChatRoomService extends Service
     if (!!$author) {
       $loads = [
         'members',
-        'messages.writtenBy',
+        'messages.createdBy',
         'messages.to',
-        'messages.writtenBy',
+        'messages.createdBy',
         'messages.images',
       ];
       $chatRooms = $author->chatRooms;

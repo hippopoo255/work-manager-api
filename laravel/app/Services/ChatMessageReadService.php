@@ -68,7 +68,7 @@ class ChatMessageReadService extends Service
     $unreadMessages = [];
     foreach ($chatRoomIds as $chatRoomId) {
       list($chatRoom, $lastMessageId) = $this->chatRoomRepository->findLastMessageId($chatRoomId);
-      $unreadMessages[] = $this->chatMessageQuery->unreads($chatRoom->id, $lastMessageId, ['writtenBy']);
+      $unreadMessages[] = $this->chatMessageQuery->unreads($chatRoom->id, $lastMessageId, ['createdBy']);
     }
     $unreadMessages = collect($unreadMessages)->flatten();
     return $unreadMessages->sortByDesc('id')->values()->slice(0, 10)->all();

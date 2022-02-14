@@ -27,7 +27,7 @@ class StoreRequest extends FormRequest
   {
     return [
       'body' => 'required|string|max:140',
-      'written_by' => 'nullable|integer|'.Rule::in(User::pluck('id')->toArray()),
+      'created_by' => 'nullable|integer|' . Rule::in(User::pluck('id')->toArray()),
     ];
   }
 
@@ -35,7 +35,7 @@ class StoreRequest extends FormRequest
   {
     return [
       'body' => 'コメント',
-      'written_by' => 'コメント投稿者ID',
+      'created_by' => 'コメント投稿者ID',
     ];
   }
 }

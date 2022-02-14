@@ -32,7 +32,7 @@ class LastReadRepository extends EloquentRepository implements LastReadRepositor
         'chat_room_id' => $chatRoom->id,
         'last_message_id' => $lastMessageId,
       ]);
-      $chatRoom->load(['messages.chatMessageReads', 'messages.writtenBy']);
+      $chatRoom->load(['messages.chatMessageReads', 'messages.createdBy']);
     }
     return $chatRoom;
   }

@@ -13,7 +13,7 @@ class DocumentFileQuery extends EloquentQuery implements DocumentFileQueryInterf
     $this->setBuilder($model);
     $this->setColumns(['name']);
     $this->setRelationTargets([
-      'uploadedBy' => [
+      'createdBy' => [
         'given_name',
         'family_name'
       ],

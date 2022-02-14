@@ -30,7 +30,7 @@ class StoreRequest extends FormRequest
   public function rules()
   {
     return [
-      'recorded_by' => 'required|integer|' . Rule::in(User::pluck('id')->toArray()),
+      'created_by' => 'required|integer|' . Rule::in(User::pluck('id')->toArray()),
       'place_id' => 'nullable|integer|' . Rule::in(MeetingPlace::pluck('id')->toArray()),
       'meeting_date' => 'required|date_format:Y/m/d H:i',
       'role_id' => 'nullable|integer|' . Rule::in(Role::pluck('id')->toArray()),
@@ -41,7 +41,7 @@ class StoreRequest extends FormRequest
       'members.*' => 'nullable|integer|' . Rule::in(User::pluck('id')->toArray()),
       'meeting_decisions' => 'nullable|array',
       'meeting_decisions.*.decided_by' => 'nullable|integer|' . Rule::in(User::pluck('id')->toArray()),
-      'meeting_decisions.*.written_by' => 'required|integer|' . Rule::in(User::pluck('id')->toArray()),
+      'meeting_decisions.*.created_by' => 'required|integer|' . Rule::in(User::pluck('id')->toArray()),
       'meeting_decisions.*.subject' => 'nullable|string|max:80',
       'meeting_decisions.*.body' => 'required|string|max:140',
       'meeting_decisions.*.tasks' => 'nullable|array',
@@ -57,13 +57,13 @@ class StoreRequest extends FormRequest
   public function attributes()
   {
     return [
-      'recorded_by' => '議事録作成者',
+      'created_by' => '議事録作成者',
       'place_id' => '開催場所',
       'meeting_date' => '開催日時',
       'title' => '会議名',
       'summary' => '会議概要',
       'meeting_decisions.*.decided_by' => '決定者',
-      'meeting_decisions.*.written_by' => '入力者',
+      'meeting_decisions.*.created_by' => '入力者',
       'meeting_decisions.*.subject' => '議題',
       'meeting_decisions.*.body' => '決定内容',
       'meeting_decisions.*.tasks.*.owner_id' => 'タスク担当者',

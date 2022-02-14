@@ -26,13 +26,13 @@ class UpdateRequest extends StoreRequest
   public function rules()
   {
     return [
-      'uploaded_by' => 'required|integer|'.Rule::in(User::pluck('id')->toArray()),
+      'created_by' => 'required|integer|' . Rule::in(User::pluck('id')->toArray()),
       'original_name' => 'required|string|max:80',
       'is_public' => 'nullable|boolean',
       'sharedMembers' => 'nullable|array',
-      'sharedMembers.*' => 'required|integer|'.Rule::in(User::pluck('id')->toArray()),
+      'sharedMembers.*' => 'required|integer|' . Rule::in(User::pluck('id')->toArray()),
       'sharedMembers.*.is_editable' => 'required|boolean',
-      'sharedMembers.*.shared_by' => 'nullable|integer|'.Rule::in(User::pluck('id')->toArray()),
+      'sharedMembers.*.shared_by' => 'nullable|integer|' . Rule::in(User::pluck('id')->toArray()),
     ];
   }
 

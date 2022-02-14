@@ -20,7 +20,7 @@ class BlogRepository extends EloquentRepository implements BlogRepositoryInterfa
    */
   public function saveWithTag(array $params, $id = null): Model
   {
-    $params['written_by'] = Auth::user()->id;
+    $params['created_by'] = Auth::user()->id;
     $blog = parent::save($params, $id);
     if (isset($params['tags'])) {
       $blog->tags()->sync($params['tags']);

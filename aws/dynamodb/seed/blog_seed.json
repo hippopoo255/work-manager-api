@@ -43,7 +43,7 @@
           "updated_at": {
             "S": "2021-11-09T04:05Z"
           },
-          "writtenBy": {
+          "createdBy": {
             "M": {
               "id": {
                 "S": "111111"
@@ -78,7 +78,7 @@
           "updated_at": {
             "S": "2021-11-09T04:05Z"
           },
-          "writtenBy": {
+          "createdBy": {
             "M": {
               "id": {
                 "S": "111111"
@@ -113,7 +113,7 @@
           "updated_at": {
             "S": "2021-11-09T04:05Z"
           },
-          "writtenBy": {
+          "createdBy": {
             "M": {
               "id": {
                 "S": "111111"
@@ -148,7 +148,7 @@
           "updated_at": {
             "S": "2021-11-09T04:05Z"
           },
-          "writtenBy": {
+          "createdBy": {
             "M": {
               "id": {
                 "S": "2"
@@ -183,7 +183,7 @@
           "updated_at": {
             "S": "2021-11-09T04:05Z"
           },
-          "writtenBy": {
+          "createdBy": {
             "M": {
               "id": {
                 "S": "2"
@@ -218,7 +218,7 @@
           "updated_at": {
             "S": "2021-11-09T04:05Z"
           },
-          "writtenBy": {
+          "createdBy": {
             "M": {
               "id": {
                 "S": "2"
@@ -253,7 +253,7 @@
           "updated_at": {
             "S": "2021-11-09T04:05Z"
           },
-          "writtenBy": {
+          "createdBy": {
             "M": {
               "id": {
                 "S": "3"
@@ -288,7 +288,7 @@
           "updated_at": {
             "S": "2021-11-09T04:05Z"
           },
-          "writtenBy": {
+          "createdBy": {
             "M": {
               "id": {
                 "S": "3"
@@ -323,7 +323,7 @@
           "updated_at": {
             "S": "2021-11-09T04:05Z"
           },
-          "writtenBy": {
+          "createdBy": {
             "M": {
               "id": {
                 "S": "3"
@@ -358,7 +358,7 @@
           "updated_at": {
             "S": "2021-11-09T04:05Z"
           },
-          "writtenBy": {
+          "createdBy": {
             "M": {
               "id": {
                 "S": "3"

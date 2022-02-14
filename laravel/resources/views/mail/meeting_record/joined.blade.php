@@ -1,7 +1,7 @@
 @component('mail::message')
 {{ $notifiable->full_name }}さん<br />
 {{ config('app.name') }}をご利用いただきありがとうございます。<br />
-{{ $meetingRecord->recordedBy->full_name }}さんが新しい議事録を追加しました。<br /><br />
+{{ $meetingRecord->createdBy->full_name }}さんが新しい議事録を追加しました。<br /><br />
 
 ※このメールは「参加者」として加えられたメンバーに送信されています。<br /><br />
 
