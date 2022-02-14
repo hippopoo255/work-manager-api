@@ -22,11 +22,11 @@ Route::group(['middleware' => 'api'], function () {
   });
   // 認証中の一般ユーザーを返却
   Route::get('/user/current', 'UserController@currentUser')->name('currentUser');
-  Route::get('/user/current/chat_rooms', 'UserController@withChatRooms')->name('withChatRooms');
-  Route::get('/meeting_place', 'MeetingPlaceController@index')->name('meetingPlace.index');
   // ユーザ
   Route::get('/user', 'UserController@index')->name('user.index');
-
+  Route::get('/user/current/chat_rooms', 'UserController@withChatRooms')->name('withChatRooms');
+  Route::get('/meeting_place', 'MeetingPlaceController@index')->name('meetingPlace.index');
+  Route::get('/meeting_record/ids', 'MeetingRecordController@ids')->name('meetingRecord.ids');
   // 認証手続
   Route::namespace('Auth')->group(function () {
     // Route::post('/register', 'RegisterController@register')->name('register');
