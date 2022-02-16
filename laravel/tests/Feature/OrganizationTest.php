@@ -48,8 +48,8 @@ class OrganizationTest extends TestCase
     $response = $this->actingAs($this->nullOrgUser)->postJson(route('organization.store'), $expects);
 
     $response->assertCreated();
-    $organization = Organization::latest()->first();
 
+    $organization = Organization::latest()->first();
     $this->assertDatabaseHas('organizations', [
       'id' => $organization->id,
       'name' => $expects['name'],
