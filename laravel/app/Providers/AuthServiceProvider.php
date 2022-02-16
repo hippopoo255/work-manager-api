@@ -31,6 +31,7 @@ class AuthServiceProvider extends ServiceProvider
     'App\Models\Schedule' => 'App\Policies\SchedulePolicy',
     'App\Models\Task' => 'App\Policies\TaskPolicy',
     'App\Models\User' => 'App\Policies\UserPolicy',
+    'App\Models\Organization' => 'App\Policies\OrganizationPolicy',
   ];
 
   /**

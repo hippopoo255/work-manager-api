@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\Activity;
+use App\Models\Organization;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class ActivityPolicy
+class OrganizationPolicy
 {
   use HandlesAuthorization;
 
@@ -25,12 +25,12 @@ class ActivityPolicy
    * Determine whether the user can view the model.
    *
    * @param  \App\Models\User  $user
-   * @param  \App\Models\Activity  $activity
+   * @param  \App\Models\Organization  $organization
    * @return mixed
    */
-  public function view(User $user, Activity $activity)
+  public function view(User $user, Organization $organization)
   {
-    //
+    $organization->id === $user->organization_id;
   }
 
   /**
@@ -41,29 +41,29 @@ class ActivityPolicy
    */
   public function create(User $user)
   {
-    //
+    return $user;
   }
 
   /**
    * Determine whether the user can update the model.
    *
    * @param  \App\Models\User  $user
-   * @param  \App\Models\Activity  $activity
+   * @param  \App\Models\Organization  $organization
    * @return mixed
    */
-  public function update(User $user, Activity $activity)
+  public function update(User $user, Organization $organization)
   {
-    return $activity->user_id === $user->id;
+    return $organization->supervisor_id === $user->id;
   }
 
   /**
    * Determine whether the user can delete the model.
    *
    * @param  \App\Models\User  $user
-   * @param  \App\Models\Activity  $activity
+   * @param  \App\Models\Organization  $organization
    * @return mixed
    */
-  public function delete(User $user, Activity $activity)
+  public function delete(User $user, Organization $organization)
   {
     //
   }
@@ -72,10 +72,10 @@ class ActivityPolicy
    * Determine whether the user can restore the model.
    *
    * @param  \App\Models\User  $user
-   * @param  \App\Models\Activity  $activity
+   * @param  \App\Models\Organization  $organization
    * @return mixed
    */
-  public function restore(User $user, Activity $activity)
+  public function restore(User $user, Organization $organization)
   {
     //
   }
@@ -84,10 +84,10 @@ class ActivityPolicy
    * Determine whether the user can permanently delete the model.
    *
    * @param  \App\Models\User  $user
-   * @param  \App\Models\Activity  $activity
+   * @param  \App\Models\Organization  $organization
    * @return mixed
    */
-  public function forceDelete(User $user, Activity $activity)
+  public function forceDelete(User $user, Organization $organization)
   {
     //
   }

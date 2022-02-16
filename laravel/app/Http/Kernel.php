@@ -71,5 +71,8 @@ class Kernel extends HttpKernel
     'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
     'rewriteuser' => \App\Http\Middleware\HandleTestUser::class,
     'jwt' => \App\Http\Middleware\CheckJWT::class,
+    'org.exists' => \App\Http\Middleware\OrganizationExists::class,
+    'org.match' => \App\Http\Middleware\OrganizationMatch::class,
+    'org.filter' => \App\Http\Middleware\OrganizationFilter::class,
   ];
 }

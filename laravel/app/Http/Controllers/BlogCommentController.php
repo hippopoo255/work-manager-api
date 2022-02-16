@@ -19,7 +19,7 @@ class BlogCommentController extends Controller
 
   public function __construct(Service $service)
   {
-    $this->authorizeResource(BlogComment::class, 'id');
+    $this->authorizeResource(BlogComment::class, 'comment_id');
     $this->service = $service;
   }
 
@@ -27,14 +27,14 @@ class BlogCommentController extends Controller
    * Store a newly created resource in storage.
    *
    * @param StoreRequest $request
-   * @param Blog $blog_id
+   * @param Blog $id
    * @return \Illuminate\Http\Response
    */
-  public function store(StoreRequest $request, Blog $blog_id)
+  public function store(StoreRequest $request, Blog $id)
   {
     DB::beginTransaction();
     try {
-      $blogComment = $this->service->store($request->all(), $blog_id);
+      $blogComment = $this->service->store($request->all(), $id);
       DB::commit();
     } catch (\Exception $e) {
       DB::rollBack();
@@ -47,15 +47,15 @@ class BlogCommentController extends Controller
    * Update the specified resource in storage.
    *
    * @param UpdateRequest $request
-   * @param Blog $blog_id
-   * @param BlogComment $id
+   * @param Blog $id
+   * @param BlogComment $comment_id
    * @return \Illuminate\Http\Response
    */
-  public function update(UpdateRequest $request, Blog $blog_id, BlogComment $id)
+  public function update(UpdateRequest $request, Blog $id, BlogComment $comment_id)
   {
     DB::beginTransaction();
     try {
-      $blogComment = $this->service->update($request->all(), $id);
+      $blogComment = $this->service->update($request->all(), $comment_id);
       DB::commit();
     } catch (\Exception $e) {
       DB::rollBack();
@@ -65,12 +65,12 @@ class BlogCommentController extends Controller
   }
 
   /**
-   * @param Blog $blog_id
-   * @param BlogComment $id
+   * @param Blog $id
+   * @param BlogComment $comment_id
    * @return \Illuminate\Http\Response
    */
-  public function destroy(Blog $blog_id, BlogComment $id)
+  public function destroy(Blog $id, BlogComment $comment_id)
   {
-    return response($this->service->delete($id), 204);
+    return response($this->service->delete($comment_id), 204);
   }
 }

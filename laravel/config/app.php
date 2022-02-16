@@ -55,6 +55,7 @@ return [
   'url' => env('APP_URL', 'http://localhost'),
 
   'asset_url' => env('ASSET_URL', null),
+  'admin_front_url' => env('APP_ADMIN_FRONT_URL', 'localhost:3001'),
   'front_url' => env('APP_FRONT_URL', 'localhost:3000'),
   'test_id' => env('APP_TEST_ID', ''),
   'test_pass' => env('APP_TEST_PASS', ''),
@@ -182,6 +183,7 @@ return [
     App\Providers\RouteServiceProvider::class,
     App\Providers\RepositoryServiceProvider::class,
     App\Providers\QueryServiceProvider::class,
+    App\Providers\ValidatorServiceProvider::class,
     // ↓Laravel側でAuth0を使ったログイン・ログアウト等するときはこのコメントアウトを外す
     // Auth0\Login\LoginServiceProvider::class,
   ],

@@ -99,8 +99,8 @@ class DocumentFileTest extends TestCase
     $file->sharedMembers()->sync($this->membersData);
     $badUser = User::whereNotIn('id', array_keys($this->membersData))->get()->first();
     $response = $this->actingAs($badUser)->getJson(route('documentFile.show', [
-      'folder_id' => $this->documentFolder->id,
-      'id' => $file->id,
+      'id' => $this->documentFolder->id,
+      'document_file_id' => $file->id,
     ]));
     $response->assertForbidden();
 
@@ -119,8 +119,8 @@ class DocumentFileTest extends TestCase
     ]);
     $file->sharedMembers()->sync($this->membersData);
     $response = $this->actingAs($this->user)->getJson(route('documentFile.show', [
-      'folder_id' => $this->documentFolder->id,
-      'id' => $file->id,
+      'id' => $this->documentFolder->id,
+      'document_file_id' => $file->id,
     ]));
     $response->assertOk()->assertJson([
       'id' => $file->id,
@@ -146,8 +146,8 @@ class DocumentFileTest extends TestCase
       'created_by' => $badUser->id,
     ];
     $response = $this->actingAs($badUser)->putJson(route('documentFile.update', [
-      'folder_id' => $this->documentFolder->id,
-      'id' => $file->id,
+      'id' => $this->documentFolder->id,
+      'document_file_id' => $file->id,
     ]), $willDenied);
     $response->assertForbidden();
 
@@ -170,8 +170,8 @@ class DocumentFileTest extends TestCase
       'created_by' => $this->user->id,
     ];
     $response = $this->actingAs($this->user)->putJson(route('documentFile.update', [
-      'folder_id' => $this->documentFolder->id,
-      'id' => $file->id,
+      'id' => $this->documentFolder->id,
+      'document_file_id' => $file->id,
     ]), $willDenied);
     $response->assertForbidden();
 
@@ -194,8 +194,8 @@ class DocumentFileTest extends TestCase
       'created_by' => $file->created_by,
     ];
     $response = $this->actingAs($this->members[0])->putJson(route('documentFile.update', [
-      'folder_id' => $this->documentFolder->id,
-      'id' => $file->id,
+      'id' => $this->documentFolder->id,
+      'document_file_id' => $file->id,
     ]), $expects);
     $response->assertOk()->assertJson([
       'id' => $file->id,
@@ -218,8 +218,8 @@ class DocumentFileTest extends TestCase
     $file->sharedMembers()->sync($this->membersData);
     $count = DocumentShare::count();
     $response = $this->actingAs($this->user)->deleteJson(route('documentFile.destroy', [
-      'folder_id' => $this->documentFolder->id,
-      'id' => $file->id,
+      'id' => $this->documentFolder->id,
+      'document_file_id' => $file->id,
     ]));
     $response->assertForbidden();
     $this->assertDatabaseHas('document_files', [
@@ -242,8 +242,8 @@ class DocumentFileTest extends TestCase
     ]);
     $file->sharedMembers()->sync($this->membersData);
     $response = $this->actingAs($this->members[0])->deleteJson(route('documentFile.destroy', [
-      'folder_id' => $this->documentFolder->id,
-      'id' => $file->id,
+      'id' => $this->documentFolder->id,
+      'document_file_id' => $file->id,
     ]));
     $response->assertNoContent();
     $this->assertSoftDeleted('document_files', [

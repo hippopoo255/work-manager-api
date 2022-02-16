@@ -19,7 +19,7 @@ class DocumentFileController extends Controller
 
   public function __construct(DocumentFileService $service)
   {
-    $this->authorizeResource(DocumentFile::class, 'id');
+    $this->authorizeResource(DocumentFile::class, 'document_file_id');
     $this->service = $service;
   }
 
@@ -27,14 +27,14 @@ class DocumentFileController extends Controller
    * Store a newly created resource in storage.
    *
    * @param StoreRequest $request
-   * @param DocumentFolder $folder_id
+   * @param DocumentFolder $id
    * @return \Illuminate\Http\Response
    */
-  public function store(StoreRequest $request, DocumentFolder $folder_id)
+  public function store(StoreRequest $request, DocumentFolder $id)
   {
     DB::beginTransaction();
     try {
-      $documentFile = $this->service->store($request->all(), $folder_id);
+      $documentFile = $this->service->store($request->all(), $id);
       DB::commit();
     } catch (\Exception $e) {
       DB::rollBack();
@@ -46,28 +46,28 @@ class DocumentFileController extends Controller
   /**
    * Display the specified resource.
    *
-   * @param DocumentFolder $folder_id
-   * @param DocumentFile $id
+   * @param DocumentFolder $id
+   * @param DocumentFile $document_file_id
    * @return \Illuminate\Http\Response
    */
-  public function show(DocumentFolder $folder_id, DocumentFile $id)
+  public function show(DocumentFolder $id, DocumentFile $document_file_id)
   {
-    return response($this->service->find($id), 200);
+    return response($this->service->find($document_file_id), 200);
   }
 
   /**
    * Update the specified resource in storage.
    *
    * @param UpdateRequest $request
-   * @param DocumentFolder $folder_id
-   * @param DocumentFile $id
+   * @param DocumentFolder $id
+   * @param DocumentFile $document_file_id
    * @return \Illuminate\Http\Response
    */
-  public function update(Request $request, DocumentFolder $folder_id, DocumentFile $id)
+  public function update(Request $request, DocumentFolder $id, DocumentFile $document_file_id)
   {
     DB::beginTransaction();
     try {
-      $documentFile = $this->service->update($request->all(), $folder_id, $id);
+      $documentFile = $this->service->update($request->all(), $id, $document_file_id);
       DB::commit();
     } catch (\Exception $e) {
       DB::rollBack();
@@ -79,12 +79,12 @@ class DocumentFileController extends Controller
   /**
    * Remove the specified resource from storage.
    *
-   * @param DocumentFolder $folder_id
-   * @param DocumentFile $id
+   * @param DocumentFolder $id
+   * @param DocumentFile $document_file_id
    * @return \Illuminate\Http\Response
    */
-  public function destroy(DocumentFolder $folder_id, DocumentFile $id)
+  public function destroy(DocumentFolder $id, DocumentFile $document_file_id)
   {
-    return response($this->service->delete($id), 204);
+    return response($this->service->delete($document_file_id), 204);
   }
 }

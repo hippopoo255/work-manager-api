@@ -49,6 +49,10 @@
         "name": "APP_FRONT_URL"
       },
       {
+        "valueFrom": "APP_ADMIN_FRONT_URL",
+        "name": "APP_ADMIN_FRONT_URL"
+      },
+      {
         "valueFrom": "APP_TEST_ID",
         "name": "APP_TEST_ID"
       },
@@ -224,6 +228,10 @@
       {
         "valueFrom": "APP_FRONT_URL",
         "name": "APP_FRONT_URL"
+      },
+      {
+        "valueFrom": "APP_ADMIN_FRONT_URL",
+        "name": "APP_ADMIN_FRONT_URL"
       },
       {
         "valueFrom": "APP_TEST_ID",

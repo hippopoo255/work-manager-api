@@ -16,7 +16,6 @@ class ActivityController extends Controller
 
   public function __construct(ActivityService $service)
   {
-
     $this->service = $service;
   }
 
@@ -43,8 +42,8 @@ class ActivityController extends Controller
    * @param User $user
    * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
    */
-  public function findByUser(User $user)
+  public function findByUser(User $id)
   {
-    return response($this->service->findByUser($user->id));
+    return response($this->service->findByUser($id->id));
   }
 }

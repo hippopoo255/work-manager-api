@@ -15,7 +15,7 @@ class UpdateRequest extends StoreRequest
    */
   public function authorize()
   {
-    return $this->user()->can('update', $this->route('id'));
+    return $this->user()->can('update', $this->route('document_file_id'));
   }
 
   /**

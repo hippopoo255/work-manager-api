@@ -79,8 +79,8 @@ class ChatMessageTest extends ChatRoomTest
     ];
 
     $response = $this->actingAs($badUser)->putJson(route('chatMessage.update', [
-      'chat_room_id' => $this->chatRoom,
-      'id' => $chatMessage,
+      'id' => $this->chatRoom,
+      'chat_message_id' => $chatMessage,
     ]), $willDenied);
 
     $response->assertForbidden();
@@ -106,8 +106,8 @@ class ChatMessageTest extends ChatRoomTest
       'body' => 'update_' . $chatMessage->body,
     ];
     $response = $this->actingAs($this->user)->putJson(route('chatMessage.update', [
-      'chat_room_id' => $this->chatRoom,
-      'id' => $chatMessage,
+      'id' => $this->chatRoom,
+      'chat_message_id' => $chatMessage,
     ]), $expects);
     $response->assertOk()->assertJson([
       'id' => $chatMessage->id,
@@ -137,8 +137,8 @@ class ChatMessageTest extends ChatRoomTest
     $badUser = User::whereNotIn('id', [$chatMessage->created_by])->get()->first();
 
     $response = $this->actingAs($badUser)->deleteJson(route('chatMessage.destroy', [
-      'chat_room_id' => $this->chatRoom,
-      'id' => $chatMessage,
+      'id' => $this->chatRoom,
+      'chat_message_id' => $chatMessage,
     ]));
 
     $response->assertForbidden();
@@ -159,8 +159,8 @@ class ChatMessageTest extends ChatRoomTest
     ]);
 
     $response = $this->actingAs($this->user)->deleteJson(route('chatMessage.destroy', [
-      'chat_room_id' => $this->chatRoom,
-      'id' => $chatMessage,
+      'id' => $this->chatRoom,
+      'chat_message_id' => $chatMessage,
     ]));
     $response->assertNoContent();
     $this->assertSoftDeleted('chat_messages', [

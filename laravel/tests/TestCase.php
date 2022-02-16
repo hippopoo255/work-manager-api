@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Mmal\OpenapiValidator\Validator;
 use Symfony\Component\Yaml\Yaml;
+use Artisan;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -25,6 +26,12 @@ abstract class TestCase extends BaseTestCase
     parent::setUpBeforeClass();
     self::$openApiValidator = new Validator(Yaml::parse(file_get_contents(__DIR__ . '/../openapi.yaml')));
   }
+
+  // static public function tearDownAfterClass(): void
+  // {
+  //   parent::tearDownAfterClass();
+  //   Artisan::call('migrate:reset');
+  // }
 
   protected function setUp(): void
   {

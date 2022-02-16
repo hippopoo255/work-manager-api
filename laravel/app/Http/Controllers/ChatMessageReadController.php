@@ -19,15 +19,15 @@ class ChatMessageReadController extends Controller
 
   /**
    * Store a newly created resource in storage.
-   * @param  ChatRoom  $chatRoom
+   * @param  ChatRoom  $id
    * @param  \Illuminate\Http\Request  $request
    * @return \Illuminate\Http\Response|\Illuminate\Contracts\Routing\ResponseFactory
    */
-  public function store(ChatRoom $chat_room_id, Request $request)
+  public function store(ChatRoom $id, Request $request)
   {
     \DB::beginTransaction();
     try {
-      $chatRoom = $this->service->store($chat_room_id);
+      $chatRoom = $this->service->store($id);
       \DB::commit();
     } catch (\Exception $e) {
       \DB::rollback();

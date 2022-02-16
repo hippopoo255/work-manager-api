@@ -24,15 +24,15 @@ class ChatMessageController extends Controller
 
   /**
    * Store a newly created resource in storage.
-   * @param ChatRoom $chat_room_id
+   * @param ChatRoom $id
    * @param StoreRequest $request
    * @return \Illuminate\Http\Response
    */
-  public function store(ChatRoom $chat_room_id, StoreRequest $request)
+  public function store(ChatRoom $id, StoreRequest $request)
   {
     DB::beginTransaction();
     try {
-      $chatMessage = $this->service->store($request->all(), $chat_room_id);
+      $chatMessage = $this->service->store($request->all(), $id);
       DB::commit();
     } catch (\Exception $e) {
       DB::rollBack();
@@ -44,15 +44,15 @@ class ChatMessageController extends Controller
   /**
    * Update the specified resource in storage.
    * @param UpdateRequest $request
-   * @param ChatRoom $chat_room_id
-   * @param ChatMessage $id
+   * @param ChatRoom $id
+   * @param ChatMessage $chat_message_id
    * @return \Illuminate\Http\Response
    */
-  public function update(UpdateRequest $request, ChatRoom $chat_room_id, ChatMessage $id)
+  public function update(UpdateRequest $request, ChatRoom $id, ChatMessage $chat_message_id)
   {
     DB::beginTransaction();
     try {
-      $chatMessage = $this->service->update($request->all(), $chat_room_id, $id);
+      $chatMessage = $this->service->update($request->all(), $id, $chat_message_id);
       DB::commit();
     } catch (\Exception $e) {
       DB::rollBack();
@@ -64,16 +64,16 @@ class ChatMessageController extends Controller
 
   /**
    * Remove the specified resource from storage.
-   * @param ChatRoom $chat_room_id
-   * @param ChatMessage $id
+   * @param ChatRoom $id
+   * @param ChatMessage $chat_message_id
    * @return \Illuminate\Http\Response
    */
-  public function destroy(ChatRoom $chat_room_id, ChatMessage $id)
+  public function destroy(ChatRoom $id, ChatMessage $chat_message_id)
   {
-    $this->authorize('delete', $id);
+    $this->authorize('delete', $chat_message_id);
     \DB::beginTransaction();
     try {
-      $result = $this->service->delete($id);
+      $result = $this->service->delete($chat_message_id);
       \DB::commit();
     } catch (\Exception $e) {
       \DB::rollback();

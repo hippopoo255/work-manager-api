@@ -43,7 +43,8 @@ return [
   'file'                 => ':attributeにはファイルを指定してください。',
   'filled'               => ':attributeには空でない値を指定してください。',
   'image'                => ':attributeには画像ファイルを指定してください。',
-  'in'                   => ':attributeには:valuesのうちいずれかの値を指定してください。',
+  // 'in'                   => ':attributeには:valuesのうちいずれかの値を指定してください。',
+  'in'                   => ':attributeには正しい値を入力してください',
   'in_array'             => ':attributeが:otherに含まれていません。',
   'integer'              => ':attributeには整数を指定してください。',
   'ip'                   => ':attributeには正しい形式のIPアドレスを指定してください。',
@@ -88,6 +89,7 @@ return [
   'unique'               => 'その:attributeはすでに使われています。',
   'uploaded'             => ':attributeのアップロードに失敗しました。',
   'url'                  => ':attributeには正しい形式のURLを指定してください。',
+  'postalcode'              => ':attributeは5~7桁の整数で入力してください',
 
   /*
     |--------------------------------------------------------------------------
@@ -122,6 +124,11 @@ return [
     'password' => 'パスワード',
     'name' => 'お名前',
     'email' => 'メールアドレス',
+    'postal_code' => '郵便番号',
+    'pref_id' => '都道府県',
+    'city' => '市区町村',
+    'tel' => '電話番号',
+    'supervisor_id' => '責任者',
   ],
 
 ];

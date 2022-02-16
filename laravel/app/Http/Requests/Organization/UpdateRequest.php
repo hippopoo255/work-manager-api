@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\BlogComment;
+namespace App\Http\Requests\Organization;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -13,7 +13,7 @@ class UpdateRequest extends StoreRequest
    */
   public function authorize()
   {
-    return $this->user()->can('update', $this->route('comment_id'));
+    return true;
   }
 
   /**

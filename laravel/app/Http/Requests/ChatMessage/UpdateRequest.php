@@ -15,8 +15,8 @@ class UpdateRequest extends StoreRequest
    */
   public function authorize()
   {
-    $this->chatMessage = $this->route('id');
-    return $this->user()->can('update', $this->route('id'));
+    $this->chatMessage = $this->route('chat_message_id');
+    return $this->user()->can('update', $this->route('chat_message_id'));
   }
 
   /**

@@ -21,7 +21,7 @@ class CreateOrganizationsTable extends Migration
       $table->string('city')->nullable()->comment('市区町村');
       $table->string('address')->nullable()->comment('所在場所');
       $table->string('tel')->nullable()->comment('電話番号');
-      $table->unsignedBigInteger('supervisor_id')->nullable()->comment('責任者');
+      $table->unsignedBigInteger('supervisor_id')->comment('責任者');
 
       $table->timestamps();
       $table->softDeletes();

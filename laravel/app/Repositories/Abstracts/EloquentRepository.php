@@ -29,10 +29,10 @@ abstract class EloquentRepository extends CommonAbstractRepository
    */
   public function save(array $params, $id = null): Model
   {
-    if(!is_null($id)) {
-      $model = $this->update($this->qualifiedUpdateParams($this->qualifiedParams($params)), $id);
-    } else {
+    if (is_null($id)) {
       $model = $this->store($this->qualifiedStoreParams($this->qualifiedParams($params)));
+    } else {
+      $model = $this->update($this->qualifiedUpdateParams($this->qualifiedParams($params)), $id);
     }
     return $model;
   }
@@ -145,5 +145,4 @@ abstract class EloquentRepository extends CommonAbstractRepository
   {
     return $this->model()->where($columnName, $value)->get()->load($loads)->all();
   }
-
 }

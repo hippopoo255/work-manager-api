@@ -83,8 +83,8 @@ class BlogCommentTest extends TestCase
       'body' => $comment->body . '_update',
     ];
     $response = $this->actingAs($this->user)->putJson(route('blogComment.update', [
-      'blog_id' => $this->blog,
-      'id' => $comment,
+      'id' => $this->blog,
+      'comment_id' => $comment,
     ]), $expects);
 
     $response->assertOk()->assertJson([
@@ -114,8 +114,8 @@ class BlogCommentTest extends TestCase
       'body' => $comment->body . '_update',
     ];
     $response = $this->actingAs($badUser)->putJson(route('blogComment.update', [
-      'blog_id' => $this->blog,
-      'id' => $comment,
+      'id' => $this->blog,
+      'comment_id' => $comment,
     ]), $willDenied);
     $response->assertForbidden();
     $this->assertDatabaseMissing('blog_comments', [
@@ -140,8 +140,8 @@ class BlogCommentTest extends TestCase
     ]);
 
     $response = $this->actingAs($this->user)->deleteJson(route('blogComment.destroy', [
-      'blog_id' => $this->blog,
-      'id' => $comment,
+      'id' => $this->blog,
+      'comment_id' => $comment,
     ]));
     $response->assertNoContent();
     $this->assertSoftDeleted('blog_comments', [
@@ -166,8 +166,8 @@ class BlogCommentTest extends TestCase
     ]);
 
     $response = $this->actingAs($this->user)->deleteJson(route('blogComment.destroy', [
-      'blog_id' => $this->blog,
-      'id' => $comment,
+      'id' => $this->blog,
+      'comment_id' => $comment,
     ]));
     $response->assertNoContent();
     $this->assertSoftDeleted('blog_comments', [
@@ -192,8 +192,8 @@ class BlogCommentTest extends TestCase
     $badUser = User::where('id', '!=', $this->user->id)->first();
 
     $response = $this->actingAs($badUser)->deleteJson(route('blogComment.destroy', [
-      'blog_id' => $this->blog,
-      'id' => $comment,
+      'id' => $this->blog,
+      'comment_id' => $comment,
     ]));
     $response->assertForbidden();
     $this->assertDatabaseHas('blog_comments', [

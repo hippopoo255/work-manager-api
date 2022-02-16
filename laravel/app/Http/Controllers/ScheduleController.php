@@ -49,11 +49,11 @@ class ScheduleController extends Controller
 
   /**
    * @param Request $request
-   * @param User $user_id
+   * @param User $id
    */
-  public function findByOwner(Request $request, User $user_id)
+  public function findByOwner(Request $request, User $id)
   {
-    return response($this->service->findByOwner($user_id), 200);
+    return response($this->service->findByOwner($id), 200);
   }
 
   /**

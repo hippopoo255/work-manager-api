@@ -96,6 +96,8 @@ use App\Notifications\MailResetPasswordNotification;
  * @method static \Illuminate\Database\Eloquent\Builder|User whereSub($value)
  * @property string $cognito_sub unique id of cognito user
  * @method static \Illuminate\Database\Eloquent\Builder|User whereCognitoSub($value)
+ * @property int|null $organization_id 会社ID
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereOrganizationId($value)
  */
 class User extends Authenticatable
 {
@@ -124,10 +126,12 @@ class User extends Authenticatable
     'updated_by',
     'deleted_by',
     'cognito_sub',
+    'organization_id',
   ];
 
   protected $appends = [
     'full_name',
+    'is_initialized',
   ];
 
   /**
@@ -146,6 +150,7 @@ class User extends Authenticatable
     'created_by',
     'updated_by',
     'deleted_by',
+    // 'organization_id',
   ];
 
   /**
@@ -166,6 +171,14 @@ class User extends Authenticatable
   }
 
   /**
+   * @return bool
+   */
+  public function getIsInitializedAttribute(): bool
+  {
+    return !!$this->organization_id;
+  }
+
+  /**
    * @return \Illuminate\Database\Eloquent\Relations\HasMany
    */
   public function blogs()
@@ -179,6 +192,14 @@ class User extends Authenticatable
   public function department()
   {
     return $this->belongsTo(Department::class, 'department_code', 'department_code');
+  }
+
+  /**
+   * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+   */
+  public function createdBy()
+  {
+    return $this->belongsTo(User::class, 'created_by', 'id');
   }
 
   /**
@@ -280,5 +301,13 @@ class User extends Authenticatable
   public function sendPasswordResetNotification($token)
   {
     $this->notify(new MailResetPasswordNotification($token));
+  }
+
+  /**
+   * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+   */
+  public function organization()
+  {
+    return $this->belongsTo(Organization::class, 'organization_id', 'id');
   }
 }

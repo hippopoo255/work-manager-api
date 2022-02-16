@@ -19,7 +19,7 @@ class StoreRequest extends FormRequest
    */
   public function authorize()
   {
-    return $this->user()->can('storeMessage', $this->route('chat_room_id'));
+    return $this->user()->can('storeMessage', $this->route('id'));
   }
 
   /**

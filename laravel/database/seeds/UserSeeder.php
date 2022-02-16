@@ -20,22 +20,27 @@ class UserSeeder extends Seeder
         [
           'role_id' => 3,
           'department_code' => $department->department_code,
+          'created_by' => 1,
         ],
         [
           'role_id' => 4,
           'department_code' => $department->department_code,
+          'created_by' => 1,
         ],
         [
           'role_id' => 1,
           'department_code' => $department->department_code,
+          'created_by' => 1,
         ],
         [
           'role_id' => 1,
           'department_code' => $department->department_code,
+          'created_by' => 1,
         ],
         [
           'role_id' => 1,
           'department_code' => $department->department_code,
+          'created_by' => 1,
         ],
       ];
     });
@@ -53,6 +58,7 @@ class UserSeeder extends Seeder
         'family_name_kana' => 'テスト',
         'given_name_kana' => 'タロウ',
         'email' => config('app.test_mail', 'sample@example.com'),
+        'created_by' => 1,
       ]);
     }
     $departmentList->each(function ($department) {
