@@ -23,7 +23,6 @@ class CreateDepartmentsTable extends Migration
       $table->unsignedBigInteger('deleted_by')->nullable()->comment('削除者');
 
       $table->timestamps();
-      $table->softDeletes();
 
       $table->foreign('created_by')->references('id')->on('users')
         ->onUpdate('cascade')

@@ -40,7 +40,7 @@ class CreateTasksTable extends Migration
         ->onDelete('set null');
       $table->foreign('progress_id')->references('id')->on('progress')
         ->onUpdate('cascade')
-        ->onDelete('set null');
+        ->onDelete('restrict');
     });
   }
 
@@ -51,7 +51,7 @@ class CreateTasksTable extends Migration
    */
   public function down()
   {
-    Schema::table('tasks', function(Blueprint $table){
+    Schema::table('tasks', function (Blueprint $table) {
       $table->dropForeign('tasks_priority_id_foreign');
       $table->dropForeign('tasks_progress_id_foreign');
       $table->dropForeign('tasks_created_by_foreign');

@@ -25,6 +25,13 @@ use App\Models\Abstracts\CommonModel as Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Progress whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Progress whereValue($value)
  * @mixin \Eloquent
+ * @property int $created_by 作成者
+ * @property int|null $updated_by 更新者
+ * @property int|null $deleted_by 削除者
+ * @property-read \App\Models\User $createdBy
+ * @method static \Illuminate\Database\Eloquent\Builder|Progress whereCreatedBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Progress whereDeletedBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Progress whereUpdatedBy($value)
  */
 class Progress extends Model
 {

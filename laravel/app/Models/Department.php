@@ -29,10 +29,19 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Query\Builder|Department withTrashed()
  * @method static \Illuminate\Database\Query\Builder|Department withoutTrashed()
  * @mixin \Eloquent
+ * @property string|null $department_code 部署コード
+ * @property string|null $color カラー
+ * @property int|null $created_by 登録者
+ * @property int|null $updated_by 更新者
+ * @property int|null $deleted_by 削除者
+ * @property-read \App\Models\User|null $createdBy
+ * @method static \Illuminate\Database\Eloquent\Builder|Department whereColor($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Department whereCreatedBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Department whereDeletedBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Department whereUpdatedBy($value)
  */
 class Department extends Model
 {
-  use SoftDeletes;
 
   protected $table = 'departments';
 

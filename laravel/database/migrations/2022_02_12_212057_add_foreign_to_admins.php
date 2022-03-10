@@ -16,7 +16,7 @@ class AddForeignToAdmins extends Migration
     Schema::table('admins', function (Blueprint $table) {
       $table->unsignedBigInteger('department_id')->nullable()->after('id')->comment('部署ID');
       $table->foreign('department_id')->references('id')->on('departments')
-        ->onUpdate('cascade')->onDelete('no action');
+        ->onUpdate('cascade')->onDelete('restrict');
       $table->foreign('role_id')->references('id')->on('roles')
         ->onUpdate('cascade')->onDelete('no action');
     });

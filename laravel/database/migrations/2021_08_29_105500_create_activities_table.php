@@ -15,7 +15,7 @@ class CreateActivitiesTable extends Migration
   {
     Schema::create('activities', function (Blueprint $table) {
       $table->id();
-      $table->unsignedBigInteger('user_id')->comment('対象者');
+      $table->unsignedBigInteger('user_id')->nullable()->comment('対象者');
       $table->unsignedBigInteger('created_by')->comment('誰のアクティビティか');
       $table->unsignedBigInteger('action_type_id')->comment('アクションID');
       $table->unsignedBigInteger('model_id')->nullable()->comment('モデルID');

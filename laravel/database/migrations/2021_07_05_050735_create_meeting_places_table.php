@@ -21,7 +21,6 @@ class CreateMeetingPlacesTable extends Migration
       $table->unsignedBigInteger('deleted_by')->nullable()->comment('削除者');
 
       $table->timestamps();
-      $table->softDeletes();
 
       $table->foreign('created_by')->references('id')->on('users')
         ->onUpdate('cascade')
@@ -42,7 +41,7 @@ class CreateMeetingPlacesTable extends Migration
    */
   public function down()
   {
-    Schema::table('meeting_places', function(Blueprint $table) {
+    Schema::table('meeting_places', function (Blueprint $table) {
       $table->dropForeign('meeting_places_deleted_by_foreign');
       $table->dropForeign('meeting_places_updated_by_foreign');
       $table->dropForeign('meeting_places_created_by_foreign');

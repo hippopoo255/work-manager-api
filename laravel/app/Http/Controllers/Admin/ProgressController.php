@@ -8,6 +8,7 @@ use App\Http\Requests\Progress\StoreRequest;
 use App\Http\Requests\Progress\UpdateRequest;
 use App\Services\ProgressService as Service;
 use App\Models\Progress;
+use Illuminate\Database\QueryException;
 
 class ProgressController extends Controller
 {
@@ -22,7 +23,7 @@ class ProgressController extends Controller
   }
   /**
    * @param Request $request
-   * @return void
+   * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
    */
   public function index(Request $request)
   {
@@ -31,7 +32,8 @@ class ProgressController extends Controller
 
   /**
    * @param StoreRequest $request
-   * @return void
+   * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+   * @throws \Throwable
    */
   public function store(StoreRequest $request)
   {
@@ -49,7 +51,8 @@ class ProgressController extends Controller
   /**
    * @param UpdateRequest $request
    * @param Progress $id
-   * @return void
+   * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+   * @throws \Throwable
    */
   public function update(UpdateRequest $request, Progress $id)
   {
@@ -67,10 +70,27 @@ class ProgressController extends Controller
   /**
    * @param Request $request
    * @param Progress $id
-   * @return void
+   * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+   * @throws \Throwable
    */
   public function destroy(Request $request, Progress $id)
   {
-    return response($this->service->delete($id), 204);
+    \DB::beginTransaction();
+    try {
+      $task = $this->service->delete($id);
+      \DB::commit();
+    } catch (\Exception $e) {
+      \DB::rollback();
+      if ($e instanceof QueryException) {
+        return response([
+          'errors' => [
+            'db' => ['関連付けられたタスクが存在するため削除できません。']
+          ]
+        ], 422);
+      }
+      throw $e;
+    }
+    // 204のためNo Content
+    return response($task, 204);
   }
 }
