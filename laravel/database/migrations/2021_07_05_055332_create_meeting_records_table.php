@@ -34,7 +34,7 @@ class CreateMeetingRecordsTable extends Migration
       $table->foreign('deleted_by')->references('id')->on('users')
         ->onUpdate('cascade')
         ->onDelete('no action');
-      $table->foreign('place_id')->references('id')->on('meeting_places')->onDelete('no action');
+      $table->foreign('place_id')->references('id')->on('meeting_places')->onUpdate('cascade')->onDelete('restrict');
     });
   }
 

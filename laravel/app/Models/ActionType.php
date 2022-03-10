@@ -28,6 +28,10 @@ use App\Contracts\Models\ModelInterface;
  * @method static \Illuminate\Database\Eloquent\Builder|ActionType whereTemplateMessage($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ActionType whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property int $is_notify ユーザが通知設定の画面で変更できるか
+ * @property int $is_admin 管理者フラグ
+ * @method static \Illuminate\Database\Eloquent\Builder|ActionType whereIsAdmin($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ActionType whereIsNotify($value)
  */
 class ActionType extends Model implements ModelInterface
 {
@@ -53,8 +57,25 @@ class ActionType extends Model implements ModelInterface
 
   const LIMIT_TASK_KEY = 'daily_limit_task';
   const LIMIT_SCHEDULE_KEY = 'daily_schedule';
+
   const DAILY_ALERT_ARR = [
     self::LIMIT_TASK_KEY => 4,
     self::LIMIT_SCHEDULE_KEY => 5,
+  ];
+
+  const ADMIN_ACTION_TYPES = [
+    self::USER_CREATE_KEY,
+    self::ADMIN_CREATE_KEY,
+    self::DEPARTMENT_CREATE_KEY,
+    self::PROGRESS_CREATE_KEY,
+    self::MEETING_PLACE_CREATE_KEY,
+  ];
+
+  const USER_ACTION_TYPES = [
+    self::SCHEDULE_SHARED_KEY,
+    self::MESSAGE_SENT_KEY,
+    self::MEETING_RECORD_JOINED_KEY,
+    self::BLOG_REPORT_KEY,
+    self::CHAT_REPORT_KEY,
   ];
 }

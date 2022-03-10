@@ -76,6 +76,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read string $full_name_kana
  * @property-read string $organization_name
  * @method static \Illuminate\Database\Eloquent\Builder|Admin whereUserCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Admin whereDepartmentId($value)
  */
 class Admin extends Authenticatable
 {

@@ -102,6 +102,9 @@ use App\Notifications\MailResetPasswordNotification;
  * @property-read string $full_name_kana
  * @property-read bool $is_initialized
  * @property-read \App\Models\Organization|null $organization
+ * @property-read \App\Models\Admin|null $admin
+ * @property-read bool $is_invited
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereDepartmentId($value)
  */
 class User extends Authenticatable
 {

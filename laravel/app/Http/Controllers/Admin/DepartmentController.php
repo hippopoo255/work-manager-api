@@ -8,13 +8,12 @@ use App\Http\Requests\Department\UpdateRequest;
 use Illuminate\Http\Request;
 use App\Services\DepartmentService as Service;
 use App\Models\Department;
+use Illuminate\Database\QueryException;
 
 class DepartmentController extends Controller
 {
-  /**
-   * @var Service;
-   */
-  private $service;
+  protected $service;
+  protected $relationalDataName = 'ユーザー';
 
   public function __construct(Service $service)
   {
@@ -31,7 +30,8 @@ class DepartmentController extends Controller
 
   /**
    * @param StoreRequest $request
-   * @return void
+   * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+   * @throws \Throwable
    */
   public function store(StoreRequest $request)
   {
@@ -49,7 +49,8 @@ class DepartmentController extends Controller
   /**
    * @param UpdateRequest $request
    * @param Department $id
-   * @return void
+   * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+   * @throws \Throwable
    */
   public function update(UpdateRequest $request, Department $id)
   {
@@ -67,10 +68,27 @@ class DepartmentController extends Controller
   /**
    * @param Request $request
    * @param Department $id
-   * @return void
+   * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+   * @throws \Throwable
    */
   public function destroy(Request $request, Department $id)
   {
-    return response($this->service->delete($id), 204);
+    \DB::beginTransaction();
+    try {
+      $department = $this->service->delete($id);
+      \DB::commit();
+    } catch (\Exception $e) {
+      \DB::rollback();
+      if ($e instanceof QueryException) {
+        return response([
+          'errors' => [
+            'db' => ['関連付けられたユーザーが存在するため削除できません。']
+          ]
+        ], 422);
+      }
+      throw $e;
+    }
+    // 204のためNo Content
+    return response($department, 204);
   }
 }

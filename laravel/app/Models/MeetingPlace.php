@@ -33,11 +33,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Query\Builder|MeetingPlace withTrashed()
  * @method static \Illuminate\Database\Query\Builder|MeetingPlace withoutTrashed()
  * @mixin \Eloquent
+ * @property-read \App\Models\User|null $createdBy
  */
 class MeetingPlace extends Model
 {
-  use SoftDeletes;
-
   protected $table = 'meeting_places';
   protected $fillable = [
     'name',

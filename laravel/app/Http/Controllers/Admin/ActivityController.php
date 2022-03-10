@@ -35,6 +35,6 @@ class ActivityController extends Controller
    */
   public function findByCreatedAdmin(Request $request, Admin $id)
   {
-    return response($this->service->findByCreatedUser($request->query(), $id->bUser), 200);
+    return response($this->service->findByCreatedUser(['authenticatable' => 'admin'], $id->bUser), 200);
   }
 }

@@ -34,7 +34,6 @@ class ProgressCreateActivityJob extends ActivityJob implements ShouldQueue
     $attributes = [
       'action_type_id' => $actionType[0]->id,
       'model_id' => $this->model->id,
-      'user_id' => $this->model->created_by,
       'created_by' => $this->model->created_by,
       'content' => $content,
     ];

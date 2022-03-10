@@ -8,6 +8,7 @@ use App\Http\Requests\MeetingPlace\StoreRequest;
 use App\Http\Requests\MeetingPlace\UpdateRequest;
 use App\Services\MeetingPlaceService as Service;
 use App\Models\MeetingPlace;
+use Illuminate\Database\QueryException;
 
 class MeetingPlaceController extends Controller
 {
@@ -22,7 +23,7 @@ class MeetingPlaceController extends Controller
   }
   /**
    * @param Request $request
-   * @return void
+   * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
    */
   public function index(Request $request)
   {
@@ -31,7 +32,8 @@ class MeetingPlaceController extends Controller
 
   /**
    * @param StoreRequest $request
-   * @return void
+   * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+   * @throws \Throwable
    */
   public function store(StoreRequest $request)
   {
@@ -49,7 +51,8 @@ class MeetingPlaceController extends Controller
   /**
    * @param UpdateRequest $request
    * @param MeetingPlace $id
-   * @return void
+   * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+   * @throws \Throwable
    */
   public function update(UpdateRequest $request, MeetingPlace $id)
   {
@@ -65,12 +68,31 @@ class MeetingPlaceController extends Controller
   }
 
   /**
+   * Undocumented function
+   *
    * @param Request $request
    * @param MeetingPlace $id
-   * @return void
+   * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+   * @throws \Throwable
    */
   public function destroy(Request $request, MeetingPlace $id)
   {
-    return response($this->service->delete($id), 204);
+    \DB::beginTransaction();
+    try {
+      $meetingPlace = $this->service->delete($id);
+      \DB::commit();
+    } catch (\Exception $e) {
+      \DB::rollback();
+      if ($e instanceof QueryException) {
+        return response([
+          'errors' => [
+            'db' => ['関連付けられた議事録が存在するため削除できません。']
+          ]
+        ], 422);
+      }
+      throw $e;
+    }
+    // 204のためNo Content
+    return response($meetingPlace, 204);
   }
 }

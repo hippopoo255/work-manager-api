@@ -25,4 +25,14 @@ class ActionTypeRepository extends EloquentRepository implements ActionTypeRepos
     $model = $this->findBy($columnName, $val);
     return $model[0]->id;
   }
+
+  /**
+   * @param string $authenticatable
+   * @return array
+   */
+  public function idsByAuthenticatable($authenticatable = 'user')
+  {
+    $actionTypeKeys = $authenticatable === 'user' ? ActionType::USER_ACTION_TYPES : ActionType::ADMIN_ACTION_TYPES;
+    return $this->model()->whereIn('key', $actionTypeKeys)->pluck('id')->toArray();
+  }
 }
