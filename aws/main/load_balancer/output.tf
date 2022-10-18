@@ -9,3 +9,6 @@ output "target_group_back_arn" {
 output "security_group_http_id" {
   value = module.sg_http.security_group_id
 }
+output "http_alb_uri" {
+  value = aws_route53_record.default.name
+}

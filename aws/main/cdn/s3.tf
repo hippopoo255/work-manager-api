@@ -8,7 +8,7 @@ data "aws_route53_zone" "default" {
 
 resource "aws_s3_bucket" "public" {
   bucket = format("asset.%s", data.aws_route53_zone.default.name)
-  acl = "public-read"
+  acl    = "public-read"
   policy = templatefile("${var.json_path_prefix}/policies/s3_policy.json", {
     domain_name = var.domain_name
   })

@@ -9,7 +9,7 @@
       }
     ],
 
-    "image": "954077437468.dkr.ecr.ap-northeast-1.amazonaws.com/${ecr_image_prefix}/web:latest",
+    "image": "${image_urls.0}:latest",
     "cpu": 8,
     "memoryReservation": 128,
     "essential": true,
@@ -26,7 +26,7 @@
   },
   {
     "name": "app",
-    "image": "954077437468.dkr.ecr.ap-northeast-1.amazonaws.com/${ecr_image_prefix}/app:latest",
+    "image": "${image_urls.1}:latest",
     "cpu": 8,
     "memoryReservation": 256,
     "essential": true,
@@ -73,24 +73,24 @@
         "name": "APP_TEST_ADMIN_COGNITO_SUB"
       },
       {
-        "valueFrom": "AMAZON_ACCESS_KEY_ID",
-        "name": "AWS_ACCESS_KEY_ID"
+        "valueFrom": "S3_ACCESS_KEY_ID",
+        "name": "S3_ACCESS_KEY_ID"
       },
       {
-        "valueFrom": "AMAZON_BUCKET",
-        "name": "AWS_BUCKET"
+        "valueFrom": "S3_BUCKET",
+        "name": "S3_BUCKET"
       },
       {
         "valueFrom": "AMAZON_DEFAULT_REGION",
         "name": "AWS_DEFAULT_REGION"
       },
       {
-        "valueFrom": "AMAZON_SECRET_ACCESS_KEY",
-        "name": "AWS_SECRET_ACCESS_KEY"
+        "valueFrom": "S3_SECRET_ACCESS_KEY",
+        "name": "S3_SECRET_ACCESS_KEY"
       },
       {
-        "valueFrom": "AMAZON_URL",
-        "name": "AWS_URL"
+        "valueFrom": "S3_URL",
+        "name": "S3_URL"
       },
       {
         "valueFrom": "AMAZON_USER_COGNITO_REGION",
@@ -111,10 +111,6 @@
       {
         "valueFrom": "BROADCAST_DRIVER",
         "name": "BROADCAST_DRIVER"
-      },
-      {
-        "valueFrom": "CORS_ALLOWED_ORIGIN",
-        "name": "CORS_ALLOWED_ORIGIN"
       },
       {
         "valueFrom": "DB_CONNECTION",
@@ -208,7 +204,7 @@
   },
   {
     "name": "supervisor",
-    "image": "954077437468.dkr.ecr.ap-northeast-1.amazonaws.com/${ecr_image_prefix}/supervisor:latest",
+    "image": "${image_urls.2}:latest",
     "cpu": 4,
     "memoryReservation": 128,
     "logConfiguration": {
@@ -254,24 +250,24 @@
         "name": "APP_TEST_ADMIN_COGNITO_SUB"
       },
       {
-        "valueFrom": "AMAZON_ACCESS_KEY_ID",
-        "name": "AWS_ACCESS_KEY_ID"
+        "valueFrom": "S3_ACCESS_KEY_ID",
+        "name": "S3_ACCESS_KEY_ID"
       },
       {
-        "valueFrom": "AMAZON_BUCKET",
-        "name": "AWS_BUCKET"
+        "valueFrom": "S3_BUCKET",
+        "name": "S3_BUCKET"
       },
       {
         "valueFrom": "AMAZON_DEFAULT_REGION",
         "name": "AWS_DEFAULT_REGION"
       },
       {
-        "valueFrom": "AMAZON_SECRET_ACCESS_KEY",
-        "name": "AWS_SECRET_ACCESS_KEY"
+        "valueFrom": "S3_SECRET_ACCESS_KEY",
+        "name": "S3_SECRET_ACCESS_KEY"
       },
       {
-        "valueFrom": "AMAZON_URL",
-        "name": "AWS_URL"
+        "valueFrom": "S3_URL",
+        "name": "S3_URL"
       },
       {
         "valueFrom": "AMAZON_USER_COGNITO_REGION",
@@ -292,10 +288,6 @@
       {
         "valueFrom": "BROADCAST_DRIVER",
         "name": "BROADCAST_DRIVER"
-      },
-      {
-        "valueFrom": "CORS_ALLOWED_ORIGIN",
-        "name": "CORS_ALLOWED_ORIGIN"
       },
       {
         "valueFrom": "DB_CONNECTION",
