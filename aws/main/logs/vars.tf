@@ -1,8 +1,8 @@
 variable "name_prefix" {
-  type = string
+  type    = string
   default = ""
 }
 variable "retention_days" {
-  type = number
+  type    = number
   default = 3
 }

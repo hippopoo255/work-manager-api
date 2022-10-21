@@ -1,5 +1,5 @@
 variable "name_prefix" {
-  type = string
+  type    = string
   default = "pj_name_snake"
 }
 
@@ -7,7 +7,7 @@ data "aws_iam_policy_document" "admin" {
   statement {
     effect = "Allow"
 
-    actions = ["*"]
+    actions   = ["*"]
     resources = ["*"]
 
     principals {
@@ -18,17 +18,17 @@ data "aws_iam_policy_document" "admin" {
 }
 
 resource "aws_iam_policy" "admin" {
-  name = "${var.name_prefix}_admin"
+  name   = "${var.name_prefix}_admin"
   policy = file("./iam_role/administrator.json")
 }
 
 resource "aws_iam_role" "admin" {
-  name = "${var.name_prefix}_admin"
+  name               = "${var.name_prefix}_admin"
   assume_role_policy = file("./iam_role/administrator.json")
 }
 
 resource "aws_iam_role_policy_attachment" "admin" {
-  role = aws_iam_role.admin.name
+  role       = aws_iam_role.admin.name
   policy_arn = aws_iam_policy.admin.arn
 }
 

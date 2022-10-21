@@ -14,7 +14,7 @@ class InvalidError(Exception):
   def __str__(self):
     return repr(self.value)
 
-bucket_name = 'asset.job-support.site'
+bucket_name = 'asset.work-manager.site'
 s3 = boto3.resource('s3')
 bucket = s3.Bucket(bucket_name)
 

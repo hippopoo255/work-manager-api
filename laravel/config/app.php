@@ -54,7 +54,7 @@ return [
 
   'url' => env('APP_URL', 'http://localhost'),
 
-  'asset_url' => env('ASSET_URL', null),
+  'S3_url' => env('S3_URL', null),
   'admin_front_url' => env('APP_ADMIN_FRONT_URL', 'localhost:3001'),
   'front_url' => env('APP_FRONT_URL', 'localhost:3000'),
   'test_id' => env('APP_TEST_ID', ''),

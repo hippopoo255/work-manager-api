@@ -19,7 +19,7 @@ return [
 
   'allowed_methods' => ['*'],
 
-  'allowed_origins' => [env('CORS_ALLOWED_ORIGIN', 'localhost:3000'), env('APP_ADMIN_FRONT_URL', 'localhost:3001')],
+  'allowed_origins' => [env('APP_FRONT_URL', 'localhost:3000'), env('APP_ADMIN_FRONT_URL', 'localhost:3001')],
 
   'allowed_origins_patterns' => [],
 
