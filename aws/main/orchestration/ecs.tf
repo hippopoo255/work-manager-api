@@ -107,6 +107,7 @@ resource "aws_ecs_task_definition" "back" {
 # }
 
 # ECSサービス
+# data "aws_caller_identity" "self" {}"
 # resource "aws_ecs_service" "back_service" {
 #   name = var.back_service_name
 #   cluster = aws_ecs_cluster.default.arn
@@ -114,7 +115,7 @@ resource "aws_ecs_task_definition" "back" {
 #   desired_count = 1
 #   health_check_grace_period_seconds = 30
 #   launch_type = "EC2"
-#   iam_role = "arn:aws:iam::015211996394:role/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS"
+#   iam_role = "arn:aws:iam::${data.aws_caller_identity.self.account_id}:role/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS"
 
 #   # network_configuration {
 #   #   security_groups = [var.security_group_id]

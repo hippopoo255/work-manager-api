@@ -1,9 +1,9 @@
-variable "cognito_user_pool_name_default" {
+variable "cognito_user_pool_arn_app" {
   type    = string
-  default = "userpool-user"
+  default = "userpool-admin"
 }
 
-variable "cognito_user_pool_name_admin" {
+variable "cognito_user_pool_arn_admin" {
   type    = string
   default = "userpool-admin"
 }

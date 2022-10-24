@@ -88,13 +88,25 @@ module "mysql_rds" {
   pj_name_snake  = var.pj_name_snake
 }
 
+# Cognito
+module "cognito" {
+  source        = "./cognito"
+  pj_name_kebab = var.pj_name_kebab
+  pj_name_kana  = var.pj_name_kana
+  pj_name_camel = var.pj_name_camel
+}
+
+# TODO: 2つのuserpoolIDをoutputしてストアパラメータ(AMAZON_USER_COGNITO_POOL_ID, AMAZON_ADMIN_COGNITO_POOL_ID)として設定したい
+# TODO: 作成したユーザープールにユーザ情報を追加してcognito-subをoutputしたい
+# TODO: outputしたcognito-subをストアパラメータ(APP_TEST_USER_COGNITO_SUB, APP_TEST_ADMIN_COGNITO_SUB)として設定したい
+
 # API Gateway
 module "api_gateway" {
-  source           = "./api_gateway"
-  json_path_prefix = "./api_gateway"
-  http_uri         = module.alb.http_alb_uri
-  api_name_app     = "${var.pj_name_kebab}-app"
-  api_name_admin   = "${var.pj_name_kebab}-admin"
-  cognito_user_pool_name_default = "${var.pj_name_kebab}-user"
-  cognito_user_pool_name_admin = "${var.pj_name_kebab}-admin"
+  source                      = "./api_gateway"
+  json_path_prefix            = "./api_gateway"
+  http_uri                    = module.alb.http_alb_uri
+  api_name_app                = "${var.pj_name_kebab}-app"
+  api_name_admin              = "${var.pj_name_kebab}-admin"
+  cognito_user_pool_arn_app   = module.cognito.userpool_arn_app
+  cognito_user_pool_arn_admin = module.cognito.userpool_arn_admin
 }
