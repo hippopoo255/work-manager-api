@@ -13,6 +13,11 @@ variable "pj_name_camel" {
   default = "WorkManager"
 }
 
+variable "pj_name_kana" {
+  type    = string
+  default = "ジョブサポ"
+}
+
 variable "domain_name" {
   type    = string
   default = "work-manager.site"
