@@ -40,7 +40,7 @@ class OrganizationCreatedNotification extends Notification implements ShouldQueu
    */
   public function toMail($notifiable)
   {
-    $query = base64_encode($notifiable->email);
+    $query = base64_encode($notifiable->login_id);
     return (new MailMessage)
       ->subject("【{$this->subjectPrefix}】組織情報の登録が完了しました")
       ->markdown('mail.organization.created', [
