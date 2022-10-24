@@ -22,9 +22,14 @@ variable "name_prefix" {
 # }
 # タスク定義用のロール
 variable "my_ecs_role_arn" {
-  type = string
+  type    = string
   default = ""
 }
 variable "log_groups" {
-  type = list
+  type = list(any)
+}
+
+variable "aws_account_id" {
+  type    = string
+  default = ""
 }

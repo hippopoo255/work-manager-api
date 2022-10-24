@@ -1,4 +1,7 @@
 # フロント用タスク定義
+# フロントエンドはコンテナ管理から外し、タスク定義しない
+# - t2.microではスペックが不足するため
+# - Next.jsのPJをVercelにデプロイする方法が無料のため
 # resource "aws_ecs_task_definition" "front" {
 #   family = "${var.name_prefix}-task-front"
 #   network_mode = "bridge"
@@ -10,16 +13,32 @@
 #   })
 # }
 
+data "aws_ecr_repository" "web" {
+  name = "${var.name_prefix}/web"
+}
+
+data "aws_ecr_repository" "app" {
+  name = "${var.name_prefix}/app"
+}
+
+data "aws_ecr_repository" "supervisor" {
+  name = "${var.name_prefix}/supervisor"
+}
+
 # APIサーバ用タスク定義
 resource "aws_ecs_task_definition" "back" {
-  family = "${var.name_prefix}-task-back"
-  network_mode = "bridge"
-  execution_role_arn = var.my_ecs_role_arn
+  family                   = "${var.name_prefix}-task-back"
+  network_mode             = "bridge"
+  execution_role_arn       = var.my_ecs_role_arn
   requires_compatibilities = []
   # compatibilities = ["EC2"]
   container_definitions = templatefile("./orchestration/container_definition_back.json", {
     log_groups = var.log_groups,
-    ecr_image_prefix = var.name_prefix,
+    image_urls = [
+      data.aws_ecr_repository.web.repository_url,
+      data.aws_ecr_repository.app.repository_url,
+      data.aws_ecr_repository.supervisor.repository_url
+    ]
   })
 }
 
@@ -88,6 +107,7 @@ resource "aws_ecs_task_definition" "back" {
 # }
 
 # ECSサービス
+# data "aws_caller_identity" "self" {}"
 # resource "aws_ecs_service" "back_service" {
 #   name = var.back_service_name
 #   cluster = aws_ecs_cluster.default.arn
@@ -95,7 +115,7 @@ resource "aws_ecs_task_definition" "back" {
 #   desired_count = 1
 #   health_check_grace_period_seconds = 30
 #   launch_type = "EC2"
-#   iam_role = "arn:aws:iam::015211996394:role/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS"
+#   iam_role = "arn:aws:iam::${data.aws_caller_identity.self.account_id}:role/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS"
 
 #   # network_configuration {
 #   #   security_groups = [var.security_group_id]

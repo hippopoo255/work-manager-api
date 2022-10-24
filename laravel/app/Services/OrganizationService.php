@@ -53,7 +53,7 @@ class OrganizationService extends Service
       $user = $user->makeVisible(['login_id']);
 
       // メール通知「組織情報登録完了のお知らせ」
-      Notification::send([Auth::user()], new OrganizationCreatedNotification());
+      Notification::send([$user], new OrganizationCreatedNotification());
       MasterInitializationJob::dispatch($user)->onQueue('default');
       return $user;
     }

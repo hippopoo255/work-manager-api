@@ -1,2 +1,2 @@
-CREATE DATABASE IF NOT EXISTS `job_support_test`;
-GRANT ALL ON job_support_test.* TO 'admin'@'%';
+CREATE DATABASE IF NOT EXISTS `work_manager_test`;
+GRANT ALL ON work_manager_test.* TO 'admin'@'%';

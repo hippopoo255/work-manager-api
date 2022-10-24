@@ -1,5 +1,5 @@
 variable "json_path_prefix" {
-  type = string
+  type    = string
   default = "."
 }
 
@@ -31,12 +31,12 @@ data "aws_iam_policy_document" "ec2_assume_role" {
 
 # ロールの作成
 resource "aws_iam_role" "my_ecs_role" {
-  name = "MyECSRole"
+  name               = "MyECSRole"
   assume_role_policy = data.aws_iam_policy_document.ecs_assume_role.json
 }
 
 resource "aws_iam_role" "ecs_instance_role" {
-  name = "ecsInstanceRole"
+  name               = "ecsInstanceRole"
   assume_role_policy = data.aws_iam_policy_document.ec2_assume_role.json
 }
 
@@ -49,7 +49,7 @@ resource "aws_iam_policy" "ecs_env_connection" {
 
 # 各ロールにポリシーをアタッチ
 resource "aws_iam_role_policy_attachment" "my_ecs_env_connect_attachment" {
-  role = aws_iam_role.my_ecs_role.name
+  role       = aws_iam_role.my_ecs_role.name
   policy_arn = aws_iam_policy.ecs_env_connection.arn
 }
 
@@ -57,12 +57,12 @@ resource "aws_iam_role_policy_attachment" "my_ecs_other_attachment" {
   for_each = {
     for arn in var.ecs_policy_arns : arn => arn
   }
-  role = aws_iam_role.my_ecs_role.name
+  role       = aws_iam_role.my_ecs_role.name
   policy_arn = each.value
 }
 
 resource "aws_iam_role_policy_attachment" "ecs_instance_env_connect_attachment" {
-  role = aws_iam_role.ecs_instance_role.name
+  role       = aws_iam_role.ecs_instance_role.name
   policy_arn = aws_iam_policy.ecs_env_connection.arn
 }
 
@@ -70,6 +70,6 @@ resource "aws_iam_role_policy_attachment" "ecs_instance_other_attachment" {
   for_each = {
     for arn in var.ec2_policy_arns : arn => arn
   }
-  role = aws_iam_role.ecs_instance_role.name
+  role       = aws_iam_role.ecs_instance_role.name
   policy_arn = each.value
 }

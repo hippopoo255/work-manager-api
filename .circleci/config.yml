@@ -2,6 +2,21 @@ version: 2.1
 orbs:
   slack: circleci/slack@4.4.2
 
+executors:
+  php:
+    docker:
+      - image: circleci/php:7.4-node-browsers
+        environment:
+          DB_PASSWORD: ""
+      - image: circleci/mysql:5.7
+        environment:
+          MYSQL_DATABASE: "work_manager_test"
+          MYSQL_ALLOW_EMPTY_PASSWORD: "true"
+          MYSQL_ROOT_HOST: "%"
+  python:
+    docker:
+      - image: circleci/python
+
 commands:
   notify_slack_fail:
     steps:
@@ -22,10 +37,7 @@ commands:
           template: success_tagged_deploy_1
 jobs:
   build:
-    docker:
-      # Specify the version you desire here
-      - image: circleci/php:7.3-node-browsers
-
+    executor: php
     working_directory: ~/repo
     steps:
       - checkout
@@ -36,20 +48,7 @@ jobs:
       - notify_slack_fail
 
   test:
-    docker:
-      - image: circleci/php:7.3-node-browsers
-        environment:
-          MYSQL_HOST: 127.0.0.1
-          MYSQL_USERNAME: "root"
-          MYSQL_PASSWORD: ""
-          MYSQL_PORT: 3306
-
-      - image: circleci/mysql:5.7
-        environment:
-          MYSQL_DATABASE: "job_support_test"
-          MYSQL_ALLOW_EMPTY_PASSWORD: "true"
-          MYSQL_ROOT_HOST: "%"
-
+    executor: php
     working_directory: ~/repo
     steps:
       - checkout
@@ -59,6 +58,9 @@ jobs:
       - run:
           name: Install PHP-Extension
           command: |
+            sudo wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo gpg --dearmour -o /usr/share/keyrings/google-keyring.gpg
+            sudo sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/google-keyring.gpg] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
+            sudo apt --allow-releaseinfo-change update
             sudo apt update
             sudo apt install -y libpng-dev
             sudo docker-php-ext-install zip gd pdo_mysql
@@ -74,9 +76,8 @@ jobs:
           working_directory: laravel
           command: |
             composer install -n --prefer-dist
-            echo $ENV_FILE | base64 --decode > .env
-            echo $TEST_ENV_FILE | base64 --decode > .env.testing
-
+            echo $ENV_FILE_ENCODED64 | base64 --decode > .env
+            echo $TEST_ENV_FILE_ENCODED64 | base64 --decode > .env.testing
       - save_cache:
           key: k2-dependencies-{{ checksum "laravel/composer.json" }}
           paths:
@@ -86,8 +87,8 @@ jobs:
           name: Setup DB
           working_directory: laravel
           command: |
-            php artisan migrate:reset --env=testing --database=mysql_testing --force
-            php artisan migrate --seed --env=testing --database=mysql_testing --force
+            php artisan migrate:reset --env=testing --force
+            php artisan migrate --seed --env=testing --force
       - run:
           name: Run PHPunit
           working_directory: laravel
@@ -102,8 +103,7 @@ jobs:
       - notify_slack_pass
 
   deploy:
-    docker:
-      - image: circleci/python
+    executor: python
     working_directory: ~/repo
     steps:
       - checkout
@@ -119,7 +119,7 @@ jobs:
           name: Configure ENV
           working_directory: laravel
           command: |
-            echo $ENV_FILE | base64 --decode > .env
+            echo $ENV_FILE_ENCODED64 | base64 --decode > .env
       - run:
           name: Login ECR
           command: eval $(aws ecr get-login --no-include-email --region $AWS_REGION)
@@ -169,4 +169,3 @@ workflows:
             branches:
               only:
                 - main
-                - develop
