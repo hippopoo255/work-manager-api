@@ -94,6 +94,11 @@ class CognitoGuard implements Guard
         'created_by' => $author->id,
       ]);
     }
+    if ($author && get_class($this->builder) === 'App\Models\Admin') {
+      $author->update([
+        'organization_id' => $author->bUser->organization_id,
+      ]);
+    }
     return $author;
   }
 }
