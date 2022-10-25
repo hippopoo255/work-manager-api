@@ -10,3 +10,14 @@ variable "pj_name_kebab" {
   type    = string
   default = ""
 }
+variable "sh_path_prefix" {
+  type    = string
+  default = ""
+}
+variable "cognito_region" {
+  type    = string
+  default = "ap-northeast-1"
+}
+variable "test_email" {}
+variable "test_username" {}
+variable "test_userpassword" {}
