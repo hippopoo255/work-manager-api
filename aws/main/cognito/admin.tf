@@ -96,6 +96,14 @@ resource "aws_cognito_user_pool" "admin" {
     email_message        = " 検証コードは {####} です。"
     email_subject        = "【${var.pj_name_kana}】検証コード"
   }
+
+  lifecycle {
+    # plan時に変更をかけていなくても差分として表示されるため除外
+    ignore_changes = [
+      password_policy,
+      schema
+    ]
+  }
 }
 
 resource "aws_cognito_user_pool_client" "admin" {
@@ -171,5 +179,32 @@ resource "aws_cognito_identity_pool" "admin" {
     client_id               = aws_cognito_user_pool_client.admin.id
     provider_name           = "cognito-idp.ap-northeast-1.amazonaws.com/${aws_cognito_user_pool.admin.id}"
     server_side_token_check = false
+  }
+}
+
+resource "aws_cognito_user" "test_user_admin" {
+  user_pool_id = aws_cognito_user_pool.admin.id
+  username     = var.test_username
+
+  attributes = {
+    email            = var.test_email
+    email_verified   = true
+    family_name      = "テスト"
+    given_name       = "太郎"
+    family_name_kana = "テスト"
+    given_name_kana  = "タロウ"
+    login_id         = var.test_username
+  }
+
+  message_action = "SUPPRESS"
+}
+
+resource "null_resource" "test_user_admin_confirmed" {
+  triggers = {
+    endpoint = "${aws_cognito_user.test_user_app.sub}"
+  }
+
+  provisioner "local-exec" {
+    command = "$PWD/${var.sh_path_prefix}confirmed_cognito_user.sh ${aws_cognito_user_pool.admin.id} ${aws_cognito_user.test_user_admin.username} ${var.test_userpassword}"
   }
 }

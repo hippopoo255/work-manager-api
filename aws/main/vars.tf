@@ -23,8 +23,22 @@ variable "domain_name" {
   default = "work-manager.site"
 }
 
-variable "db_user" {}
-variable "db_pass" {}
-# variable "cluster_name" {}
-# variable "front_service_name" {}
-# variable "back_service_name" {}
+variable "db_user" {
+  type = string
+}
+
+variable "db_pass" {
+  type = string
+}
+
+variable "test_email" {
+  type = string
+}
+
+variable "test_username" {
+  type = string
+}
+
+variable "test_userpassword" {
+  type = string
+}
