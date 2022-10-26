@@ -14,10 +14,9 @@ provider "aws" {
 
 # ALBと紐付ける
 resource "aws_acm_certificate" "default" {
-  domain_name = "api.${data.aws_route53_zone.default.name}"
+  domain_name               = "api.${data.aws_route53_zone.default.name}"
   subject_alternative_names = []
-  validation_method = "DNS"
-  # リージョン：東京
+  validation_method         = "DNS"
   provider = aws.tokyo
 
   lifecycle {
@@ -31,9 +30,9 @@ resource "aws_acm_certificate" "default" {
 
 # cloudfrontと紐付ける
 resource "aws_acm_certificate" "cdn" {
-  domain_name = "asset.${data.aws_route53_zone.default.name}"
+  domain_name               = "asset.${data.aws_route53_zone.default.name}"
   subject_alternative_names = []
-  validation_method = "DNS"
+  validation_method         = "DNS"
   # リージョン：バージニア北部
   provider = aws.virginia
 
@@ -57,15 +56,15 @@ resource "aws_route53_record" "default_certificate" {
   }
 
   zone_id = data.aws_route53_zone.default.zone_id
-  name = each.value.name
-  type = each.value.type
+  name    = each.value.name
+  type    = each.value.type
   records = [each.value.record]
-  ttl = 60
+  ttl     = 60
 }
 
 # 検証の待機
 resource "aws_acm_certificate_validation" "default" {
-  certificate_arn = aws_acm_certificate.default.arn
+  certificate_arn         = aws_acm_certificate.default.arn
   validation_record_fqdns = [for record in aws_route53_record.default_certificate : record.fqdn]
 }
 
@@ -81,15 +80,15 @@ resource "aws_route53_record" "cdn_certificate" {
   }
 
   zone_id = data.aws_route53_zone.default.zone_id
-  name = each.value.name
-  type = each.value.type
+  name    = each.value.name
+  type    = each.value.type
   records = [each.value.record]
-  ttl = 60
+  ttl     = 60
 }
 
 # 検証の待機
 resource "aws_acm_certificate_validation" "cdn" {
-  provider = aws.virginia
-  certificate_arn = aws_acm_certificate.cdn.arn
+  provider                = aws.virginia
+  certificate_arn         = aws_acm_certificate.cdn.arn
   validation_record_fqdns = [for record in aws_route53_record.cdn_certificate : record.fqdn]
 }

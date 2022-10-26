@@ -1,6 +1,6 @@
 #!/bin/bash
 
-aws cognito-idp admin-set-user-password --user-pool-id $1 \
-  --username $2 \
-  --password $3 \
+aws cognito-idp admin-set-user-password --user-pool-id $COGNITO_USERPOOL_ID \
+  --username $COGNITO_USERNAME \
+  --password $COGNITO_PASSWORD \
   --permanent

@@ -37,8 +37,8 @@ module "alb" {
 }
 
 # RDS
-module "mysql_rds" {
-  source = "./db"
+module "rds" {
+  source = "./rds"
   subnet_ids = [
     module.network.subnet_public0_id,
     module.network.subnet_public1_id,
@@ -53,13 +53,13 @@ module "mysql_rds" {
 
 # Cognito
 module "cognito" {
-  source        = "./cognito"
-  pj_name_kebab = var.pj_name_kebab
-  pj_name_kana  = var.pj_name_kana
-  pj_name_camel = var.pj_name_camel
-  sh_path_prefix = "cognito/"
-  test_email = var.test_email
-  test_username = var.test_username
+  source            = "./cognito"
+  pj_name_kebab     = var.pj_name_kebab
+  pj_name_kana      = var.pj_name_kana
+  pj_name_camel     = var.pj_name_camel
+  sh_path_prefix    = "cognito/"
+  test_email        = var.test_email
+  test_username     = var.test_username
   test_userpassword = var.test_userpassword
 }
 
@@ -83,7 +83,19 @@ module "cloudwatch" {
 
 # store parameters
 module "ssm_parameter" {
-  source                    = "./ssm"
+  source                  = "./ssm"
+  domain_name             = var.domain_name
+  pj_name_kana            = var.pj_name_kana
+  pj_name_kebab           = var.pj_name_kebab
+  json_path_prefix        = "./ssm"
+  cognito_test_user_app   = module.cognito.test_user_app
+  cognito_test_user_admin = module.cognito.test_user_admin
+  rds_credentials = {
+    db_user = var.db_user
+    db_pass = var.db_pass
+  }
+
+  depends_on = [module.rds]
 }
 
 # ECR -> 3.ECRに移行(repo_name_prefixをvar.pj_name_kebabと合うように指定すること)

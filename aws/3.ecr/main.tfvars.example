@@ -1,0 +1,2 @@
+pj_root_path = "[プロジェクトルート位置までの相対パス]"
+repo_name_prefix = "default"

@@ -71,7 +71,7 @@ resource "aws_db_instance" "default" {
   allocated_storage     = 20
   max_allocated_storage = 50
   storage_type          = "gp2"
-  name                  = var.pj_name_snake
+  db_name               = var.pj_name_snake
   username              = var.db_user
   password              = var.db_pass
   # multi_az = true
