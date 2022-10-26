@@ -1,9 +1,9 @@
 variable "domain_name" {
-  type = string
+  type    = string
   default = "work-manager.site"
 }
 
 variable "pj_prefix" {
-  type = string
+  type    = string
   default = "work_manager"
 }

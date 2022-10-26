@@ -205,6 +205,12 @@ resource "null_resource" "test_user_app_confirmed" {
   }
 
   provisioner "local-exec" {
-    command = "$PWD/${var.sh_path_prefix}confirmed_cognito_user.sh ${aws_cognito_user_pool.app.id} ${aws_cognito_user.test_user_app.username} ${var.test_userpassword}"
+    command = "$PWD/${var.sh_path_prefix}confirmed_cognito_user.sh"
+
+    environment = {
+      COGNITO_USERPOOL_ID = aws_cognito_user_pool.app.id
+      COGNITO_USERNAME    = aws_cognito_user.test_user_app.username
+      COGNITO_PASSWORD    = var.test_userpassword
+    }
   }
 }

@@ -25,6 +25,8 @@ resource "aws_s3_bucket" "public" {
   }
 }
 
+# TODO: S3にassetsディレクトリをアップロード
+
 output "s3_bucket_bucket_website_domain" {
   value = aws_s3_bucket.public.bucket_domain_name
 }

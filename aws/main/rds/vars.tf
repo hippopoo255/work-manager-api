@@ -4,11 +4,11 @@ variable "vpc_cidr_block" {}
 variable "db_user" {}
 variable "db_pass" {}
 variable "db_connection" {
-  type = string
+  type    = string
   default = "mysql"
 }
 variable "db_port" {
-  type = string
+  type    = string
   default = "3306"
 }
 variable "pj_name_kebab" {}
