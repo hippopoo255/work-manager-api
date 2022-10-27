@@ -25,6 +25,8 @@ data "template_file" "params_structure" {
     db_name                     = data.aws_db_instance.mysql.db_name
     db_port                     = data.aws_db_instance.mysql.port
     db_connection               = "mysql"
+    domain_name                 = var.domain_name
+    pj_name_kana                = var.pj_name_kana
   }
 }
 
