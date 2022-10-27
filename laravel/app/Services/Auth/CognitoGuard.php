@@ -97,6 +97,7 @@ class CognitoGuard implements Guard
     if ($author && get_class($this->builder) === 'App\Models\Admin') {
       $author->update([
         'organization_id' => $author->bUser->organization_id,
+        'created_by' => $author->bUser->id,
       ]);
     }
     return $author;
