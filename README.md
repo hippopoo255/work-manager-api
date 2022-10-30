@@ -6,11 +6,11 @@
 
 ## リンク
 
-- サイトリンク： ~~https://job-support.site~~ 公開終了しました
+- サイトリンク： [https://work-manager.site](https://work-manager.site)
 
-- Next.js のソースコード：https://github.com/kabatech255/job-support-next
+- [一般システム（Next.js） のソースコード](https://github.com/hippopoo255/work-manager-next)
 
-- [管理者システム（Nuxt.js） のソースコード](https://github.com/kabatech255/job-support-nuxt)
+- [管理者システム（Nuxt.js） のソースコード](https://github.com/hippopoo255/work-manager-nuxt)
 
 ## 「デモユーザーとして試す」
 
