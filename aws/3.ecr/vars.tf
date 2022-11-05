@@ -1,11 +1,23 @@
+variable "repos" {
+  default = {
+    1 = {
+      name      = "web"
+      image_dir = "nginx"
+    },
+    2 = {
+      name      = "app"
+      image_dir = "php"
+    },
+    3 = {
+      name      = "supervisor"
+      image_dir = "supervisor"
+    }
+  }
+}
+
 variable "repo_name_prefix" {
   type    = string
   default = "default"
-}
-
-variable "sh_path_prefix" {
-  type    = string
-  default = ""
 }
 
 variable "repos_region" {

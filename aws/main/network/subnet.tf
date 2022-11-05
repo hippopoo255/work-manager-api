@@ -19,5 +19,3 @@ resource "aws_subnet" "private" {
     Name = values(var.private_subnets)[count.index].name
   }
 }
-
-

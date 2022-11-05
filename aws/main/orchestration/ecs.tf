@@ -29,7 +29,7 @@ data "aws_ecr_repository" "supervisor" {
 resource "aws_ecs_task_definition" "back" {
   family                   = "${var.name_prefix}-task-back"
   network_mode             = "bridge"
-  execution_role_arn       = var.my_ecs_role_arn
+  execution_role_arn       = aws_iam_role.my_ecs_role.arn
   requires_compatibilities = []
   # compatibilities = ["EC2"]
   container_definitions = templatefile("./orchestration/container_definition_back.json", {
@@ -50,7 +50,7 @@ resource "aws_ecs_task_definition" "back" {
 # resource "aws_launch_template" "default" {
 #   name          = "default"
 #   image_id      = data.aws_ssm_parameter.amzn2_for_ecs_ami.value
-#   instance_type = "t2.small"
+#   instance_type = "t2.micro"
 #   ebs_optimized = true
 #   user_data = base64encode(templatefile("./orchestration/userdata.sh", {
 #     cluster_name = var.cluster_name

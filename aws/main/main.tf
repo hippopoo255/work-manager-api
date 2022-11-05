@@ -2,17 +2,10 @@ provider "aws" {
   region = "ap-northeast-1"
 }
 
-# ECSでSSMのパラメータストアのパラメータにアクセスする等のロール
-module "role" {
-  source           = "./role"
-  json_path_prefix = "./role"
-}
-
 # cdn
 module "cdn" {
-  source           = "./cdn"
-  domain_name      = var.domain_name
-  json_path_prefix = "./cdn"
+  source      = "./cdn"
+  domain_name = var.domain_name
 }
 
 # network
@@ -57,7 +50,6 @@ module "cognito" {
   pj_name_kebab     = var.pj_name_kebab
   pj_name_kana      = var.pj_name_kana
   pj_name_camel     = var.pj_name_camel
-  sh_path_prefix    = "cognito/"
   test_email        = var.test_email
   test_username     = var.test_username
   test_userpassword = var.test_userpassword
@@ -66,12 +58,12 @@ module "cognito" {
 # API Gateway
 module "api_gateway" {
   source                      = "./api_gateway"
-  json_path_prefix            = "./api_gateway"
   http_uri                    = module.alb.http_alb_uri
   api_name_app                = "${var.pj_name_kebab}-app"
   api_name_admin              = "${var.pj_name_kebab}-admin"
   cognito_user_pool_arn_app   = module.cognito.userpool_arn_app
   cognito_user_pool_arn_admin = module.cognito.userpool_arn_admin
+  domain_name    = var.domain_name
 }
 
 # CloudWatch
@@ -87,7 +79,6 @@ module "ssm_parameter" {
   domain_name             = var.domain_name
   pj_name_kana            = var.pj_name_kana
   pj_name_kebab           = var.pj_name_kebab
-  json_path_prefix        = "./ssm"
   cognito_test_user_app   = module.cognito.test_user_app
   cognito_test_user_admin = module.cognito.test_user_admin
   rds_credentials = {
@@ -120,7 +111,7 @@ module "ecs" {
   # cluster_name = var.cluster_name
   # front_service_name = var.front_service_name
   # back_service_name = var.back_service_name
-  my_ecs_role_arn = module.role.my_ecs_role_arn
+  # my_ecs_role_arn = module.role.my_ecs_role_arn
   log_groups = [
     module.cloudwatch.log_group_name_web,
     module.cloudwatch.log_group_name_app,

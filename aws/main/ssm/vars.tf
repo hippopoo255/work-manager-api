@@ -4,8 +4,6 @@ variable "pj_name_kana" {
 }
 variable "pj_name_kebab" {
 }
-variable "json_path_prefix" {
-}
 variable "cognito_test_user_app" {
   default = {
     attributes = {

@@ -205,7 +205,7 @@ resource "null_resource" "test_user_admin_confirmed" {
   }
 
   provisioner "local-exec" {
-    command = "$PWD/${var.sh_path_prefix}confirmed_cognito_user.sh"
+    command = "${path.module}/confirmed_cognito_user.sh"
 
     environment = {
       COGNITO_USERPOOL_ID = aws_cognito_user_pool.admin.id

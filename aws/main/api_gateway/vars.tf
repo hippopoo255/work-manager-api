@@ -8,11 +8,6 @@ variable "cognito_user_pool_arn_admin" {
   default = "userpool-admin"
 }
 
-variable "json_path_prefix" {
-  type    = string
-  default = "."
-}
-
 variable "http_uri" {
   type    = string
   default = "example.com"
@@ -26,4 +21,14 @@ variable "api_name_app" {
 variable "api_name_admin" {
   type    = string
   default = "pj-name-kebab-admin"
+}
+
+variable "domain_name" {
+  type    = string
+  default = ""
+}
+
+variable "api_resource_name" {
+  type = string
+  default ="blog_asset"
 }
