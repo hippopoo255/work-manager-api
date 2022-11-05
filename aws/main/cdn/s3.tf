@@ -9,7 +9,7 @@ data "aws_route53_zone" "default" {
 resource "aws_s3_bucket" "public" {
   bucket = format("asset.%s", data.aws_route53_zone.default.name)
   acl    = "public-read"
-  policy = templatefile("${var.json_path_prefix}/policies/s3_policy.json", {
+  policy = templatefile("${path.module}/policies/s3_policy.json", {
     domain_name = var.domain_name
   })
   website {
@@ -26,11 +26,3 @@ resource "aws_s3_bucket" "public" {
 }
 
 # TODO: S3にassetsディレクトリをアップロード
-
-output "s3_bucket_bucket_website_domain" {
-  value = aws_s3_bucket.public.bucket_domain_name
-}
-
-output "s3_bucket_name" {
-  value = aws_s3_bucket.public.bucket_regional_domain_name
-}

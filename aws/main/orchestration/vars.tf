@@ -21,10 +21,10 @@ variable "name_prefix" {
 #   default = ""
 # }
 # タスク定義用のロール
-variable "my_ecs_role_arn" {
-  type    = string
-  default = ""
-}
+# variable "my_ecs_role_arn" {
+#   type    = string
+#   default = ""
+# }
 variable "log_groups" {
   type = list(any)
 }

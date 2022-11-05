@@ -11,7 +11,7 @@ data "aws_db_instance" "mysql" {
 }
 
 data "template_file" "params_structure" {
-  template = file("${var.json_path_prefix}/ssm.json")
+  template = file("${path.module}/ssm.json")
   vars = {
     cognito_userpool_id_app     = data.aws_cognito_user_pools.app.ids.0
     cognito_userpool_id_admin   = data.aws_cognito_user_pools.admin.ids.0

@@ -1,20 +1,3 @@
-variable "repos" {
-  default = {
-    1 = {
-      name      = "web"
-      image_dir = "nginx"
-    },
-    2 = {
-      name      = "app"
-      image_dir = "php"
-    },
-    3 = {
-      name      = "supervisor"
-      image_dir = "supervisor"
-    }
-  }
-}
-
 resource "aws_ecr_repository" "web" {
   for_each = var.repos
   name     = "${var.repo_name_prefix}/${lookup(each.value, "name")}"
@@ -55,7 +38,7 @@ resource "null_resource" "push_images" {
   }
 
   provisioner "local-exec" {
-    command = "$PWD/${var.sh_path_prefix}push_image.sh"
+    command = "${path.module}/push_image.sh"
 
     environment = {
       AWS_DEFAULT_REGION = var.repos_region

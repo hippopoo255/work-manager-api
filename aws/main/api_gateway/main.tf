@@ -1,7 +1,13 @@
+module "upload_image" {
+  source            = "./upload_image"
+  origin_white_list = "http://localhost:3000,https://www.${var.domain_name}"
+  storage_url       = "https://asset.${var.domain_name}"
+}
+
 data "aws_caller_identity" "self" {}
 
 data "template_file" "rest_app" {
-  template = file("${var.json_path_prefix}/schema/openapi.app.yaml")
+  template = file("${path.module}/schema/openapi.app.yaml")
   vars = {
     # openapi.app.yamlファイルに${alb_uri}とあれば、terraformから当該箇所に値を埋め込むことができる
     alb_uri        = "https://${var.http_uri}"
@@ -12,7 +18,7 @@ data "template_file" "rest_app" {
 }
 
 data "template_file" "rest_admin" {
-  template = file("${var.json_path_prefix}/schema/openapi.admin.yaml")
+  template = file("${path.module}/schema/openapi.admin.yaml")
   vars = {
     # openapi.admin.yamlファイルに${alb_uri}とあれば、terraformから当該箇所に値を埋め込むことができる
     alb_uri        = "https://${var.http_uri}"
@@ -60,7 +66,7 @@ resource "aws_api_gateway_deployment" "deployment_app" {
   # API gatewayのリソースを更新してもデプロイはされない
   # 再デプロイのトリガーとなる設定
   triggers = {
-    redeployment = sha1(file("${var.json_path_prefix}/schema/openapi.app.yaml"))
+    redeployment = sha1(file("${path.module}/schema/openapi.app.yaml"))
   }
 
   lifecycle {
@@ -76,10 +82,18 @@ resource "aws_api_gateway_deployment" "deployment_admin" {
   # API gatewayのリソースを更新してもデプロイはされない
   # 再デプロイのトリガーとなる設定
   triggers = {
-    redeployment = sha1(file("${var.json_path_prefix}/schema/openapi.admin.yaml"))
+    redeployment = sha1(file("${path.module}/schema/openapi.admin.yaml"))
   }
 
   lifecycle {
     create_before_destroy = true
   }
+}
+
+resource "aws_lambda_permission" "api_gateway_trigger" {
+  statement_id  = "AllowExecutionFromApiGateway"
+  action        = "lambda:InvokeFunction"
+  function_name = module.upload_image.lambda_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn = "${aws_api_gateway_rest_api.api_app.execution_arn}/*/*/${var.api_resource_name}"
 }

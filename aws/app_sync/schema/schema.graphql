@@ -1,0 +1,102 @@
+﻿schema {
+  query: Query
+  mutation: Mutation
+}
+
+type AuthPayload {
+  user: User!
+  token: String!
+}
+
+type Blog {
+  body: String!
+  created_at: AWSDateTime
+  id: ID!
+  status: BlogStatus!
+  tags: [Tag!]!
+  title: String!
+  updated_at: AWSDateTime
+  createdBy: User
+}
+
+type Mutation {
+  createBlog(input: CreateBlogInput!): Blog!
+  updateBlog(id: String!, input: UpdateBlogInput!): Blog!
+  deleteBlog(id: String!): Blog!
+  signUp(input: SignUpInput!): AuthPayload
+  signIn(input: SignInInput!): AuthPayload
+}
+
+type Query {
+  blogs(query: QueryInput, nextToken: String): ListWithPager
+  blog(id: String!): Blog
+  users: [User!]!
+  tags: [Tag!]
+}
+
+type ListWithPager {
+  items: [Blog]
+  nextToken: String
+}
+
+type Tag {
+  id: ID!
+  name: String!
+  created_at: AWSDateTime
+  updated_at: AWSDateTime
+}
+
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  created_at: AWSDateTime
+  updated_at: AWSDateTime
+}
+
+enum BlogStatus {
+  done
+  pending
+}
+
+input QueryInput {
+  tag: String
+}
+
+input CreateBlogInput {
+  title: String!
+  body: String!
+  status: BlogStatus!
+  createdBy: CreatedBy!
+  tags: [TagInput]!
+}
+
+input SignInInput {
+  email: String!
+  password: String!
+}
+
+input SignUpInput {
+  email: String!
+  name: String!
+  password: String!
+  password_confirmation: String!
+}
+
+input UpdateBlogInput {
+  title: String!
+  body: String!
+  status: BlogStatus!
+  createdBy: CreatedBy!
+  tags: [TagInput]!
+}
+
+input TagInput {
+  id: String
+  name: String!
+}
+
+input CreatedBy {
+  id: String!
+  name: String!
+}

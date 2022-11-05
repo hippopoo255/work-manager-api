@@ -1,1 +1,0 @@
-<!-- dynamodbやlambdaをメインに、main.tfで表現する -->
