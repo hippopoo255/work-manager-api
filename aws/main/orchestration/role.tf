@@ -16,11 +16,11 @@ variable "ec2_policy_arns" {
 
 # ロールの信頼ポリシー
 data "aws_iam_policy_document" "ecs_assume_role" {
-  source_json = file("${path.module}/policies/ecs_policy_principal.json")
+  source_json = file("${path.module}/policy/ecs_policy_principal.json")
 }
 
 data "aws_iam_policy_document" "ec2_assume_role" {
-  source_json = file("${path.module}/policies/ec2_policy_principal.json")
+  source_json = file("${path.module}/policy/ec2_policy_principal.json")
 }
 
 
@@ -46,7 +46,7 @@ resource "aws_iam_role" "ecs_instance_role" {
 resource "aws_iam_policy" "ecs_env_connection" {
   name = "ecs-env-connection"
   # SSMのパラメータストアにアクセス、KMSによる復号等の権限
-  policy = file("${path.module}/policies/ecs_env_connection.json")
+  policy = file("${path.module}/policy/ecs_env_connection.json")
 }
 
 # 各ロールにポリシーをアタッチ
