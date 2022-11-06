@@ -103,6 +103,8 @@ module "ecs" {
     module.network.subnet_public0_id,
     module.network.subnet_public1_id,
   ]
+
+  
   target_group_front_arn = module.alb.target_group_front_arn
   target_group_back_arn  = module.alb.target_group_back_arn
   security_group_id      = module.alb.security_group_http_id
