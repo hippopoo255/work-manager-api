@@ -59,8 +59,7 @@ module "cognito" {
 module "api_gateway" {
   source                      = "./api_gateway"
   http_uri                    = module.alb.http_alb_uri
-  api_name_app                = "${var.pj_name_kebab}-app"
-  api_name_admin              = "${var.pj_name_kebab}-admin"
+  pj_name_kebab = var.pj_name_kebab
   cognito_user_pool_arn_app   = module.cognito.userpool_arn_app
   cognito_user_pool_arn_admin = module.cognito.userpool_arn_admin
   domain_name                 = var.domain_name
