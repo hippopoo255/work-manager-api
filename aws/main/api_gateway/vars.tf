@@ -13,14 +13,9 @@ variable "http_uri" {
   default = "example.com"
 }
 
-variable "api_name_app" {
+variable "pj_name_kebab" {
   type    = string
-  default = "pj-name-kebab-app"
-}
-
-variable "api_name_admin" {
-  type    = string
-  default = "pj-name-kebab-admin"
+  default = "pj-name-kebab"
 }
 
 variable "domain_name" {
@@ -29,6 +24,6 @@ variable "domain_name" {
 }
 
 variable "api_resource_name" {
-  type = string
-  default ="blog_asset"
+  type    = string
+  default = "blog_asset"
 }

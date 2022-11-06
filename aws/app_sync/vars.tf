@@ -1,4 +1,4 @@
 variable "pj_name_snake" {
-  type = string
+  type    = string
   default = "work_manager"
 }

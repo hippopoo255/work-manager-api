@@ -16,7 +16,7 @@ resource "aws_appsync_resolver" "this" {
   type   = each.value.type
   kind   = "PIPELINE"
 
-  request_template = "{}"
+  request_template  = "{}"
   response_template = "$util.toJson($ctx.result)"
 
   pipeline_config {
