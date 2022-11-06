@@ -17,7 +17,7 @@ resource "aws_acm_certificate" "default" {
   domain_name               = "api.${data.aws_route53_zone.default.name}"
   subject_alternative_names = []
   validation_method         = "DNS"
-  provider = aws.tokyo
+  provider                  = aws.tokyo
 
   lifecycle {
     create_before_destroy = true

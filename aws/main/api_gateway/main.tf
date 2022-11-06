@@ -4,33 +4,39 @@ module "upload_image" {
   storage_url       = "https://asset.${var.domain_name}"
 }
 
-data "aws_caller_identity" "self" {}
-
-data "template_file" "rest_app" {
-  template = file("${path.module}/schema/openapi.app.yaml")
-  vars = {
-    # openapi.app.yamlファイルに${alb_uri}とあれば、terraformから当該箇所に値を埋め込むことができる
-    alb_uri        = "https://${var.http_uri}"
-    api_name       = var.api_name_app
-    aws_account_id = data.aws_caller_identity.self.account_id
-    userpool_arns  = var.cognito_user_pool_arn_app
-  }
+locals {
+  endpoints = [
+    {
+      name = "app",
+      userpool_arns = var.cognito_user_pool_arn_app
+    },
+    {
+      name = "admin",
+      userpool_arns = var.cognito_user_pool_arn_admin
+    },
+  ]
 }
 
-data "template_file" "rest_admin" {
-  template = file("${path.module}/schema/openapi.admin.yaml")
+data "aws_caller_identity" "self" {}
+
+data "template_file" "this" {
+  for_each = { for endpoint in local.endpoints : endpoint.name => endpoint }
+
+  template = file("${path.module}/schema/openapi.${each.key}.yaml")
   vars = {
     # openapi.admin.yamlファイルに${alb_uri}とあれば、terraformから当該箇所に値を埋め込むことができる
     alb_uri        = "https://${var.http_uri}"
-    api_name       = var.api_name_admin
+    api_name       = "${var.pj_name_kebab}-${each.key}"
     aws_account_id = data.aws_caller_identity.self.account_id
-    userpool_arns  = var.cognito_user_pool_arn_admin
+    userpool_arns  = each.value.userpool_arns
   }
 }
 
-resource "aws_api_gateway_rest_api" "api_app" {
-  name = var.api_name_app
-  body = data.template_file.rest_app.rendered
+resource "aws_api_gateway_rest_api" "this" {
+  for_each = { for endpoint in local.endpoints : endpoint.name => endpoint}
+
+  name = "${var.pj_name_kebab}-${each.key}"
+  body = data.template_file.this[each.key].rendered
 
   endpoint_configuration {
     types = ["EDGE"]
@@ -43,46 +49,17 @@ resource "aws_api_gateway_rest_api" "api_app" {
   }
 }
 
-resource "aws_api_gateway_rest_api" "api_admin" {
-  name = var.api_name_admin
-  body = data.template_file.rest_admin.rendered
+resource "aws_api_gateway_deployment" "this" {
+  for_each = { for endpoint in local.endpoints : endpoint.name => endpoint}
 
-  endpoint_configuration {
-    types = ["EDGE"]
-  }
-
-  lifecycle {
-    ignore_changes = [
-      policy
-    ]
-  }
-}
-
-resource "aws_api_gateway_deployment" "deployment_app" {
-  depends_on  = [aws_api_gateway_rest_api.api_app]
-  rest_api_id = aws_api_gateway_rest_api.api_app.id
+  depends_on  = [aws_api_gateway_rest_api.this]
+  rest_api_id = aws_api_gateway_rest_api.this[each.key].id
   stage_name  = "develop"
 
   # API gatewayのリソースを更新してもデプロイはされない
   # 再デプロイのトリガーとなる設定
   triggers = {
-    redeployment = sha1(file("${path.module}/schema/openapi.app.yaml"))
-  }
-
-  lifecycle {
-    create_before_destroy = true
-  }
-}
-
-resource "aws_api_gateway_deployment" "deployment_admin" {
-  depends_on  = [aws_api_gateway_rest_api.api_admin]
-  rest_api_id = aws_api_gateway_rest_api.api_admin.id
-  stage_name  = "develop"
-
-  # API gatewayのリソースを更新してもデプロイはされない
-  # 再デプロイのトリガーとなる設定
-  triggers = {
-    redeployment = sha1(file("${path.module}/schema/openapi.admin.yaml"))
+    redeployment = md5(file("${path.module}/schema/openapi.${each.key}.yaml"))
   }
 
   lifecycle {
@@ -95,5 +72,7 @@ resource "aws_lambda_permission" "api_gateway_trigger" {
   action        = "lambda:InvokeFunction"
   function_name = module.upload_image.lambda_name
   principal     = "apigateway.amazonaws.com"
-  source_arn = "${aws_api_gateway_rest_api.api_app.execution_arn}/*/*/${var.api_resource_name}"
+  source_arn    = "${aws_api_gateway_rest_api.this["app"].execution_arn}/*/*/${var.api_resource_name}"
+
+  depends_on = [aws_api_gateway_deployment.this["app"]]
 }
