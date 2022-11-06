@@ -63,7 +63,7 @@ module "api_gateway" {
   api_name_admin              = "${var.pj_name_kebab}-admin"
   cognito_user_pool_arn_app   = module.cognito.userpool_arn_app
   cognito_user_pool_arn_admin = module.cognito.userpool_arn_admin
-  domain_name    = var.domain_name
+  domain_name                 = var.domain_name
 }
 
 # CloudWatch

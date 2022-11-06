@@ -29,6 +29,6 @@ variable "domain_name" {
 }
 
 variable "api_resource_name" {
-  type = string
-  default ="blog_asset"
+  type    = string
+  default = "blog_asset"
 }
