@@ -66,7 +66,7 @@ resource "aws_api_gateway_deployment" "deployment_app" {
   # API gatewayのリソースを更新してもデプロイはされない
   # 再デプロイのトリガーとなる設定
   triggers = {
-    redeployment = sha1(file("${path.module}/schema/openapi.app.yaml"))
+    redeployment = md5(file("${path.module}/schema/openapi.app.yaml"))
   }
 
   lifecycle {
@@ -82,7 +82,7 @@ resource "aws_api_gateway_deployment" "deployment_admin" {
   # API gatewayのリソースを更新してもデプロイはされない
   # 再デプロイのトリガーとなる設定
   triggers = {
-    redeployment = sha1(file("${path.module}/schema/openapi.admin.yaml"))
+    redeployment = md5(file("${path.module}/schema/openapi.admin.yaml"))
   }
 
   lifecycle {
@@ -96,4 +96,6 @@ resource "aws_lambda_permission" "api_gateway_trigger" {
   function_name = module.upload_image.lambda_name
   principal     = "apigateway.amazonaws.com"
   source_arn = "${aws_api_gateway_rest_api.api_app.execution_arn}/*/*/${var.api_resource_name}"
+
+  depends_on = [aws_api_gateway_deployment.deployment_app]
 }

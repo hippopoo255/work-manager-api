@@ -1,0 +1,44 @@
+{
+  "sequences": [
+    {
+      "PutRequest": {
+        "Item": {
+          "table_name": { "S": "blogs" },
+          "seq": {
+            "N": "10"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "table_name": { "S": "tags" },
+          "seq": {
+            "N": "22"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "table_name": { "S": "sequences" },
+          "seq": {
+            "N": "0"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "table_name": { "S": "s3_blog_assets" },
+          "seq": {
+            "N": "0"
+          }
+        }
+      }
+    }
+  ]
+}

@@ -31,7 +31,7 @@ resource "aws_iam_policy" "lambda_basic_executions" {
   for_each = { for i in local.functions : i.name => i }
 
   name = "lambda-basic-execution--${each.value.name}"
-  policy = templatefile("${path.module}/roles/lambda_execution.json", {
+  policy = templatefile("${path.module}/role/lambda_execution.json", {
     account_id = data.aws_caller_identity.self.account_id,
     func_name  = each.value.name
   })

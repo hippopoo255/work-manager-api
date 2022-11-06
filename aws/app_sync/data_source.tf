@@ -1,5 +1,6 @@
-# module "dynamodb"
-# ...
+module "data_store" {
+  source = "./data_store"
+}
 
 
 data "aws_caller_identity" "self" {}
