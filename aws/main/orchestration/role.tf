@@ -63,10 +63,10 @@ resource "aws_iam_role_policy_attachment" "my_ecs_other_attachment" {
   policy_arn = each.value
 }
 
-resource "aws_iam_role_policy_attachment" "ecs_instance_env_connect_attachment" {
-  role       = aws_iam_role.ecs_instance_role.name
-  policy_arn = aws_iam_policy.ecs_env_connection.arn
-}
+# resource "aws_iam_role_policy_attachment" "ecs_instance_env_connect_attachment" {
+#   role       = aws_iam_role.ecs_instance_role.name
+#   policy_arn = aws_iam_policy.ecs_env_connection.arn
+# }
 
 resource "aws_iam_role_policy_attachment" "ecs_instance_other_attachment" {
   for_each = {
@@ -74,4 +74,9 @@ resource "aws_iam_role_policy_attachment" "ecs_instance_other_attachment" {
   }
   role       = aws_iam_role.ecs_instance_role.name
   policy_arn = each.value
+}
+
+resource "aws_iam_instance_profile" "ecs_instance_profile" {
+  name = "ecs-instance-profile"
+  role = aws_iam_role.ecs_instance_role.name
 }

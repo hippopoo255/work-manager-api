@@ -8,10 +8,10 @@ variable "name_prefix" {
   type = string
 }
 
-# variable "cluster_name" {
-#   type = string
-#   default = ""
-# }
+variable "cluster_name" {
+  type    = string
+  default = ""
+}
 # variable "front_service_name" {
 #   type = string
 #   default = ""

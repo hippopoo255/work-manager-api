@@ -107,10 +107,9 @@ module "ecs" {
   target_group_back_arn  = module.alb.target_group_back_arn
   security_group_id      = module.alb.security_group_http_id
   name_prefix            = var.pj_name_kebab
-  # cluster_name = var.cluster_name
+  cluster_name = "${var.pj_name_camel}Cluster"
   # front_service_name = var.front_service_name
   # back_service_name = var.back_service_name
-  # my_ecs_role_arn = module.role.my_ecs_role_arn
   log_groups = [
     module.cloudwatch.log_group_name_web,
     module.cloudwatch.log_group_name_app,
