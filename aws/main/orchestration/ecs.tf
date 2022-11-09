@@ -1,18 +1,3 @@
-# フロント用タスク定義
-# フロントエンドはコンテナ管理から外し、タスク定義しない
-# - t2.microではスペックが不足するため
-# - Next.jsのPJをVercelにデプロイする方法が無料のため
-# resource "aws_ecs_task_definition" "front" {
-#   family = "${var.name_prefix}-task-front"
-#   network_mode = "bridge"
-#   execution_role_arn = var.my_ecs_role_arn
-#   requires_compatibilities = []
-#   # compatibilities = ["EC2"]
-#   container_definitions = templatefile("./orchestration/container_definition_front.json", {
-#     log_groups = var.log_groups
-#   })
-# }
-
 data "aws_ecr_repository" "web" {
   name = "${var.name_prefix}/web"
 }
@@ -42,94 +27,86 @@ resource "aws_ecs_task_definition" "back" {
   })
 }
 
-# クラスター
-# data "aws_ssm_parameter" "amzn2_for_ecs_ami" {
-#   name = "/aws/service/ecs/optimized-ami/amazon-linux-2/recommended/image_id"
-# }
+# auto scaling group
+data "aws_ssm_parameter" "amzn2_for_ecs_ami" {
+  name = "/aws/service/ecs/optimized-ami/amazon-linux-2/recommended/image_id"
+}
 
-# resource "aws_launch_template" "default" {
-#   name          = "default"
-#   image_id      = data.aws_ssm_parameter.amzn2_for_ecs_ami.value
-#   instance_type = "t2.micro"
-#   ebs_optimized = true
-#   user_data = base64encode(templatefile("./orchestration/userdata.sh", {
-#     cluster_name = var.cluster_name
-#   }))
+resource "aws_launch_configuration" "default" {
+  # name: コンソール画面からクラスターテンプレート「EC2 Linux + ネットワーキング」を使用した場合のデフォルト値を踏襲
+  # 複数回applyすると"AlreadyExists: Launch Configuration by this name already exists"というエラーになるので、name_prefixを使う
+  name_prefix          = "EC2ContainerService-${var.cluster_name}-EcsInstanceLc"
+  image_id             = data.aws_ssm_parameter.amzn2_for_ecs_ami.value
+  instance_type        = "t2.micro"
+  security_groups      = [var.security_group_id]
+  key_name             = "web-server"
+  iam_instance_profile = aws_iam_instance_profile.ecs_instance_profile.id
 
-#   block_device_mappings {
-#     device_name = "/dev/sda1"
-#     ebs {
-#       volume_size = 30
-#       volume_type = "gp2"
-#     }
-#   }
-# }
+  user_data = base64encode(templatefile("${path.module}/userdata.sh", {
+    cluster_name = "${var.cluster_name}"
+  }))
 
-# resource "aws_autoscaling_group" "default" {
-#   name = "default"
+  depends_on = [aws_iam_instance_profile.ecs_instance_profile]
 
-#   launch_template {
-#     id = aws_launch_template.default.id
-#     version = "$Latest"
-#   }
+  root_block_device {
+    volume_size = "30"
+    volume_type = "gp2"
+  }
 
-#   protect_from_scale_in = true
-#   max_size = 1
-#   min_size = 1
-#   availability_zones = ["ap-northeast-1a"]
-# }
+  lifecycle {
+    create_before_destroy = true
+  }
+}
 
-# resource "aws_ecs_capacity_provider" "default" {
-#   name = "ec2"
+resource "aws_autoscaling_group" "default" {
+  # name: コンソール画面からクラスターテンプレート「EC2 Linux + ネットワーキング」を使用した場合のデフォルト値を踏襲
+  name                  = "EC2ContainerService-${var.cluster_name}-EcsInstanceAsg"
+  launch_configuration  = aws_launch_configuration.default.name
+  vpc_zone_identifier   = [var.subnets.1]
+  protect_from_scale_in = false
+  health_check_type     = "EC2"
+  # wait_for_capacity_timeout = 300  # TerraformがAuto Scalingグループのインスタンスの作成を待機しないようにする
+  max_size         = 1
+  min_size         = 0
+  desired_capacity = 1
 
-#   auto_scaling_group_provider {
-#     auto_scaling_group_arn = aws_autoscaling_group.default.arn
-#     managed_termination_protection = "ENABLED"
+  lifecycle {
+    create_before_destroy = true
+  }
+}
 
-#     managed_scaling {
-#       maximum_scaling_step_size = 1
-#       minimum_scaling_step_size = 1
-#       status = "ENABLED"
-#       target_capacity = 100
-#     }
-#   }
-# }
+# ECS Cluster
+resource "aws_ecs_cluster" "default" {
+  name = var.cluster_name
+}
 
-# resource "aws_ecs_cluster" "default" {
-#   name = var.cluster_name
-#   capacity_providers = [aws_ecs_capacity_provider.default.name]
+# ECS Service
+data "aws_caller_identity" "self" {}
 
-#   default_capacity_provider_strategy {
-#     capacity_provider = aws_ecs_capacity_provider.default.name
-#     weight = 1
-#     base = 0
-#   }
-# }
+resource "aws_ecs_service" "back_service" {
+  name                              = "${var.name_prefix}-service-back"
+  cluster                           = aws_ecs_cluster.default.id
+  task_definition                   = aws_ecs_task_definition.back.arn
+  desired_count                     = 1
+  health_check_grace_period_seconds = 30
+  launch_type                       = "EC2"
+  iam_role                          = "arn:aws:iam::${data.aws_caller_identity.self.account_id}:role/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS"
 
-# ECSサービス
-# data "aws_caller_identity" "self" {}"
-# resource "aws_ecs_service" "back_service" {
-#   name = var.back_service_name
-#   cluster = aws_ecs_cluster.default.arn
-#   task_definition = aws_ecs_task_definition.back.arn
-#   desired_count = 1
-#   health_check_grace_period_seconds = 30
-#   launch_type = "EC2"
-#   iam_role = "arn:aws:iam::${data.aws_caller_identity.self.account_id}:role/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS"
+  depends_on = [aws_ecs_cluster.default]
 
-#   # network_configuration {
-#   #   security_groups = [var.security_group_id]
-#   #   subnets = var.subnets
-#   # }
+  load_balancer {
+    target_group_arn = var.target_group_back_arn
+    container_name   = "web"
+    container_port   = 80
+  }
 
-#   load_balancer {
-#     target_group_arn = var.target_group_back_arn
-#     container_name = "web"
-#     container_port = 80
-#   }
-
-#   lifecycle {
-#     ignore_changes = [task_definition]
-#   }
-# }
-
+  lifecycle {
+    ignore_changes = [
+      task_definition,
+      #       desired_count,
+      #       capacity_provider_strategy,
+      #       # ブルーグリーン入れる場合はこちらを有効にする(ターゲットグループが切り替わるため)
+      #       # load_balancer, 
+    ]
+  }
+}
