@@ -1,0 +1,384 @@
+[
+  {
+    "name": "web",
+    "portMappings": [
+      {
+        "hostPort": 0,
+        "protocol": "tcp",
+        "containerPort": 80
+      }
+    ],
+
+    "image": "${image_urls.0}:latest",
+    "cpu": 8,
+    "memoryReservation": 128,
+    "essential": true,
+    "links": ["app:app"],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "secretOptions": null,
+      "options": {
+        "awslogs-group": "${log_groups.0}",
+        "awslogs-region": "ap-northeast-1",
+        "awslogs-stream-prefix": "${log_groups.0}"
+      }
+    }
+  },
+  {
+    "name": "app",
+    "image": "${image_urls.1}:latest",
+    "cpu": 8,
+    "memoryReservation": 256,
+    "essential": true,
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "secretOptions": null,
+      "options": {
+        "awslogs-group": "${log_groups.1}",
+        "awslogs-region": "ap-northeast-1",
+        "awslogs-stream-prefix": "${log_groups.1}"
+      }
+    },
+    "secrets": [
+      {
+        "valueFrom": "/${namespace}/APP_NAME",
+        "name": "APP_NAME"
+      },
+      {
+        "valueFrom": "/${namespace}/APP_FRONT_URL",
+        "name": "APP_FRONT_URL"
+      },
+      {
+        "valueFrom": "/${namespace}/APP_ADMIN_FRONT_URL",
+        "name": "APP_ADMIN_FRONT_URL"
+      },
+      {
+        "valueFrom": "/${namespace}/APP_TEST_ID",
+        "name": "APP_TEST_ID"
+      },
+      {
+        "valueFrom": "/${namespace}/APP_TEST_PASS",
+        "name": "APP_TEST_PASS"
+      },
+      {
+        "valueFrom": "/${namespace}/APP_TEST_MAIL",
+        "name": "APP_TEST_MAIL"
+      },
+      {
+        "valueFrom": "/${namespace}/APP_TEST_USER_COGNITO_SUB",
+        "name": "APP_TEST_USER_COGNITO_SUB"
+      },
+      {
+        "valueFrom": "/${namespace}/APP_TEST_ADMIN_COGNITO_SUB",
+        "name": "APP_TEST_ADMIN_COGNITO_SUB"
+      },
+      {
+        "valueFrom": "/${namespace}/S3_ACCESS_KEY_ID",
+        "name": "S3_ACCESS_KEY_ID"
+      },
+      {
+        "valueFrom": "/${namespace}/S3_BUCKET",
+        "name": "S3_BUCKET"
+      },
+      {
+        "valueFrom": "/${namespace}/AMAZON_DEFAULT_REGION",
+        "name": "AWS_DEFAULT_REGION"
+      },
+      {
+        "valueFrom": "/${namespace}/S3_SECRET_ACCESS_KEY",
+        "name": "S3_SECRET_ACCESS_KEY"
+      },
+      {
+        "valueFrom": "/${namespace}/S3_URL",
+        "name": "S3_URL"
+      },
+      {
+        "valueFrom": "/${namespace}/AMAZON_USER_COGNITO_REGION",
+        "name": "AWS_USER_COGNITO_REGION"
+      },
+      {
+        "valueFrom": "/${namespace}/AMAZON_USER_COGNITO_POOL_ID",
+        "name": "AWS_USER_COGNITO_POOL_ID"
+      },
+      {
+        "valueFrom": "/${namespace}/AMAZON_ADMIN_COGNITO_REGION",
+        "name": "AWS_ADMIN_COGNITO_REGION"
+      },
+      {
+        "valueFrom": "/${namespace}/AMAZON_ADMIN_COGNITO_POOL_ID",
+        "name": "AWS_ADMIN_COGNITO_POOL_ID"
+      },
+      {
+        "valueFrom": "/${namespace}/BROADCAST_DRIVER",
+        "name": "BROADCAST_DRIVER"
+      },
+      {
+        "valueFrom": "/${namespace}/DB_CONNECTION",
+        "name": "DB_CONNECTION"
+      },
+      {
+        "valueFrom": "/${namespace}/DB_DATABASE",
+        "name": "DB_DATABASE"
+      },
+      {
+        "valueFrom": "/${namespace}/DB_HOST",
+        "name": "DB_HOST"
+      },
+      {
+        "valueFrom": "/${namespace}/DB_PASSWORD",
+        "name": "DB_PASSWORD"
+      },
+      {
+        "valueFrom": "/${namespace}/DB_PORT",
+        "name": "DB_PORT"
+      },
+      {
+        "valueFrom": "/${namespace}/DB_USERNAME",
+        "name": "DB_USERNAME"
+      },
+      {
+        "valueFrom": "/${namespace}/LOG_CHANNEL",
+        "name": "LOG_CHANNEL"
+      },
+      {
+        "valueFrom": "/${namespace}/MAIL_MAILER",
+        "name": "MAIL_MAILER"
+      },
+      {
+        "valueFrom": "/${namespace}/MAIL_HOST",
+        "name": "MAIL_HOST"
+      },
+      {
+        "valueFrom": "/${namespace}/MAIL_PORT",
+        "name": "MAIL_PORT"
+      },
+      {
+        "valueFrom": "/${namespace}/MAIL_ENCRYPTION",
+        "name": "MAIL_ENCRYPTION"
+      },
+      {
+        "valueFrom": "/${namespace}/MAIL_PASSWORD",
+        "name": "MAIL_PASSWORD"
+      },
+      {
+        "valueFrom": "/${namespace}/MAIL_USERNAME",
+        "name": "MAIL_USERNAME"
+      },
+      {
+        "valueFrom": "/${namespace}/MAIL_FROM_ADDRESS",
+        "name": "MAIL_FROM_ADDRESS"
+      },
+      {
+        "valueFrom": "/${namespace}/MAIL_FROM_NAME",
+        "name": "MAIL_FROM_NAME"
+      },
+      {
+        "valueFrom": "/${namespace}/SES_ACCESS_KEY",
+        "name": "SES_ACCESS_KEY"
+      },
+      {
+        "valueFrom": "/${namespace}/SES_SECRET_ACCESS_KEY",
+        "name": "SES_SECRET_ACCESS_KEY"
+      },
+      {
+        "valueFrom": "/${namespace}/SES_DEFAULT_REGION",
+        "name": "SES_DEFAULT_REGION"
+      },
+      {
+        "valueFrom": "/${namespace}/PUSHER_APP_CLUSTER",
+        "name": "PUSHER_APP_CLUSTER"
+      },
+      {
+        "valueFrom": "/${namespace}/PUSHER_APP_ID",
+        "name": "PUSHER_APP_ID"
+      },
+      {
+        "valueFrom": "/${namespace}/PUSHER_APP_KEY",
+        "name": "PUSHER_APP_KEY"
+      },
+      {
+        "valueFrom": "/${namespace}/PUSHER_APP_SECRET",
+        "name": "PUSHER_APP_SECRET"
+      }
+    ]
+  },
+  {
+    "name": "supervisor",
+    "image": "${image_urls.2}:latest",
+    "cpu": 4,
+    "memoryReservation": 128,
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "secretOptions": null,
+      "options": {
+        "awslogs-group": "${log_groups.2}",
+        "awslogs-region": "ap-northeast-1",
+        "awslogs-stream-prefix": "${log_groups.2}"
+      }
+    },
+    "secrets": [
+      {
+        "valueFrom": "/${namespace}/APP_NAME",
+        "name": "APP_NAME"
+      },
+      {
+        "valueFrom": "/${namespace}/APP_FRONT_URL",
+        "name": "APP_FRONT_URL"
+      },
+      {
+        "valueFrom": "/${namespace}/APP_ADMIN_FRONT_URL",
+        "name": "APP_ADMIN_FRONT_URL"
+      },
+      {
+        "valueFrom": "/${namespace}/APP_TEST_ID",
+        "name": "APP_TEST_ID"
+      },
+      {
+        "valueFrom": "/${namespace}/APP_TEST_PASS",
+        "name": "APP_TEST_PASS"
+      },
+      {
+        "valueFrom": "/${namespace}/APP_TEST_MAIL",
+        "name": "APP_TEST_MAIL"
+      },
+      {
+        "valueFrom": "/${namespace}/APP_TEST_USER_COGNITO_SUB",
+        "name": "APP_TEST_USER_COGNITO_SUB"
+      },
+      {
+        "valueFrom": "/${namespace}/APP_TEST_ADMIN_COGNITO_SUB",
+        "name": "APP_TEST_ADMIN_COGNITO_SUB"
+      },
+      {
+        "valueFrom": "/${namespace}/S3_ACCESS_KEY_ID",
+        "name": "S3_ACCESS_KEY_ID"
+      },
+      {
+        "valueFrom": "/${namespace}/S3_BUCKET",
+        "name": "S3_BUCKET"
+      },
+      {
+        "valueFrom": "/${namespace}/AMAZON_DEFAULT_REGION",
+        "name": "AWS_DEFAULT_REGION"
+      },
+      {
+        "valueFrom": "/${namespace}/S3_SECRET_ACCESS_KEY",
+        "name": "S3_SECRET_ACCESS_KEY"
+      },
+      {
+        "valueFrom": "/${namespace}/S3_URL",
+        "name": "S3_URL"
+      },
+      {
+        "valueFrom": "/${namespace}/AMAZON_USER_COGNITO_REGION",
+        "name": "AWS_USER_COGNITO_REGION"
+      },
+      {
+        "valueFrom": "/${namespace}/AMAZON_USER_COGNITO_POOL_ID",
+        "name": "AWS_USER_COGNITO_POOL_ID"
+      },
+      {
+        "valueFrom": "/${namespace}/AMAZON_ADMIN_COGNITO_REGION",
+        "name": "AWS_ADMIN_COGNITO_REGION"
+      },
+      {
+        "valueFrom": "/${namespace}/AMAZON_ADMIN_COGNITO_POOL_ID",
+        "name": "AWS_ADMIN_COGNITO_POOL_ID"
+      },
+      {
+        "valueFrom": "/${namespace}/BROADCAST_DRIVER",
+        "name": "BROADCAST_DRIVER"
+      },
+      {
+        "valueFrom": "/${namespace}/DB_CONNECTION",
+        "name": "DB_CONNECTION"
+      },
+      {
+        "valueFrom": "/${namespace}/DB_DATABASE",
+        "name": "DB_DATABASE"
+      },
+      {
+        "valueFrom": "/${namespace}/DB_HOST",
+        "name": "DB_HOST"
+      },
+      {
+        "valueFrom": "/${namespace}/DB_PASSWORD",
+        "name": "DB_PASSWORD"
+      },
+      {
+        "valueFrom": "/${namespace}/DB_PORT",
+        "name": "DB_PORT"
+      },
+      {
+        "valueFrom": "/${namespace}/DB_USERNAME",
+        "name": "DB_USERNAME"
+      },
+      {
+        "valueFrom": "/${namespace}/LOG_CHANNEL",
+        "name": "LOG_CHANNEL"
+      },
+      {
+        "valueFrom": "/${namespace}/MAIL_MAILER",
+        "name": "MAIL_MAILER"
+      },
+      {
+        "valueFrom": "/${namespace}/MAIL_HOST",
+        "name": "MAIL_HOST"
+      },
+      {
+        "valueFrom": "/${namespace}/MAIL_PORT",
+        "name": "MAIL_PORT"
+      },
+      {
+        "valueFrom": "/${namespace}/MAIL_ENCRYPTION",
+        "name": "MAIL_ENCRYPTION"
+      },
+      {
+        "valueFrom": "/${namespace}/MAIL_PASSWORD",
+        "name": "MAIL_PASSWORD"
+      },
+      {
+        "valueFrom": "/${namespace}/MAIL_USERNAME",
+        "name": "MAIL_USERNAME"
+      },
+      {
+        "valueFrom": "/${namespace}/MAIL_FROM_ADDRESS",
+        "name": "MAIL_FROM_ADDRESS"
+      },
+      {
+        "valueFrom": "/${namespace}/MAIL_FROM_NAME",
+        "name": "MAIL_FROM_NAME"
+      },
+      {
+        "valueFrom": "/${namespace}/SES_ACCESS_KEY",
+        "name": "SES_ACCESS_KEY"
+      },
+      {
+        "valueFrom": "/${namespace}/SES_SECRET_ACCESS_KEY",
+        "name": "SES_SECRET_ACCESS_KEY"
+      },
+      {
+        "valueFrom": "/${namespace}/SES_DEFAULT_REGION",
+        "name": "SES_DEFAULT_REGION"
+      },
+      {
+        "valueFrom": "/${namespace}/PUSHER_APP_CLUSTER",
+        "name": "PUSHER_APP_CLUSTER"
+      },
+      {
+        "valueFrom": "/${namespace}/PUSHER_APP_ID",
+        "name": "PUSHER_APP_ID"
+      },
+      {
+        "valueFrom": "/${namespace}/PUSHER_APP_KEY",
+        "name": "PUSHER_APP_KEY"
+      },
+      {
+        "valueFrom": "/${namespace}/PUSHER_APP_SECRET",
+        "name": "PUSHER_APP_SECRET"
+      }
+    ],
+    "essential": true,
+    "links": ["app:app"]
+  }
+]
