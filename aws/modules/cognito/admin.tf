@@ -1,5 +1,5 @@
 resource "aws_cognito_user_pool" "admin" {
-  name = "${local.pj_name_kebab}-admin-${var.env_name}"
+  name = "${local.pj_name_kebab}-admin-${data.aws_default_tags.this.tags.Env}"
 
   auto_verified_attributes = [
     "email",
@@ -14,9 +14,9 @@ resource "aws_cognito_user_pool" "admin" {
     # ユーザーに自己サインアップを許可する。
     allow_admin_create_user_only = false
     invite_message_template {
-      email_message = " ユーザー名は {username}、仮パスワードは {####} です。"
-      email_subject = " 仮パスワード"
-      sms_message   = " ユーザー名は {username}、仮パスワードは {####} です。"
+      email_message = "ユーザー名は {username}、仮パスワードは {####} です。"
+      email_subject = "仮パスワード"
+      sms_message   = "ユーザー名は {username}、仮パスワードは {####} です。"
     }
   }
 
@@ -172,7 +172,7 @@ resource "aws_cognito_user_pool_client" "admin" {
 }
 
 resource "aws_cognito_identity_pool" "admin" {
-  identity_pool_name               = "${local.pj_name_kebab}-adminpool-${var.env_name}"
+  identity_pool_name               = "${local.pj_name_kebab}-adminpool-${data.aws_default_tags.this.tags.Env}"
   allow_unauthenticated_identities = false
 
   cognito_identity_providers {

@@ -1,15 +1,3 @@
-data "aws_ecr_repository" "web" {
-  name = "${local.pj_name_kebab}/${var.env_name}/web"
-}
-
-data "aws_ecr_repository" "app" {
-  name = "${local.pj_name_kebab}/${var.env_name}/app"
-}
-
-data "aws_ecr_repository" "supervisor" {
-  name = "${local.pj_name_kebab}/${var.env_name}/supervisor"
-}
-
 # APIサーバ用タスク定義
 resource "aws_ecs_task_definition" "back" {
   family                   = "${local.pj_name_kebab}-task-back"
@@ -24,13 +12,8 @@ resource "aws_ecs_task_definition" "back" {
       data.aws_ecr_repository.app.repository_url,
       data.aws_ecr_repository.supervisor.repository_url
     ]
-    namespace = var.env_name
+    namespace = data.aws_default_tags.this.tags.Env
   })
-}
-
-# auto scaling group
-data "aws_ssm_parameter" "amzn2_for_ecs_ami" {
-  name = "/aws/service/ecs/optimized-ami/amazon-linux-2/recommended/image_id"
 }
 
 resource "aws_launch_configuration" "default" {
@@ -81,9 +64,6 @@ resource "aws_ecs_cluster" "default" {
   name = local.cluster_name
 }
 
-# ECS Service
-data "aws_caller_identity" "self" {}
-
 resource "aws_ecs_service" "back_service" {
   name                              = "${local.pj_name_kebab}-service-back"
   cluster                           = aws_ecs_cluster.default.id
@@ -96,7 +76,7 @@ resource "aws_ecs_service" "back_service" {
   depends_on = [aws_ecs_cluster.default]
 
   load_balancer {
-    target_group_arn = data.terraform_remote_state.init.outputs.target_group_back_arn[var.env_name]
+    target_group_arn = data.terraform_remote_state.init.outputs.target_group_back_arn[data.aws_default_tags.this.tags.Env]
     container_name   = "web"
     container_port   = 80
   }

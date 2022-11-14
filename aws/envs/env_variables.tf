@@ -6,10 +6,6 @@ variable "db_pass" {
   type = string
 }
 
-variable "env_name" {
-  type = string
-}
-
 variable "front_hosting_settings" {}
 
 variable "test_email" {
@@ -21,5 +17,9 @@ variable "test_username" {
 }
 
 variable "test_userpassword" {
+  type = string
+}
+
+variable "laravel_pj_root_path" {
   type = string
 }
