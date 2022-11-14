@@ -9,7 +9,7 @@ data "aws_cognito_user_pools" "admin" {
 }
 # rds
 data "aws_db_instance" "mysql" {
-  db_instance_identifier = local.pj_name_kebab
+  db_instance_identifier = "${local.pj_name_kebab}-${data.aws_default_tags.this.tags.Env}"
 }
 
 data "template_file" "params_structure" {
@@ -27,6 +27,8 @@ data "template_file" "params_structure" {
     db_name                     = data.aws_db_instance.mysql.db_name
     db_port                     = data.aws_db_instance.mysql.port
     db_connection               = "mysql"
+    host_name                   = data.aws_default_tags.this.tags.Env == "prod" ? "www" : "dev"
+    admin_host_name             = data.aws_default_tags.this.tags.Env == "prod" ? "admin" : "admin" # TODO: pending
     domain_name                 = local.domain_name
     pj_name_kana                = local.pj_name_kana
     namespace                   = data.aws_default_tags.this.tags.Env

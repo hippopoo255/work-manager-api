@@ -29,7 +29,7 @@ resource "aws_ecr_lifecycle_policy" "web" {
 }
 
 resource "null_resource" "push_images" {
-  for_each   = { for r in local.repos : r.name => r }
+  for_each = { for r in local.repos : r.name => r }
 
   triggers = {
     repos_url         = md5("${aws_ecr_repository.web[each.key].repository_url}:latest")

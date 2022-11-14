@@ -6,8 +6,6 @@ variable "db_pass" {
   type = string
 }
 
-variable "front_hosting_settings" {}
-
 variable "test_email" {
   type = string
 }
