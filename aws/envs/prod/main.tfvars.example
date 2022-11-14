@@ -1,4 +1,4 @@
-# センシティブな変数のみを管理する
+# 主にセンシティブな変数を管理する
 db_user="willrewrite"
 db_pass="willrewrite"
 front_hosting_settings = {
@@ -31,6 +31,7 @@ front_hosting_settings = {
     ]
   }
 }
-test_email=""
-test_username=""
-test_userpassword=""
+test_email="test-taro@example.com"
+test_username="testuser1"
+test_userpassword="willrewrite"
+laravel_pj_root_path = "../../../"

@@ -7,3 +7,5 @@ data "terraform_remote_state" "init" {
     region = "${local.default_region}"
   }
 }
+
+data "aws_default_tags" "this" {}

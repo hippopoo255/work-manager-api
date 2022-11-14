@@ -12,7 +12,3 @@ variable "api_resource_name" {
   type    = string
   default = "blog_asset"
 }
-
-variable "env_name" {
-  type    = string
-}
