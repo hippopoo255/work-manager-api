@@ -1,21 +1,3 @@
-data "aws_caller_identity" "self" {}
-
-# assume_role = ロールの「信頼」タブ参照
-data "aws_iam_policy_document" "lambda_assume_role_policy" {
-  statement {
-    actions = ["sts:AssumeRole"]
-
-    principals {
-      type        = "Service"
-      identifiers = ["lambda.amazonaws.com"]
-    }
-  }
-}
-
-data "aws_iam_policy" "AmazonDynamoDBFullAccess" {
-  arn = "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess"
-}
-
 resource "aws_iam_policy" "lambda_basic_executions" {
   for_each = { for i in local.functions : i.name => i }
 

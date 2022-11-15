@@ -1,0 +1,30 @@
+front_hosting_settings = {
+  app = {
+    records = [
+      {
+        server_name = "",
+        type = "A",
+        value = "12.34.56.78"
+      },
+      {
+        server_name = "",
+        type = "CNAME",
+        value = "cname.vercel-dns.com"
+      },
+    ]
+  },
+  admin = {
+    records = [
+      {
+        server_name = "admin.",
+        type = "A",
+        value = "123.45.678.901"
+      },
+      {
+        server_name = "",
+        type = "TXT",
+        value = "google-site-verification=xxxxxxxxxxxxxxxxxxxxxx-xxxxxx-xxxxx"
+      },
+    ]
+  }
+}

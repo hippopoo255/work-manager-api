@@ -61,9 +61,3 @@ module "ecs" {
   ]
   depends_on = [module.ecr]
 }
-
-# frontend_dns_record
-module "frontend_dns_record" {
-  source                 = "../../modules/dns_record"
-  front_hosting_settings = var.front_hosting_settings
-}

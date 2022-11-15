@@ -32,3 +32,9 @@ module "load_balancer" {
 
   depends_on = [module.network]
 }
+
+# frontend_dns_record
+module "frontend_dns_record" {
+  source                 = "../../modules/dns_record"
+  front_hosting_settings = var.front_hosting_settings
+}

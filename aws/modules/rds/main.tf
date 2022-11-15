@@ -1,5 +1,5 @@
-resource "aws_db_parameter_group" "default" {
-  name   = local.pj_name_kebab
+resource "aws_db_parameter_group" "this" {
+  name   = "${local.pj_name_kebab}-${data.aws_default_tags.this.tags.Env}"
   family = "mysql5.7"
 
 
@@ -39,8 +39,8 @@ resource "aws_db_parameter_group" "default" {
   }
 }
 
-resource "aws_db_option_group" "default" {
-  name                 = "${local.pj_name_kebab}-option"
+resource "aws_db_option_group" "this" {
+  name                 = "${local.pj_name_kebab}-option-${data.aws_default_tags.this.tags.Env}"
   engine_name          = "mysql"
   major_engine_version = "5.7"
 
@@ -58,13 +58,13 @@ module "mysql_sg" {
   cidr_blocks = [data.terraform_remote_state.init.outputs.vpc_cidr_block]
 }
 
-resource "aws_db_subnet_group" "default" {
-  name       = local.pj_name_kebab
+resource "aws_db_subnet_group" "this" {
+  name       = "${local.pj_name_kebab}-${data.aws_default_tags.this.tags.Env}"
   subnet_ids = data.terraform_remote_state.init.outputs.subnet_ids
 }
 
-resource "aws_db_instance" "default" {
-  identifier            = local.pj_name_kebab
+resource "aws_db_instance" "this" {
+  identifier            = "${local.pj_name_kebab}-${data.aws_default_tags.this.tags.Env}"
   engine                = local.db_connection
   engine_version        = "5.7.39"
   instance_class        = "db.t2.micro"
@@ -87,9 +87,9 @@ resource "aws_db_instance" "default" {
   port                   = local.db_port
   apply_immediately      = false
   vpc_security_group_ids = [module.mysql_sg.security_group_id]
-  parameter_group_name   = aws_db_parameter_group.default.name
-  option_group_name      = aws_db_option_group.default.name
-  db_subnet_group_name   = aws_db_subnet_group.default.name
+  parameter_group_name   = aws_db_parameter_group.this.name
+  option_group_name      = aws_db_option_group.this.name
+  db_subnet_group_name   = aws_db_subnet_group.this.name
 
   lifecycle {
     ignore_changes = [password]
