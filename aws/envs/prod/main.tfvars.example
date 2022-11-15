@@ -1,0 +1,7 @@
+# 主にセンシティブな変数を管理する
+db_user="willrewrite"
+db_pass="willrewrite"
+test_email="test-taro@example.com"
+test_username="testuser1"
+test_userpassword="willrewrite"
+laravel_pj_root_path = "../../../"

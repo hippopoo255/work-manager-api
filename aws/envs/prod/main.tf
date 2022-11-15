@@ -16,7 +16,6 @@ module "cognito" {
   test_email        = var.test_email
   test_username     = var.test_username
   test_userpassword = var.test_userpassword
-  env_name          = var.env_name
 }
 
 # # API Gateway
@@ -24,7 +23,6 @@ module "api_gateway" {
   source                      = "../../modules/api_gateway"
   cognito_user_pool_arn_app   = module.cognito.userpool_arn_app
   cognito_user_pool_arn_admin = module.cognito.userpool_arn_admin
-  env_name                    = var.env_name
 }
 
 # # CloudWatch
@@ -43,15 +41,14 @@ module "ssm_parameter" {
     db_user = var.db_user
     db_pass = var.db_pass
   }
-  env_name = var.env_name
 
   depends_on = [module.rds]
 }
 
 # ECR
 module "ecr" {
-  source   = "../../modules/ecr"
-  env_name = var.env_name
+  source               = "../../modules/ecr"
+  laravel_pj_root_path = var.laravel_pj_root_path
 }
 
 # ECS
@@ -62,12 +59,5 @@ module "ecs" {
     module.cloudwatch.log_group_name_app,
     module.cloudwatch.log_group_name_supervisor
   ]
-  env_name   = var.env_name
   depends_on = [module.ecr]
-}
-
-# frontend_dns_record
-module "frontend_dns_record" {
-  source                 = "../../modules/dns_record"
-  front_hosting_settings = var.front_hosting_settings
 }

@@ -7,25 +7,6 @@
 # createBlog(function1: save_blog)
 # updateBlog(function1: save_blog)
 # deleteBlog(function1: delete_blog)
-locals {
-  resolver_edge_template_mapping_files = [
-    {
-      name            = "req",
-      path            = "request_mapping_template/common_resolver.template",
-      file_permission = "0777"
-    },
-    {
-      name            = "res",
-      path            = "response_mapping_template/common_resolver.template",
-      file_permission = "0777"
-    },
-  ]
-}
-
-data "local_file" "resolvers" {
-  for_each = { for f in local.resolver_edge_template_mapping_files : f.name => f }
-  filename = "${path.module}/${each.value.path}"
-}
 
 resource "aws_appsync_resolver" "this" {
   for_each = { for item in local.resolvers : item.field => item }

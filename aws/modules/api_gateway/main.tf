@@ -41,7 +41,7 @@ resource "aws_api_gateway_deployment" "this" {
 
   depends_on  = [aws_api_gateway_rest_api.this]
   rest_api_id = aws_api_gateway_rest_api.this[each.key].id
-  stage_name  = var.env_name
+  stage_name  = data.aws_default_tags.this.tags.Env
 
   # API gatewayのリソースを更新してもデプロイはされない
   # 再デプロイのトリガーとなる設定

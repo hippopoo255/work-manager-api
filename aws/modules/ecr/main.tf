@@ -1,6 +1,6 @@
 resource "aws_ecr_repository" "web" {
   for_each     = { for r in local.repos : r.name => r }
-  name         = "${local.pj_name_kebab}/${var.env_name}/${each.key}"
+  name         = "${local.pj_name_kebab}/${data.aws_default_tags.this.tags.Env}/${each.key}"
   force_delete = true
 }
 
@@ -28,10 +28,8 @@ resource "aws_ecr_lifecycle_policy" "web" {
   EOF
 }
 
-data "aws_caller_identity" "self" {}
-
 resource "null_resource" "push_images" {
-  for_each   = { for r in local.repos : r.name => r }
+  for_each = { for r in local.repos : r.name => r }
 
   triggers = {
     repos_url         = md5("${aws_ecr_repository.web[each.key].repository_url}:latest")
@@ -46,7 +44,7 @@ resource "null_resource" "push_images" {
       AWS_ACCOUNT_ID     = data.aws_caller_identity.self.account_id
       REPOSITORY_URL     = "${aws_ecr_repository.web[each.key].repository_url}:latest"
       IMAGE_DIR          = each.value.image_dir
-      PJ_ROOT_PATH       = local.pj_root_path
+      PJ_ROOT_PATH       = var.laravel_pj_root_path
     }
   }
 }

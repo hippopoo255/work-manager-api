@@ -66,7 +66,3 @@ variable "rds_credentials" {
     db_pass = ""
   }
 }
-variable "env_name" {
-  type    = string
-  default = "stg" # stg / prod
-}

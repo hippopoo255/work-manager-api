@@ -71,6 +71,13 @@ resource "aws_lb_listener_rule" "back" {
     }
   }
 
+  condition {
+    http_header {
+      http_header_name = "origin"
+      values           = each.value.header_origin
+    }
+  }
+
   # depends_on = [aws_lb_target_group.back]
 }
 

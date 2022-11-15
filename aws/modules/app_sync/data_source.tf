@@ -2,23 +2,8 @@ module "data_store" {
   source = "./data_store"
 }
 
-
-data "aws_caller_identity" "self" {}
-
 module "lambda" {
   source = "./lambda"
-}
-
-# AssumeRoleポリシー
-data "aws_iam_policy_document" "this" {
-  statement {
-    actions = ["sts:AssumeRole"]
-
-    principals {
-      type        = "Service"
-      identifiers = ["appsync.amazonaws.com"]
-    }
-  }
 }
 
 # Data source にLambdaを使うのでlambda invokeのポリシー
@@ -45,13 +30,6 @@ resource "aws_iam_role_policy_attachment" "this" {
 
   role       = aws_iam_role.this[each.key].name
   policy_arn = aws_iam_policy.this[each.key].arn
-}
-
-# module.lambdaで作成できた Lambda リソース
-data "aws_lambda_function" "this" {
-  for_each = { for item in local.functions : item.name => item }
-
-  function_name = each.key
 }
 
 # データソース

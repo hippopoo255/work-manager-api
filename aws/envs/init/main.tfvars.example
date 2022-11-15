@@ -1,6 +1,3 @@
-# センシティブな変数のみを管理する
-db_user="willrewrite"
-db_pass="willrewrite"
 front_hosting_settings = {
   app = {
     records = [
@@ -31,6 +28,3 @@ front_hosting_settings = {
     ]
   }
 }
-test_email=""
-test_username=""
-test_userpassword=""
