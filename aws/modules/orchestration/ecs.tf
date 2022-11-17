@@ -2,7 +2,7 @@
 resource "aws_ecs_task_definition" "this" {
   family                   = "${local.pj_name_kebab}-task-${data.aws_default_tags.this.tags.Env}"
   network_mode             = "bridge"
-  execution_role_arn       = aws_iam_role.my_ecs_role.arn
+  execution_role_arn       = aws_iam_role.ecs_task_role.arn
   requires_compatibilities = []
   # compatibilities = ["EC2"]
   container_definitions = templatefile("${path.module}/container_definition_back.json", {

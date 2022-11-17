@@ -16,8 +16,8 @@ data "aws_iam_policy_document" "ec2_assume_role" {
   Terraform上で管理していないポリシーをmy-ecs-roleに(コンソール画面などから)アタッチしている場合、
   そのポリシーはデタッチされる
 */
-resource "aws_iam_role" "my_ecs_role" {
-  name               = "my-ecs-role-${data.aws_default_tags.this.tags.Env}"
+resource "aws_iam_role" "ecs_task_role" {
+  name               = "ecs-task-role-${data.aws_default_tags.this.tags.Env}"
   assume_role_policy = data.aws_iam_policy_document.ecs_assume_role.json
 }
 
@@ -35,7 +35,7 @@ resource "aws_iam_policy" "ecs_env_connection" {
 
 # 各ロールにポリシーをアタッチ
 resource "aws_iam_role_policy_attachment" "my_ecs_env_connect_attachment" {
-  role       = aws_iam_role.my_ecs_role.name
+  role       = aws_iam_role.ecs_task_role.name
   policy_arn = aws_iam_policy.ecs_env_connection.arn
 }
 
@@ -43,7 +43,7 @@ resource "aws_iam_role_policy_attachment" "my_ecs_other_attachment" {
   for_each = {
     for arn in local.ecs_policy_arns : arn => arn # key => value
   }
-  role       = aws_iam_role.my_ecs_role.name
+  role       = aws_iam_role.ecs_task_role.name
   policy_arn = each.value
 }
 
