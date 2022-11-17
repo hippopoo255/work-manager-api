@@ -17,18 +17,18 @@ data "aws_iam_policy_document" "ec2_assume_role" {
   そのポリシーはデタッチされる
 */
 resource "aws_iam_role" "my_ecs_role" {
-  name               = "my-ecs-role"
+  name               = "my-ecs-role-${data.aws_default_tags.this.tags.Env}"
   assume_role_policy = data.aws_iam_policy_document.ecs_assume_role.json
 }
 
 resource "aws_iam_role" "ecs_instance_role" {
-  name               = "ecs-instance-role"
+  name               = "ecs-instance-role-${data.aws_default_tags.this.tags.Env}"
   assume_role_policy = data.aws_iam_policy_document.ec2_assume_role.json
 }
 
 # ポリシーの作成
 resource "aws_iam_policy" "ecs_env_connection" {
-  name = "ecs-env-connection"
+  name = "ecs-env-connection-${data.aws_default_tags.this.tags.Env}"
   # SSMのパラメータストアにアクセス、KMSによる復号等の権限
   policy = file("${path.module}/policy/ecs_env_connection.json")
 }
@@ -56,6 +56,6 @@ resource "aws_iam_role_policy_attachment" "ecs_instance_other_attachment" {
 }
 
 resource "aws_iam_instance_profile" "ecs_instance_profile" {
-  name = "ecs-instance-profile"
+  name = "ecs-instance-profile-${data.aws_default_tags.this.tags.Env}"
   role = aws_iam_role.ecs_instance_role.name
 }

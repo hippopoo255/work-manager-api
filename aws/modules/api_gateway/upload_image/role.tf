@@ -13,14 +13,14 @@ data "aws_iam_policy_document" "lambda_assume_role_policy" {
 }
 
 resource "aws_iam_policy" "lambda_basic_execution" {
-  name = "lambda-basic-execution--upload_image"
+  name = "lambda-basic-execution--upload_image-${data.aws_default_tags.this.tags.Env}"
   policy = templatefile("${path.module}/policy/lambda_execution.json", {
     account_id = data.aws_caller_identity.self.account_id,
   })
 }
 
 resource "aws_iam_role" "upload_image" {
-  name               = "lambda-role--upload_image"
+  name               = "lambda-role--upload_image-${data.aws_default_tags.this.tags.Env}"
   assume_role_policy = data.aws_iam_policy_document.lambda_assume_role_policy.json
 }
 

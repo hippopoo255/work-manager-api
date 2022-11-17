@@ -18,14 +18,14 @@ module "cognito" {
   test_userpassword = var.test_userpassword
 }
 
-# # API Gateway
+# API Gateway
 module "api_gateway" {
   source                      = "../../modules/api_gateway"
   cognito_user_pool_arn_app   = module.cognito.userpool_arn_app
   cognito_user_pool_arn_admin = module.cognito.userpool_arn_admin
 }
 
-# # CloudWatch
+# CloudWatch
 module "cloudwatch" {
   source = "../../modules/logs"
   # デフォルト値を変更したい時はここのコメントアウトを外す

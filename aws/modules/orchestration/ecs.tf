@@ -86,7 +86,7 @@ resource "aws_ecs_service" "back_service" {
 
   lifecycle {
     ignore_changes = [
-      task_definition,
+      # task_definition,
       #       desired_count,
       #       capacity_provider_strategy,
       #       # ブルーグリーン入れる場合はこちらを有効にする(ターゲットグループが切り替わるため)
