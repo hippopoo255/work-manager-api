@@ -1,7 +1,7 @@
 from posix import environ
 import boto3
 import json
-import urllib.parse
+import random, string
 import base64
 import io
 import os
@@ -36,7 +36,7 @@ def lambda_handler(event, context):
       path_list = []
       # 画像のアップロード
       for f in fs.list:
-        file_name = f.filename
+        file_name = rename_file_name(f.filename)
         result = file_upload(f, get_relative_path(dir_name, file_name))
         if result:
           path_list.append(result)
@@ -83,6 +83,14 @@ def get_file_req(event):
 def is_image_type(file_type):
   permitted_list = ['image/png', 'image/png', 'image/jpeg', 'image/svg+xml', 'image/gif']
   return file_type in permitted_list
+
+def rename_file_name(original_file_name):
+  space_removed_name = original_file_name.replace('　', '').replace(' ', '').replace('\t', '').replace('\n', '')
+  return '{}{}'.format(get_random_str(), space_removed_name)
+
+def get_random_str(length = 32):
+  random_list = [random.choice(string.ascii_letters + string.digits) for i in range(length)]
+  return ''.join(random_list)
 
 def get_relative_path(dir_name, file_name):
   file_name = random_prefix() + file_name

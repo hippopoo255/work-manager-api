@@ -7,7 +7,7 @@ data "archive_file" "lambda_function" {
 
 resource "aws_lambda_function" "upload_image" {
   filename      = data.archive_file.lambda_function.output_path
-  function_name = "upload_image"
+  function_name = "upload_image_${data.aws_default_tags.this.tags.Env}"
   role          = aws_iam_role.upload_image.arn
   # ref: ランタイム設定
   handler = "lambda_function.lambda_handler"
