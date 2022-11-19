@@ -1,6 +1,6 @@
 module "upload_image" {
   source            = "./upload_image"
-  origin_white_list = "http://localhost:3000,https://${data.aws_default_tags.this.tags.Env == "stg" ? "dev" : "www"}.${local.domain_name}"
+  origin_white_list = "http://localhost:3000,https://${local.env_types[data.aws_default_tags.this.tags.Env].hosts.app}.${local.domain_name}"
   storage_url       = "https://asset.${local.domain_name}"
 }
 
@@ -17,7 +17,7 @@ data "template_file" "this" {
     aws_account_id = data.aws_caller_identity.self.account_id
     userpool_arns  = each.value.userpool_arns
     env_name       = data.aws_default_tags.this.tags.Env
-    host           = data.aws_default_tags.this.tags.Env == "stg" ? "dev" : "www"
+    host           = local.env_types[data.aws_default_tags.this.tags.Env].hosts.app
     domain_name    = local.domain_name
   }
 }

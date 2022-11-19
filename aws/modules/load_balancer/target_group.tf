@@ -5,7 +5,7 @@
  */
 # Laravelコンテナ用のターゲットグループ
 resource "aws_lb_target_group" "back" {
-  for_each = { for g in local.target_group_list : g.name => g }
+  for_each = local.env_types
 
   name                 = "${local.pj_name_kebab}-tg-back-${each.key}"
   target_type          = "instance"

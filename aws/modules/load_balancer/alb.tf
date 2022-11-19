@@ -53,7 +53,7 @@ resource "aws_lb" "this" {
  * アクション: Laravelコンテナ用のターゲットグループに転送する
  */
 resource "aws_lb_listener_rule" "back" {
-  for_each = { for g in local.listener_rules : g.name => g }
+  for_each = local.env_types
 
   listener_arn = aws_lb_listener.https.arn
   priority     = each.value.priority
@@ -61,7 +61,7 @@ resource "aws_lb_listener_rule" "back" {
   action {
     # Laravelコンテナ用のターゲットグループに転送するよう指定
     type             = "forward"
-    target_group_arn = aws_lb_target_group.back[each.value.target_group_name].arn
+    target_group_arn = aws_lb_target_group.back[each.key].arn
   }
 
   condition {
@@ -74,7 +74,9 @@ resource "aws_lb_listener_rule" "back" {
   condition {
     http_header {
       http_header_name = "origin"
-      values           = each.value.header_origin
+      values = [
+        for k, host in each.value.hosts : "https://${host}.${local.domain_name}"
+      ]
     }
   }
 
