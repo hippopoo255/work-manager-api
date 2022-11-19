@@ -59,7 +59,7 @@ module "mysql_sg" {
 }
 
 resource "aws_db_subnet_group" "this" {
-  name       = "${local.pj_name_kebab}-${data.aws_default_tags.this.tags.Env}_${data.aws_default_tags.this.tags.Env}"
+  name       = "${local.pj_name_kebab}-${data.aws_default_tags.this.tags.Env}"
   subnet_ids = data.terraform_remote_state.init.outputs.subnet_ids
 }
 

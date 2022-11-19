@@ -6,18 +6,14 @@ output "vpc_cidr_block" {
   value = aws_vpc.this.cidr_block
 }
 
-output "subnet_public0_id" {
-  value = aws_subnet.public.0.id
+output "subnet_public_ids" {
+  value = [for k, v in aws_subnet.public : v.id]
+
+  depends_on = [aws_subnet.public]
 }
 
-output "subnet_public1_id" {
-  value = aws_subnet.public.1.id
-}
+output "subnet_private_ids" {
+  value = [for k, v in aws_subnet.private : v.id]
 
-output "subnet_private0_id" {
-  value = aws_subnet.private.0.id
-}
-
-output "subnet_private1_id" {
-  value = aws_subnet.private.1.id
+  depends_on = [aws_subnet.private]
 }

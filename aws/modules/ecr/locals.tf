@@ -13,4 +13,5 @@ locals {
       image_dir = "supervisor"
     }
   }
+  max_image_count = 4
 }

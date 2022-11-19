@@ -113,7 +113,7 @@
     {
       "Name": "/${namespace}/APP_FRONT_URL",
       "Type": "SecureString",
-      "Value": "https://www.${domain_name}"
+      "Value": "https://${host_name}.${domain_name}"
     },
     {
       "Name": "/${namespace}/APP_TEST_ADMIN_COGNITO_SUB",

@@ -25,12 +25,9 @@ module "load_balancer" {
   source = "./load_balancer"
   vpc_id = module.network.vpc_id
   # networkディレクトリのoutput.tfで出力したやつを使う
-  subnets = [
-    module.network.subnet_public0_id,
-    module.network.subnet_public1_id,
-  ]
+  subnets = module.network.subnet_ids
 
-  depends_on = [module.network]
+  depends_on = [module.network.subnet_ids]
 }
 
 # frontend_dns_record
