@@ -7,25 +7,9 @@ resource "aws_ecr_repository" "web" {
 resource "aws_ecr_lifecycle_policy" "web" {
   for_each   = { for r in local.repos : r.name => r }
   repository = aws_ecr_repository.web[each.key].name
-  policy     = <<EOF
-  {
-    "rules": [
-      {
-        "rulePriority": 1,
-        "description": "keep last 10 release tagged images",
-        "selection": {
-          "tagStatus": "tagged",
-          "tagPrefixList": ["release"],
-          "countType": "imageCountMoreThan",
-          "countNumber": 10
-        },
-        "action": {
-          "type": "expire"
-        }
-      }
-    ]
-  }
-  EOF
+  policy     = templatefile("${path.module}/lifecycle_policy.json", {
+    max_image_count = local.max_image_count
+  })
 }
 
 resource "null_resource" "push_images" {

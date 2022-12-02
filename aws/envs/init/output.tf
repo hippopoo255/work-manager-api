@@ -7,10 +7,7 @@ output "vpc_cidr_block" {
 }
 
 output "subnet_ids" {
-  value = [
-    module.network.subnet_public0_id,
-    module.network.subnet_public1_id,
-  ]
+  value = module.network.subnet_ids
 }
 
 output "target_group_back_arn" {

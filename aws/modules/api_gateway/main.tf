@@ -1,28 +1,13 @@
 module "upload_image" {
   source            = "./upload_image"
-  origin_white_list = "http://localhost:3000,https://www.${local.domain_name}"
+  origin_white_list = "http://localhost:3000,https://${local.env_types[data.aws_default_tags.this.tags.Env].hosts.app}.${local.domain_name}"
   storage_url       = "https://asset.${local.domain_name}"
-}
-
-data "aws_caller_identity" "self" {}
-
-data "template_file" "this" {
-  for_each = { for endpoint in local.endpoints : endpoint.name => endpoint }
-
-  template = file("${path.module}/schema/openapi.${each.key}.yaml")
-  vars = {
-    # openapi.admin.yamlファイルに${alb_uri}とあれば、terraformから当該箇所に値を埋め込むことができる
-    alb_uri        = "https://${data.terraform_remote_state.init.outputs.http_alb_uri}"
-    api_name       = "${local.pj_name_kebab}-${each.key}"
-    aws_account_id = data.aws_caller_identity.self.account_id
-    userpool_arns  = each.value.userpool_arns
-  }
 }
 
 resource "aws_api_gateway_rest_api" "this" {
   for_each = { for endpoint in local.endpoints : endpoint.name => endpoint }
 
-  name = "${local.pj_name_kebab}-${each.key}"
+  name = "${local.pj_name_kebab}-${each.key}-${data.aws_default_tags.this.tags.Env}"
   body = data.template_file.this[each.key].rendered
 
   endpoint_configuration {

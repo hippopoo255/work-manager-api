@@ -4,7 +4,6 @@ provider "aws" {
   default_tags {
     tags = {
       Env    = "stg"
-      Env    = "Stg"
       System = "work-manager"
     }
   }

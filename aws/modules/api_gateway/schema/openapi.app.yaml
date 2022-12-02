@@ -1062,23 +1062,23 @@ paths:
                 $ref: "#/components/schemas/InvalidError"
       x-amazon-apigateway-integration:
         httpMethod: POST
-        uri: "arn:aws:apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/arn:aws:lambda:ap-northeast-1:${aws_account_id}:function:upload_image/invocations"
+        uri: "arn:aws:apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/arn:aws:lambda:ap-northeast-1:${aws_account_id}:function:upload_image_${env_name}/invocations"
         responses:
           "403":
             statusCode: "403"
             responseParameters:
               method.response.header.Access-Control-Allow-Credentials: "'true'"
-              method.response.header.Access-Control-Allow-Origin: "'https://www.work-manager.site'"
+              method.response.header.Access-Control-Allow-Origin: "'https://${host}.${domain_name}'"
           "422":
             statusCode: "422"
             responseParameters:
               method.response.header.Access-Control-Allow-Credentials: "'true'"
-              method.response.header.Access-Control-Allow-Origin: "'https://www.work-manager.site'"
+              method.response.header.Access-Control-Allow-Origin: "'https://${host}.${domain_name}'"
           default:
             statusCode: "200"
             responseParameters:
               method.response.header.Access-Control-Allow-Credentials: "'true'"
-              method.response.header.Access-Control-Allow-Origin: "'https://www.work-manager.site'"
+              method.response.header.Access-Control-Allow-Origin: "'https://${host}.${domain_name}'"
         requestTemplates:
           multipart/form-data: |
             ##  See http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-mapping-template-reference.html

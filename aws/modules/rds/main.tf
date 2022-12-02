@@ -51,7 +51,7 @@ resource "aws_db_option_group" "this" {
 
 module "mysql_sg" {
   source      = "../security_group"
-  name        = "${local.pj_name_snake}_${local.db_connection}_sg"
+  name        = "${local.pj_name_snake}_${local.db_connection}_sg_${data.aws_default_tags.this.tags.Env}"
   vpc_id      = data.terraform_remote_state.init.outputs.vpc_id
   from_port   = local.db_port
   to_port     = local.db_port

@@ -12,6 +12,18 @@ data "aws_db_instance" "mysql" {
   db_instance_identifier = "${local.pj_name_kebab}-${data.aws_default_tags.this.tags.Env}"
 }
 
+data "template_file" "list_access_keys" {
+  template = file("${path.module}/s3-access-key-list.json")
+
+  depends_on = [null_resource.list_access_key]
+}
+
+data "template_file" "s3_user_credentials" {
+  template = file("${path.module}/s3-access-user-credentials.json")
+
+  depends_on = [null_resource.create_access_key]
+}
+
 data "template_file" "params_structure" {
   template = file("${path.module}/ssm.json")
   vars = {
@@ -27,10 +39,12 @@ data "template_file" "params_structure" {
     db_name                     = data.aws_db_instance.mysql.db_name
     db_port                     = data.aws_db_instance.mysql.port
     db_connection               = "mysql"
-    host_name                   = data.aws_default_tags.this.tags.Env == "prod" ? "www" : "dev"
-    admin_host_name             = data.aws_default_tags.this.tags.Env == "prod" ? "admin" : "admin" # TODO: pending
+    host_name                   = local.env_types[data.aws_default_tags.this.tags.Env].hosts.app
+    admin_host_name             = local.env_types[data.aws_default_tags.this.tags.Env].hosts.admin
     domain_name                 = local.domain_name
     pj_name_kana                = local.pj_name_kana
     namespace                   = data.aws_default_tags.this.tags.Env
+    s3_access_key_id = jsondecode(data.template_file.s3_user_credentials.rendered).AccessKey.AccessKeyId
+    s3_secret_access_key = jsondecode(data.template_file.s3_user_credentials.rendered).AccessKey.SecretAccessKey
   }
 }

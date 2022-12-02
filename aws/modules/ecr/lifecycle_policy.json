@@ -1,0 +1,16 @@
+{
+  "rules": [
+    {
+      "rulePriority": 1,
+      "description": "keep last ${max_image_count} release tagged images",
+      "selection": {
+        "tagStatus": "any",
+        "countType": "imageCountMoreThan",
+        "countNumber": ${max_image_count}
+      },
+      "action": {
+        "type": "expire"
+      }
+    }
+  ]
+}

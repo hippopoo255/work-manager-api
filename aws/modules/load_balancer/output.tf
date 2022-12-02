@@ -1,9 +1,7 @@
 # ECSのターゲットグループに使う
-# output "target_group_front_arn" {
-#   value = aws_lb_target_group.front.arn
-# }
 output "target_group_back_arn" {
   value = {
+    # for_each = local.env_types
     prod = aws_lb_target_group.back["prod"].arn,
     stg  = aws_lb_target_group.back["stg"].arn,
   }

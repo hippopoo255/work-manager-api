@@ -20,7 +20,7 @@
 # resource "aws_ecs_task_definition" "front" {
 #   family = "${local.pj_name_kebab}-task-front"
 #   network_mode = "bridge"
-#   execution_role_arn = var.my_ecs_role_arn
+#   execution_role_arn = var.ecs_task_role_arn
 #   requires_compatibilities = []
 #   # compatibilities = ["EC2"]
 #   container_definitions = templatefile("./orchestration/container_definition_front.json", {
