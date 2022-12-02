@@ -28,7 +28,7 @@ module "api_gateway" {
 # CloudWatch
 module "cloudwatch" {
   source = "../../modules/logs"
-  # デフォルト値を変更したい時はここのコメントアウトを外す
+  # デフォルト値(=3)を変更したい時はここのコメントアウトを外す
   # retention_days = 3
 }
 
@@ -54,10 +54,6 @@ module "ecr" {
 # ECS
 module "ecs" {
   source = "../../modules/orchestration"
-  log_groups = [
-    module.cloudwatch.log_group_name_web,
-    module.cloudwatch.log_group_name_app,
-    module.cloudwatch.log_group_name_supervisor
-  ]
+  log_groups = module.cloudwatch.log_groups
   depends_on = [module.ecr]
 }
