@@ -20,7 +20,7 @@ class OrganizationTest extends TestCase
   {
     parent::setUp();
     // 組織情報の追加処理はorganization_idがnullでも通らないといけない
-    $this->nullOrgUser = factory(User::class)->create([
+    $this->nullOrgUser = User::factory()->create([
       'organization_id' => null
     ]);
   }
@@ -120,7 +120,7 @@ class OrganizationTest extends TestCase
    */
   public function should_組織情報の更新()
   {
-    $organization = factory(Organization::class)->create([
+    $organization = Organization::factory()->create([
       'supervisor_id' => $this->nullOrgUser->id,
     ]);
     $expect = [
@@ -153,7 +153,7 @@ class OrganizationTest extends TestCase
    */
   public function should_責任者以外の更新リクエストにはForbiddenを返却する()
   {
-    $organization = factory(Organization::class)->create([
+    $organization = Organization::factory()->create([
       'supervisor_id' => $this->nullOrgUser->id,
     ]);
 
@@ -218,13 +218,13 @@ class OrganizationTest extends TestCase
       'summary' => 'This is a summary of the meeting from expects.',
     ];
 
-    $newRecord = factory(MeetingRecord::class)->create($record);
+    $newRecord = MeetingRecord::factory()->create($record);
 
-    $otherOrg = factory(Organization::class)->create([
+    $otherOrg = Organization::factory()->create([
       'supervisor_id' => 20
     ]);
 
-    $otherUser = factory(User::class)->create([
+    $otherUser = User::factory()->create([
       'organization_id' => $otherOrg->id,
     ]);
 

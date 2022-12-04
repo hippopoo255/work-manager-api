@@ -21,7 +21,7 @@ class BlogSeeder extends Seeder
     $blogCount = 80;
     $perUser = (int)ceil($blogCount / $users->count());
     $users->each(function ($user) use ($perUser) {
-      $blogs = factory(Blog::class, $perUser)->create([
+      $blogs = Blog::factory()->count($perUser)->create([
         'created_by' => $user->id,
         'title' => $user->family_name . 'です',
       ]);

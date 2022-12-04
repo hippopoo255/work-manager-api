@@ -190,7 +190,7 @@ class BlogTest extends TestCase
    */
   public function should_投稿者以外の更新禁止()
   {
-    $blog = factory(Blog::class)->create([
+    $blog = Blog::factory()->create([
       'created_by' => $this->user->id,
     ]);
     $badUser = User::where('id', '!=', $this->user->id)->first();
@@ -216,7 +216,7 @@ class BlogTest extends TestCase
   public function should_更新バリデーションエラー()
   {
     Storage::fake('s3');
-    $blog = factory(Blog::class)->create([
+    $blog = Blog::factory()->create([
       'created_by' => $this->user->id,
     ]);
     $invalid = [
@@ -250,7 +250,7 @@ class BlogTest extends TestCase
    */
   public function should_ブログの削除()
   {
-    $blog = factory(Blog::class)->create([
+    $blog = Blog::factory()->create([
       'created_by' => $this->user->id,
     ]);
     $commentUser = User::where('id', '!=', $this->user->id)->first();
@@ -276,7 +276,7 @@ class BlogTest extends TestCase
    */
   public function should_投稿者以外によるブログの削除禁止()
   {
-    $blog = factory(Blog::class)->create([
+    $blog = Blog::factory()->create([
       'created_by' => $this->user->id,
     ]);
     $badUser = User::where('id', '!=', $this->user->id)->first();

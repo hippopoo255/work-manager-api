@@ -1,13 +1,30 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
-use App\Models\Department;
-use Faker\Generator as Faker;
-
-$factory->define(Department::class, function (Faker $faker) {
-  return [
-    'department_code' => $faker->unique()->randomNumber(),
-    'name' => $faker->unique()->jobTitle,
-  ];
-});
+use Illuminate\Database\Eloquent\Factories\Factory;
+/*
+|--------------------------------------------------------------------------
+| Model Factories
+|--------------------------------------------------------------------------
+|
+| This directory should contain each of the model factory definitions for
+| your application. Factories provide a convenient way to generate new
+| model instances for testing / seeding your application's database.
+|
+*/
+class DepartmentFactory extends Factory
+{
+  /**
+   * Define the model's default state.
+   *
+   * @return array
+   */
+  public function definition()
+  {
+    return [
+      'department_code' => $this->faker->unique()->randomNumber(),
+      'name' => $this->faker->unique()->jobTitle,
+    ];
+  }
+}

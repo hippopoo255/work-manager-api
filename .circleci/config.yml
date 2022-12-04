@@ -5,7 +5,7 @@ orbs:
 executors:
   php:
     docker:
-      - image: circleci/php:7.4-node-browsers
+      - image: cimg/php:8.1-browsers
         environment:
           DB_PASSWORD: ""
       - image: circleci/mysql:5.7
@@ -62,9 +62,7 @@ jobs:
             sudo sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/google-keyring.gpg] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
             sudo apt --allow-releaseinfo-change update
             sudo apt update
-            sudo apt install -y libpng-dev
-            sudo docker-php-ext-install zip gd pdo_mysql
-            sudo docker-php-ext-enable pdo_mysql
+            sudo apt install -y libpng-dev libjpeg-dev
       # Download and cache dependencies
       - restore_cache:
           keys:
@@ -75,7 +73,7 @@ jobs:
           name: Install Composer
           working_directory: laravel
           command: |
-            composer install -n --prefer-dist
+            composer update -n --prefer-dist
             echo $ENV_FILE_ENCODED64 | base64 --decode > .env
             echo $TEST_ENV_FILE_ENCODED64 | base64 --decode > .env.testing
       - save_cache:
