@@ -27,7 +27,7 @@ class ChatSeeder extends Seeder
     $managers = User::with(['department'])->where('role_id', $managerRole)->get();
     $managers->each(function ($manager) use ($departmentIdByTestUser) {
       // 部署のチャットルーム作成
-      $room = factory(ChatRoom::class)->create([
+      $room = ChatRoom::factory()->create([
         'created_by' => $manager->id,
         'name' => $manager->department->name . 'のルーム',
       ]);
@@ -48,7 +48,7 @@ class ChatSeeder extends Seeder
         $attributes['body'] = "ジョブサポをお試しくださりありがとうございます。\nチャット機能の他にも、当サイトには議事録作成機能、タスクやスケジュールの管理機能等を搭載しておりますので、是非お試し下さい。";
       }
 
-      factory(ChatMessage::class)->create($attributes);
+      ChatMessage::factory()->create($attributes);
     });
   }
 }

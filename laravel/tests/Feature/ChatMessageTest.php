@@ -67,7 +67,7 @@ class ChatMessageTest extends ChatRoomTest
    */
   public function should_投稿者以外による更新は禁止()
   {
-    $chatMessage = factory(ChatMessage::class)->create([
+    $chatMessage = ChatMessage::factory()->create([
       'body' => 'This is a message.',
       'created_by' => $this->user->id,
       'chat_room_id' => $this->chatRoom->id,
@@ -96,7 +96,7 @@ class ChatMessageTest extends ChatRoomTest
    */
   public function should_メッセージの更新()
   {
-    $chatMessage = factory(ChatMessage::class)->create([
+    $chatMessage = ChatMessage::factory()->create([
       'body' => 'This is a message.',
       'created_by' => $this->user->id,
       'chat_room_id' => $this->chatRoom->id,
@@ -129,7 +129,7 @@ class ChatMessageTest extends ChatRoomTest
    */
   public function should_投稿者以外はメッセージの削除禁止()
   {
-    $chatMessage = factory(ChatMessage::class)->create([
+    $chatMessage = ChatMessage::factory()->create([
       'body' => 'This is a message.',
       'created_by' => $this->user->id,
       'chat_room_id' => $this->chatRoom->id,
@@ -153,7 +153,7 @@ class ChatMessageTest extends ChatRoomTest
    */
   public function should_メッセージの削除()
   {
-    $chatMessage = factory(ChatMessage::class)->create([
+    $chatMessage = ChatMessage::factory()->create([
       'body' => 'This is a message.',
       'created_by' => $this->user->id,
       'chat_room_id' => $this->chatRoom->id,
@@ -178,7 +178,7 @@ class ChatMessageTest extends ChatRoomTest
    */
   public function should_チャットの報告()
   {
-    $chatMessage = factory(ChatMessage::class)->create([
+    $chatMessage = ChatMessage::factory()->create([
       'body' => 'This is a message which will be reported.',
       'created_by' => $this->user->id,
       'chat_room_id' => $this->chatRoom->id,
@@ -200,7 +200,7 @@ class ChatMessageTest extends ChatRoomTest
    */
   public function should_報告の理由に関するバリデーションルール()
   {
-    $chatMessage = factory(ChatMessage::class)->create([
+    $chatMessage = ChatMessage::factory()->create([
       'body' => 'This is a message which shouldn\'t be reported.',
       'created_by' => $this->user->id,
       'chat_room_id' => $this->chatRoom->id,
@@ -229,7 +229,7 @@ class ChatMessageTest extends ChatRoomTest
    */
   public function should_ルーム参加者以外のユーザによる報告は403()
   {
-    $chatMessage = factory(ChatMessage::class)->create([
+    $chatMessage = ChatMessage::factory()->create([
       'body' => 'This is a message which shouldn\'t be reported.',
       'created_by' => $this->user->id,
       'chat_room_id' => $this->chatRoom->id,

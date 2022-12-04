@@ -38,7 +38,6 @@ class JWTVerifierService
       $decodedData = JWT::decode($jwt, $jwk, [$alg]);
       return $decodedData;
     } catch (\RuntimeException $exception) {
-      \Log::debug(json_decode(json_encode($exception), true));
       return null;
     }
   }

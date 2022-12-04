@@ -1,6 +1,12 @@
 GROUP = auth
 GROUP = User
 
+setup:
+	cp .env.example .env && cp laravel/.env.example .env
+	docker compose run --rm api sh -c "composer install && php artisan key:generate"
+	docker compose run --rm api chmod -R a+rw storage/ bootstrap/cache
+	docker compose up -d
+
 start:
 	docker compose start
 

@@ -48,7 +48,7 @@ class DepartmentSeeder extends Seeder
     ];
 
     collect($departments)->each(function ($department) {
-      factory(Department::class, 1)->create($department);
+      Department::factory()->count(1)->create($department);
     });
   }
 }

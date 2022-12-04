@@ -15,7 +15,7 @@ class OrganizationSeeder extends Seeder
   public function run()
   {
     DB::table('organizations')->truncate();
-    $organization = factory(Organization::class, 1)->create([
+    $organization = Organization::factory()->count(1)->create([
       'supervisor_id' => \TestUser::id(),
       'updated_by' => \TestUser::id()
     ]);

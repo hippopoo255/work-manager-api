@@ -21,7 +21,7 @@ class ScheduleTest extends TestCase
   protected function setUp(): void
   {
     parent::setUp();
-    $this->schedule = factory(Schedule::class)->create([
+    $this->schedule = Schedule::factory()->create([
       'created_by' => $this->user->id,
     ]);
 

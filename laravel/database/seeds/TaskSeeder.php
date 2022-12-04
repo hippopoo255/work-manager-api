@@ -19,7 +19,7 @@ class TaskSeeder extends Seeder
     $testUser = DB::table('users')->first();
     for ($i = 0; $i < 100; $i++) {
       $day = array_random(range(-14, 14));
-      factory(Task::class)->create([
+      Task::factory()->create([
         'owner_id' => $testUser->id,
         'created_by' => $testUser->id,
         'time_limit' => Carbon::now()->addDays($day),

@@ -17,7 +17,7 @@ class ScheduleSeeder extends Seeder
     DB::table('schedules')->truncate();
     $users = User::all();
     $users->each(function ($user) {
-      $schedules = factory(Schedule::class, 10)->create([
+      $schedules = Schedule::factory()->count(10)->create([
         'created_by' => $user->id,
       ]);
       $schedules->each(function ($schedule) {

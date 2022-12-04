@@ -17,7 +17,7 @@ class BlogCommentTest extends TestCase
   protected function setUp(): void
   {
     parent::setUp();
-    $this->blog = factory(Blog::class)->create([
+    $this->blog = Blog::factory()->create([
       'created_by' => $this->user->id,
     ]);
   }

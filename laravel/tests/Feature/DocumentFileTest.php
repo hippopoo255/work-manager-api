@@ -22,7 +22,7 @@ class DocumentFileTest extends TestCase
   protected function setUp(): void
   {
     parent::setUp();
-    $this->documentFolder = factory(DocumentFolder::class)->create([
+    $this->documentFolder = DocumentFolder::factory()->create([
       'created_by' => $this->user->id
     ]);
     $this->members = User::where('id', '!=', $this->user->id)
@@ -93,7 +93,7 @@ class DocumentFileTest extends TestCase
    */
   public function should_共有者以外は限定公開のファイル閲覧禁止()
   {
-    $file = factory(DocumentFile::class)->create([
+    $file = DocumentFile::factory()->create([
       'created_by' => $this->members[0],
     ]);
     $file->sharedMembers()->sync($this->membersData);
@@ -114,7 +114,7 @@ class DocumentFileTest extends TestCase
    */
   public function should_ファイル閲覧()
   {
-    $file = factory(DocumentFile::class)->create([
+    $file = DocumentFile::factory()->create([
       'created_by' => $this->members[0],
     ]);
     $file->sharedMembers()->sync($this->membersData);
@@ -136,7 +136,7 @@ class DocumentFileTest extends TestCase
    */
   public function should_共有者以外の更新禁止()
   {
-    $file = factory(DocumentFile::class)->create([
+    $file = DocumentFile::factory()->create([
       'created_by' => $this->members[0],
     ]);
     $file->sharedMembers()->sync($this->membersData);
@@ -161,7 +161,7 @@ class DocumentFileTest extends TestCase
    */
   public function should_共有者でも編集権限がないメンバーによる更新禁止()
   {
-    $file = factory(DocumentFile::class)->create([
+    $file = DocumentFile::factory()->create([
       'created_by' => $this->members[0],
     ]);
     $file->sharedMembers()->sync($this->membersData);
@@ -185,7 +185,7 @@ class DocumentFileTest extends TestCase
    */
   public function should_編集権限を持つメンバーによる更新()
   {
-    $file = factory(DocumentFile::class)->create([
+    $file = DocumentFile::factory()->create([
       'created_by' => $this->members[0],
     ]);
     $file->sharedMembers()->sync($this->membersData);
@@ -212,7 +212,7 @@ class DocumentFileTest extends TestCase
    */
   public function should_編集権限のないメンバーによる削除禁止()
   {
-    $file = factory(DocumentFile::class)->create([
+    $file = DocumentFile::factory()->create([
       'created_by' => $this->members[0],
     ]);
     $file->sharedMembers()->sync($this->membersData);
@@ -237,7 +237,7 @@ class DocumentFileTest extends TestCase
   public function should_編集権限を持つメンバーによる削除()
   {
     Storage::fake('s3');
-    $file = factory(DocumentFile::class)->create([
+    $file = DocumentFile::factory()->create([
       'created_by' => $this->members[0],
     ]);
     $file->sharedMembers()->sync($this->membersData);

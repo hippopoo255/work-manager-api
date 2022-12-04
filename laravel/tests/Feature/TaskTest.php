@@ -94,7 +94,7 @@ class TaskTest extends TestCase
    */
   public function should_タスクの更新()
   {
-    $task = factory(Task::class)->create([
+    $task = Task::factory()->create([
       'owner_id' => $this->user->id,
       'created_by' => $this->user->id,
     ]);
@@ -123,7 +123,7 @@ class TaskTest extends TestCase
    */
   public function should_タスクの追加者以外による更新禁止()
   {
-    $task = factory(Task::class)->create([
+    $task = Task::factory()->create([
       'owner_id' => $this->user->id,
       'created_by' => $this->user->id,
     ]);
@@ -150,7 +150,7 @@ class TaskTest extends TestCase
    */
   public function should_タスクの削除()
   {
-    $task = factory(Task::class)->create([
+    $task = Task::factory()->create([
       'owner_id' => $this->user->id,
       'created_by' => $this->user->id,
     ]);
@@ -170,7 +170,7 @@ class TaskTest extends TestCase
    */
   public function should_投稿者以外のユーザによるタスクの削除禁止()
   {
-    $task = factory(Task::class)->create([
+    $task = Task::factory()->create([
       'owner_id' => $this->user->id,
       'created_by' => $this->user->id,
     ]);

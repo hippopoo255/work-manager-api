@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Notifications\MailResetPasswordNotification;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * App\Models\User
@@ -109,6 +110,7 @@ use App\Notifications\MailResetPasswordNotification;
 class User extends Authenticatable
 {
   use SoftDeletes;
+  use HasFactory;
   use Notifiable;
 
   protected $table = 'users';

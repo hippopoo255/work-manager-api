@@ -1,16 +1,33 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
-use App\Models\ChatRoom;
-use Faker\Generator as Faker;
-use Faker\Factory;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\User;
 
-$faker = Factory::create('ja_JP');
-$factory->define(ChatRoom::class, function ($faker) {
-  return [
-    'created_by' => array_random(User::all()->pluck('id')->toArray()),
-    'name' => $faker->word . ' ROOM',
-  ];
-});
+/*
+|--------------------------------------------------------------------------
+| Model Factories
+|--------------------------------------------------------------------------
+|
+| This directory should contain each of the model factory definitions for
+| your application. Factories provide a convenient way to generate new
+| model instances for testing / seeding your application's database.
+|
+*/
+class ChatRoomFactory extends Factory
+{
+  /**
+   * Define the model's default state.
+   *
+   * @return array
+   */
+  public function definition()
+  {
+    return [
+      'created_by' => array_random(User::all()->pluck('id')->toArray()),
+      'name' => $this->faker->word . ' ROOM',
+
+    ];
+  }
+}

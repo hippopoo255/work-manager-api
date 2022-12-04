@@ -18,7 +18,7 @@ class ChatRoomTest extends TestCase
   protected function setUp(): void
   {
     parent::setUp();
-    $this->chatRoom = factory(ChatRoom::class)->create([
+    $this->chatRoom = ChatRoom::factory()->create([
       'created_by' => $this->user->id,
     ]);
 

@@ -1,19 +1,35 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
-use App\Models\MeetingRecord;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\MeetingPlace;
-use Faker\Generator as Faker;
-use Faker\Factory;
 
-$faker = Factory::create('ja_JP');
-$factory->define(MeetingRecord::class, function ($faker) {
-  return [
-    'created_by' => $faker->randomNumber,
-    'place_id' => array_random(MeetingPlace::all()->pluck('id')->toArray()),
-    'meeting_date' => $faker->dateTimeThisYear,
-    'title' => $faker->word . '会議',
-    'summary' => "- 議題1\n- 議題2\n- 議題3",
-  ];
-});
+/*
+|--------------------------------------------------------------------------
+| Model Factories
+|--------------------------------------------------------------------------
+|
+| This directory should contain each of the model factory definitions for
+| your application. Factories provide a convenient way to generate new
+| model instances for testing / seeding your application's database.
+|
+*/
+class MeetingRecordFactory extends Factory
+{
+  /**
+   * Define the model's default state.
+   *
+   * @return array
+   */
+  public function definition()
+  {
+    return [
+      'created_by' => $this->faker->randomNumber,
+      'place_id' => array_random(MeetingPlace::all()->pluck('id')->toArray()),
+      'meeting_date' => $this->faker->dateTimeThisYear,
+      'title' => $this->faker->word . '会議',
+      'summary' => "- 議題1\n- 議題2\n- 議題3",
+    ];
+  }
+}
