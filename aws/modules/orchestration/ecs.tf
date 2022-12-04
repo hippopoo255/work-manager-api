@@ -6,7 +6,11 @@ resource "aws_ecs_task_definition" "this" {
   requires_compatibilities = []
   # compatibilities = ["EC2"]
   container_definitions = templatefile("${path.module}/container_definition_back.json", {
-    log_groups = var.log_groups,
+    log_groups = [
+      var.log_groups["web"].name,
+      var.log_groups["app"].name,
+      var.log_groups["supervisor"].name,
+    ],
     image_urls = [
       data.aws_ecr_repository.web.repository_url,
       data.aws_ecr_repository.app.repository_url,

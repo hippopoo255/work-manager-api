@@ -36,7 +36,7 @@ class RoleSeeder extends Seeder
       ],
     ];
     collect($roles)->each(function($role) {
-      factory(Role::class, 1)->create($role);
+      Role::factory()->count(1)->create($role);
     });
   }
 }

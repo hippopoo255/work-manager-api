@@ -18,7 +18,7 @@ class ChatRoomTest extends TestCase
   protected function setUp(): void
   {
     parent::setUp();
-    $this->chatRoom = factory(ChatRoom::class)->create([
+    $this->chatRoom = ChatRoom::factory()->create([
       'created_by' => $this->user->id,
     ]);
 
@@ -109,7 +109,7 @@ class ChatRoomTest extends TestCase
   public function should_グループメンバ以外のユーザによる閲覧禁止()
   {
     $this->chatRoom->members()->sync($this->membersData);
-    $badUser = User::whereNotIn('id', array_keys($this->membersData))->get()->first();
+    $badUser = User::whereNotIn('id', array_keys($this->membersData))->first();
     $response = $this->actingAs($badUser)->getJson(route('chatRoom.show', $this->chatRoom));
     $response->assertForbidden()->assertJsonMissing([
       'id' => $this->chatRoom->id

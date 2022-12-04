@@ -51,7 +51,7 @@ class UserSeeder extends Seeder
     });
 
     if (\TestUser::hasId()) {
-      factory(User::class, 1)->create([
+      User::factory()->count(1)->create([
         'department_id' => 5,
         'user_code' => 111111,
         'role_id' => 2,
@@ -68,7 +68,7 @@ class UserSeeder extends Seeder
     }
     $departmentList->each(function ($department) {
       collect($department)->each(function ($member) {
-        factory(User::class, 1)->create($member);
+        User::factory()->count(1)->create($member);
       });
     })->all();
   }

@@ -21,7 +21,7 @@ class ScheduleTest extends TestCase
   protected function setUp(): void
   {
     parent::setUp();
-    $this->schedule = factory(Schedule::class)->create([
+    $this->schedule = Schedule::factory()->create([
       'created_by' => $this->user->id,
     ]);
 
@@ -106,7 +106,7 @@ class ScheduleTest extends TestCase
       'title' => $willDenied['title'],
     ]);
     // そもそも共有されていないユーザ
-    $badUser = User::whereNotIn('id', array_keys($this->membersData))->get()->first();
+    $badUser = User::whereNotIn('id', array_keys($this->membersData))->first();
     $response = $this->actingAs($badUser)->putJson(route('schedule.update', $this->schedule), $willDenied);
     $response->assertForbidden();
     $this->assertDatabaseMissing('schedules', [
@@ -163,7 +163,7 @@ class ScheduleTest extends TestCase
       'deleted_at' => null,
     ]);
     // そもそも共有されていないユーザ
-    $badUser = User::whereNotIn('id', array_keys($this->membersData))->get()->first();
+    $badUser = User::whereNotIn('id', array_keys($this->membersData))->first();
     $response = $this->actingAs($badUser)->deleteJson(route('schedule.destroy', $this->schedule));
     $response->assertForbidden();
     $this->assertDatabaseHas('schedules', [

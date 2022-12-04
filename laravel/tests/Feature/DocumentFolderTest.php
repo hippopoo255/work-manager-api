@@ -61,7 +61,7 @@ class DocumentFolderTest extends TestCase
    */
   public function should_作成者以外のユーザの更新禁止()
   {
-    $folder = factory(DocumentFolder::class)->create([
+    $folder = DocumentFolder::factory()->create([
       'created_by' => User::where('id', '!=', $this->user->id)->first()->id
     ]);
     $willDenied = [
@@ -84,7 +84,7 @@ class DocumentFolderTest extends TestCase
    */
   public function should_フォルダの更新()
   {
-    $folder = factory(DocumentFolder::class)->create([
+    $folder = DocumentFolder::factory()->create([
       'created_by' => $this->user->id,
     ]);
     $expects = [
@@ -107,7 +107,7 @@ class DocumentFolderTest extends TestCase
    */
   public function should_作成者以外のユーザによる削除禁止()
   {
-    $folder = factory(DocumentFolder::class)->create([
+    $folder = DocumentFolder::factory()->create([
       'created_by' => $this->user->id,
     ]);
     $badUser = User::where('id', '!=', $this->user->id)->first();
@@ -127,7 +127,7 @@ class DocumentFolderTest extends TestCase
    */
   public function should_フォルダ削除()
   {
-    $folder = factory(DocumentFolder::class)->create([
+    $folder = DocumentFolder::factory()->create([
       'created_by' => $this->user->id,
     ]);
     $response = $this->actingAs($this->user)->deleteJson(route('documentFolder.destroy', $folder));

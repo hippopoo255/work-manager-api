@@ -7,9 +7,11 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 abstract class CommonModel extends Model
 {
+  use HasFactory;
   /**
    * @return $this
    */

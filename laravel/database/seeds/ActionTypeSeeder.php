@@ -111,7 +111,7 @@ class ActionTypeSeeder extends Seeder
     ];
 
     $actionTypeIds = collect($types)->map(function ($type) {
-      $newActionType = factory(ActionType::class)->create($type);
+      $newActionType = ActionType::factory()->create($type);
       return $newActionType;
     })->filter(function ($type) {
       return $type->is_notify;

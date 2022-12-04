@@ -35,8 +35,8 @@ use App\Contracts\Models\ModelInterface;
  */
 class ActionType extends Model implements ModelInterface
 {
-  protected $table = 'action_types';
 
+  protected $table = 'action_types';
   protected $fillable = [
     'name',
     'template_message',

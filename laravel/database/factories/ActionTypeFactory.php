@@ -1,15 +1,23 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
-use App\Models\ActionType;
-use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(ActionType::class, function (Faker $faker) {
-  return [
-    'key' => $faker->unique()->word,
-    'label_name' => $faker->word,
-    'template_message' => $faker->sentence(2),
-    'link' => '/',
-  ];
-});
+class ActionTypeFactory extends Factory
+{
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+      return [
+        'key' => $this->faker->unique()->word,
+        'label_name' => $this->faker->word,
+        'template_message' => $this->faker->sentence(2),
+        'link' => '/',
+      ];
+    }
+}

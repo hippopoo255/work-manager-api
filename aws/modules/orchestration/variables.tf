@@ -1,3 +1,1 @@
-variable "log_groups" {
-  type = list(any)
-}
+variable "log_groups" {}

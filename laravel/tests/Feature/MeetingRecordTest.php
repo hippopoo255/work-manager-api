@@ -182,17 +182,17 @@ class MeetingRecordTest extends TestCase
    */
   public function should_議事録の更新()
   {
-    $meetingRecord = factory(MeetingRecord::class)->create([
+    $meetingRecord = MeetingRecord::factory()->create([
       'created_by' => $this->user->id,
     ]);
     $members = User::pluck('id')->shuffle()->splice(0, 2)->all();
     $meetingRecord->members()->sync($members);
-    $meetingDecisions = factory(MeetingDecision::class, 2)->create([
+    $meetingDecisions = MeetingDecision::factory()->count(2)->create([
       'meeting_record_id' => $meetingRecord->id,
       'decided_by' => $this->user->id,
       'created_by' => $this->user->id,
     ]);
-    factory(Task::class, 2)->create([
+    Task::factory()->count(2)->create([
       'meeting_decision_id' => $meetingDecisions->first()->id,
       'owner_id' => array_random($members),
       'created_by' => $this->user->id,
@@ -267,7 +267,7 @@ class MeetingRecordTest extends TestCase
    */
   public function should_投稿者以外の更新リクエストにはForbiddenを返却する()
   {
-    $meetingRecord = factory(MeetingRecord::class)->create([
+    $meetingRecord = MeetingRecord::factory()->create([
       'created_by' => $this->user->id,
     ]);
     $willDenied = [
