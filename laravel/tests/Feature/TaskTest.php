@@ -127,7 +127,7 @@ class TaskTest extends TestCase
       'owner_id' => $this->user->id,
       'created_by' => $this->user->id,
     ]);
-    $badUser = User::where('id', '!=', $this->user->id)->get()->first();
+    $badUser = User::where('id', '!=', $this->user->id)->first();
     $willDenied = [
       'owner_id' => $badUser->id,
       'body' => $task->body . '_update',
@@ -174,7 +174,7 @@ class TaskTest extends TestCase
       'owner_id' => $this->user->id,
       'created_by' => $this->user->id,
     ]);
-    $badUser = User::where('id', '!=', $this->user->id)->get()->first();
+    $badUser = User::where('id', '!=', $this->user->id)->first();
     $response = $this->actingAs($badUser)->deleteJson(route('task.destroy', $task));
 
     $response->assertForbidden();

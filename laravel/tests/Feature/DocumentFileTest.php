@@ -97,7 +97,7 @@ class DocumentFileTest extends TestCase
       'created_by' => $this->members[0],
     ]);
     $file->sharedMembers()->sync($this->membersData);
-    $badUser = User::whereNotIn('id', array_keys($this->membersData))->get()->first();
+    $badUser = User::whereNotIn('id', array_keys($this->membersData))->first();
     $response = $this->actingAs($badUser)->getJson(route('documentFile.show', [
       'id' => $this->documentFolder->id,
       'document_file_id' => $file->id,
@@ -140,7 +140,7 @@ class DocumentFileTest extends TestCase
       'created_by' => $this->members[0],
     ]);
     $file->sharedMembers()->sync($this->membersData);
-    $badUser = User::whereNotIn('id', array_keys($this->membersData))->get()->first();
+    $badUser = User::whereNotIn('id', array_keys($this->membersData))->first();
     $willDenied = [
       'original_name' => $file->original_name . '_update',
       'created_by' => $badUser->id,

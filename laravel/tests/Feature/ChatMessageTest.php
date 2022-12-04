@@ -49,7 +49,7 @@ class ChatMessageTest extends ChatRoomTest
    */
   public function should_グループメンバ以外のユーザによる投稿は禁止()
   {
-    $badUser = User::whereNotIn('id', array_keys($this->membersData))->get()->first();
+    $badUser = User::whereNotIn('id', array_keys($this->membersData))->first();
     $willDenied = [
       'body' => 'This is a message.',
       'created_by' => $badUser->id,
@@ -73,7 +73,7 @@ class ChatMessageTest extends ChatRoomTest
       'chat_room_id' => $this->chatRoom->id,
     ]);
 
-    $badUser = User::whereNotIn('id', [$chatMessage->created_by])->get()->first();
+    $badUser = User::whereNotIn('id', [$chatMessage->created_by])->first();
     $willDenied = [
       'created_by' => $this->user->id,
       'body' => 'update_' . $chatMessage->body,
@@ -135,7 +135,7 @@ class ChatMessageTest extends ChatRoomTest
       'chat_room_id' => $this->chatRoom->id,
     ]);
 
-    $badUser = User::whereNotIn('id', [$chatMessage->created_by])->get()->first();
+    $badUser = User::whereNotIn('id', [$chatMessage->created_by])->first();
 
     $response = $this->actingAs($badUser)->deleteJson(route('chatMessage.destroy', [
       'id' => $this->chatRoom,
@@ -208,7 +208,7 @@ class ChatMessageTest extends ChatRoomTest
     $reportUser = $this->chatRoom->members->where('id', '<>', $this->user->id)->first();
 
     // report_categoriesにないIDがリクエストボディに入っている
-    $maxReportCategoryId = ReportCategory::pluck('id')->max();
+    $maxReportCategoryId = collect(ReportCategory::pluck('id'))->max();
     $invalidId = $maxReportCategoryId + 1;
     $response = $this->actingAs($reportUser)->postJson(route('chatMessage.report', $chatMessage), [
       'report_category_id' => $invalidId,
