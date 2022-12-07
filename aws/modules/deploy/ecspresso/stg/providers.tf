@@ -1,0 +1,1 @@
+../../../../envs/stg/providers.tf

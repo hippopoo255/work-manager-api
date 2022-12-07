@@ -1,6 +1,7 @@
 version: 2.1
 orbs:
   slack: circleci/slack@4.4.2
+  ecspresso: fujiwara/ecspresso@1.0.0
 
 executors:
   php:
@@ -106,6 +107,15 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
+      - when:
+          condition:
+            equal: [feature/setup-ecspresso, << pipeline.git.branch >>]
+          steps:
+            - run: echo 'export ENV_NAME=prod' >> $BASH_ENV
+      - run:
+          name: show $ENV_NAME
+          command: |
+            echo $ENV_NAME
       - run:
           name: install aws
           command: |
@@ -124,31 +134,30 @@ jobs:
       - run:
           name: Push App Image
           command: |
-            docker build -t $AWS_ECR_APP_URL:latest -f docker/php/Dockerfile --build-arg TZ=$TZ --no-cache=true .
-            docker push $AWS_ECR_APP_URL:latest
+            docker build -t $AWS_ECR_REPOSITORY_URL/$ENV_NAME/app:latest -f docker/php/Dockerfile --build-arg TZ=$TZ --no-cache=true .
+            docker push $AWS_ECR_REPOSITORY_URL/$ENV_NAME/app:latest
       - run:
           name: Push Web Image
           command: |
-            docker build -t $AWS_ECR_WEB_URL:latest -f docker/nginx/Dockerfile --build-arg TZ=$TZ --no-cache=true .
-            docker push $AWS_ECR_WEB_URL:latest
+            docker build -t $AWS_ECR_REPOSITORY_URL/$ENV_NAME/web:latest -f docker/nginx/Dockerfile --build-arg TZ=$TZ --no-cache=true .
+            docker push $AWS_ECR_REPOSITORY_URL/$ENV_NAME/web:latest
       - run:
-          name: Configure For Cli
+          name: Push Worker Image
           command: |
-            aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
-            aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-            aws configure set default.region $AWS_REGION
+            docker build -t $AWS_ECR_REPOSITORY_URL/$ENV_NAME/supervisor:latest -f docker/supervisor/Dockerfile --build-arg TZ=$TZ --no-cache=true .
+            docker push $AWS_ECR_REPOSITORY_URL/$ENV_NAME/supervisor:latest
+
+      - ecspresso/install:
+          version: v1.7.14
       - run:
-          name: Describe ECS Backend Task
+          name: Confirm ecspresso version
           command: |
-            aws ecs describe-task-definition \
-              --task-definition $ECS_BACK_TASK_NAME | jq '.taskDefinition | { containerDefinitions: .containerDefinitions }' > definition.json
+            ecspresso version
       - run:
-          name: Update ECS Backend Service
+          name: Deploy to ECS
+          working_directory: aws/modules/deploy/ecspresso/prod
           command: |
-            aws ecs update-service \
-              --cluster $ECS_CLUSTER_NAME \
-              --service $ECS_BACK_SERVICE_NAME \
-              --task-definition $ECS_BACK_TASK_NAME
+            ecspresso deploy --config config_prod.yml
       - notify_slack_fail
       - notify_slack_deploy
 
@@ -167,3 +176,4 @@ workflows:
             branches:
               only:
                 - main
+                - develop

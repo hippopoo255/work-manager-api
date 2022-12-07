@@ -1,6 +1,6 @@
 # APIサーバ用タスク定義
 resource "aws_ecs_task_definition" "this" {
-  family                   = "${local.pj_name_kebab}-task-${data.aws_default_tags.this.tags.Env}"
+  family                   = "${data.aws_default_tags.this.tags.System}-task-${data.aws_default_tags.this.tags.Env}"
   network_mode             = "bridge"
   execution_role_arn       = aws_iam_role.ecs_task_role.arn
   requires_compatibilities = []

@@ -1,0 +1,411 @@
+{
+  "containerDefinitions": [
+    {
+      "cpu": 8,
+      "environment": [],
+      "essential": true,
+      "image": "{{ tfstate `data.aws_ecr_repository.web.repository_url` }}:latest",
+      "links": ["app:app"],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "{{ tfstate `data.aws_cloudwatch_log_group.web.name` }}",
+          "awslogs-region": "{{ must_env `AWS_REGION` }}",
+          "awslogs-stream-prefix": "{{ tfstate `data.aws_cloudwatch_log_group.web.name` }}"
+        }
+      },
+      "memoryReservation": 128,
+      "mountPoints": [],
+      "name": "web",
+      "portMappings": [
+        {
+          "containerPort": 80,
+          "hostPort": 0,
+          "protocol": "tcp"
+        }
+      ],
+      "volumesFrom": []
+    },
+    {
+      "command": [],
+      "cpu": 8,
+      "entryPoint": [],
+      "environment": [],
+      "essential": true,
+      "image": "{{ tfstate `data.aws_ecr_repository.app.repository_url` }}:latest",
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "{{ tfstate `data.aws_cloudwatch_log_group.app.name` }}",
+          "awslogs-region": "{{ must_env `AWS_REGION` }}",
+          "awslogs-stream-prefix": "{{ tfstate `data.aws_cloudwatch_log_group.app.name` }}"
+        }
+      },
+      "memoryReservation": 192,
+      "mountPoints": [],
+      "name": "app",
+      "portMappings": [],
+      "secrets": [
+        {
+          "name": "APP_ADMIN_FRONT_URL",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/APP_ADMIN_FRONT_URL"
+        },
+        {
+          "name": "APP_FRONT_URL",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/APP_FRONT_URL"
+        },
+        {
+          "name": "APP_NAME",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/APP_NAME"
+        },
+        {
+          "name": "APP_TEST_ADMIN_COGNITO_SUB",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/APP_TEST_ADMIN_COGNITO_SUB"
+        },
+        {
+          "name": "APP_TEST_ID",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/APP_TEST_ID"
+        },
+        {
+          "name": "APP_TEST_MAIL",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/APP_TEST_MAIL"
+        },
+        {
+          "name": "APP_TEST_PASS",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/APP_TEST_PASS"
+        },
+        {
+          "name": "APP_TEST_USER_COGNITO_SUB",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/APP_TEST_USER_COGNITO_SUB"
+        },
+        {
+          "name": "AWS_ADMIN_COGNITO_POOL_ID",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/AMAZON_ADMIN_COGNITO_POOL_ID"
+        },
+        {
+          "name": "AWS_ADMIN_COGNITO_REGION",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/AMAZON_ADMIN_COGNITO_REGION"
+        },
+        {
+          "name": "AWS_DEFAULT_REGION",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/AMAZON_DEFAULT_REGION"
+        },
+        {
+          "name": "AWS_USER_COGNITO_POOL_ID",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/AMAZON_USER_COGNITO_POOL_ID"
+        },
+        {
+          "name": "AWS_USER_COGNITO_REGION",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/AMAZON_USER_COGNITO_REGION"
+        },
+        {
+          "name": "BROADCAST_DRIVER",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/BROADCAST_DRIVER"
+        },
+        {
+          "name": "DB_CONNECTION",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/DB_CONNECTION"
+        },
+        {
+          "name": "DB_DATABASE",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/DB_DATABASE"
+        },
+        {
+          "name": "DB_HOST",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/DB_HOST"
+        },
+        {
+          "name": "DB_PASSWORD",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/DB_PASSWORD"
+        },
+        {
+          "name": "DB_PORT",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/DB_PORT"
+        },
+        {
+          "name": "DB_USERNAME",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/DB_USERNAME"
+        },
+        {
+          "name": "LOG_CHANNEL",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/LOG_CHANNEL"
+        },
+        {
+          "name": "MAIL_ENCRYPTION",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/MAIL_ENCRYPTION"
+        },
+        {
+          "name": "MAIL_FROM_ADDRESS",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/MAIL_FROM_ADDRESS"
+        },
+        {
+          "name": "MAIL_FROM_NAME",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/MAIL_FROM_NAME"
+        },
+        {
+          "name": "MAIL_HOST",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/MAIL_HOST"
+        },
+        {
+          "name": "MAIL_MAILER",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/MAIL_MAILER"
+        },
+        {
+          "name": "MAIL_PASSWORD",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/MAIL_PASSWORD"
+        },
+        {
+          "name": "MAIL_PORT",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/MAIL_PORT"
+        },
+        {
+          "name": "MAIL_USERNAME",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/MAIL_USERNAME"
+        },
+        {
+          "name": "PUSHER_APP_CLUSTER",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/PUSHER_APP_CLUSTER"
+        },
+        {
+          "name": "PUSHER_APP_ID",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/PUSHER_APP_ID"
+        },
+        {
+          "name": "PUSHER_APP_KEY",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/PUSHER_APP_KEY"
+        },
+        {
+          "name": "PUSHER_APP_SECRET",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/PUSHER_APP_SECRET"
+        },
+        {
+          "name": "S3_ACCESS_KEY_ID",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/S3_ACCESS_KEY_ID"
+        },
+        {
+          "name": "S3_BUCKET",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/S3_BUCKET"
+        },
+        {
+          "name": "S3_SECRET_ACCESS_KEY",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/S3_SECRET_ACCESS_KEY"
+        },
+        {
+          "name": "S3_URL",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/S3_URL"
+        },
+        {
+          "name": "SES_ACCESS_KEY",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/SES_ACCESS_KEY"
+        },
+        {
+          "name": "SES_DEFAULT_REGION",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/SES_DEFAULT_REGION"
+        },
+        {
+          "name": "SES_SECRET_ACCESS_KEY",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/SES_SECRET_ACCESS_KEY"
+        }
+      ],
+      "volumesFrom": []
+    },
+    {
+      "cpu": 4,
+      "environment": [],
+      "essential": true,
+      "image": "{{ tfstate `data.aws_ecr_repository.supervisor.repository_url` }}:latest",
+      "links": ["app:app"],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "{{ tfstate `data.aws_cloudwatch_log_group.supervisor.name` }}",
+          "awslogs-region": "{{ must_env `AWS_REGION` }}",
+          "awslogs-stream-prefix": "{{ tfstate `data.aws_cloudwatch_log_group.supervisor.name` }}"
+        }
+      },
+      "memoryReservation": 128,
+      "mountPoints": [],
+      "name": "supervisor",
+      "portMappings": [],
+      "secrets": [
+        {
+          "name": "APP_NAME",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/APP_NAME"
+        },
+        {
+          "name": "APP_FRONT_URL",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/APP_FRONT_URL"
+        },
+        {
+          "name": "APP_ADMIN_FRONT_URL",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/APP_ADMIN_FRONT_URL"
+        },
+        {
+          "name": "APP_TEST_ID",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/APP_TEST_ID"
+        },
+        {
+          "name": "APP_TEST_PASS",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/APP_TEST_PASS"
+        },
+        {
+          "name": "APP_TEST_MAIL",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/APP_TEST_MAIL"
+        },
+        {
+          "name": "APP_TEST_USER_COGNITO_SUB",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/APP_TEST_USER_COGNITO_SUB"
+        },
+        {
+          "name": "APP_TEST_ADMIN_COGNITO_SUB",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/APP_TEST_ADMIN_COGNITO_SUB"
+        },
+        {
+          "name": "S3_ACCESS_KEY_ID",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/S3_ACCESS_KEY_ID"
+        },
+        {
+          "name": "S3_BUCKET",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/S3_BUCKET"
+        },
+        {
+          "name": "AWS_DEFAULT_REGION",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/AMAZON_DEFAULT_REGION"
+        },
+        {
+          "name": "S3_SECRET_ACCESS_KEY",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/S3_SECRET_ACCESS_KEY"
+        },
+        {
+          "name": "S3_URL",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/S3_URL"
+        },
+        {
+          "name": "AWS_USER_COGNITO_REGION",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/AMAZON_USER_COGNITO_REGION"
+        },
+        {
+          "name": "AWS_USER_COGNITO_POOL_ID",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/AMAZON_USER_COGNITO_POOL_ID"
+        },
+        {
+          "name": "AWS_ADMIN_COGNITO_REGION",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/AMAZON_ADMIN_COGNITO_REGION"
+        },
+        {
+          "name": "AWS_ADMIN_COGNITO_POOL_ID",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/AMAZON_ADMIN_COGNITO_POOL_ID"
+        },
+        {
+          "name": "BROADCAST_DRIVER",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/BROADCAST_DRIVER"
+        },
+        {
+          "name": "DB_CONNECTION",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/DB_CONNECTION"
+        },
+        {
+          "name": "DB_DATABASE",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/DB_DATABASE"
+        },
+        {
+          "name": "DB_HOST",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/DB_HOST"
+        },
+        {
+          "name": "DB_PASSWORD",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/DB_PASSWORD"
+        },
+        {
+          "name": "DB_PORT",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/DB_PORT"
+        },
+        {
+          "name": "DB_USERNAME",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/DB_USERNAME"
+        },
+        {
+          "name": "LOG_CHANNEL",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/LOG_CHANNEL"
+        },
+        {
+          "name": "MAIL_MAILER",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/MAIL_MAILER"
+        },
+        {
+          "name": "MAIL_HOST",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/MAIL_HOST"
+        },
+        {
+          "name": "MAIL_PORT",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/MAIL_PORT"
+        },
+        {
+          "name": "MAIL_ENCRYPTION",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/MAIL_ENCRYPTION"
+        },
+        {
+          "name": "MAIL_PASSWORD",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/MAIL_PASSWORD"
+        },
+        {
+          "name": "MAIL_USERNAME",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/MAIL_USERNAME"
+        },
+        {
+          "name": "MAIL_FROM_ADDRESS",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/MAIL_FROM_ADDRESS"
+        },
+        {
+          "name": "MAIL_FROM_NAME",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/MAIL_FROM_NAME"
+        },
+        {
+          "name": "SES_ACCESS_KEY",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/SES_ACCESS_KEY"
+        },
+        {
+          "name": "SES_SECRET_ACCESS_KEY",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/SES_SECRET_ACCESS_KEY"
+        },
+        {
+          "name": "SES_DEFAULT_REGION",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/SES_DEFAULT_REGION"
+        },
+        {
+          "name": "PUSHER_APP_CLUSTER",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/PUSHER_APP_CLUSTER"
+        },
+        {
+          "name": "PUSHER_APP_ID",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/PUSHER_APP_ID"
+        },
+        {
+          "name": "PUSHER_APP_KEY",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/PUSHER_APP_KEY"
+        },
+        {
+          "name": "PUSHER_APP_SECRET",
+          "valueFrom": "/{{ tfstate `data.aws_default_tags.this.tags.Env` }}/PUSHER_APP_SECRET"
+        }
+      ],
+      "volumesFrom": []
+    }
+  ],
+  "executionRoleArn": "{{ tfstate `data.aws_iam_role.ecs_task_role.arn` }}",
+  "family": "{{ tfstate `data.aws_default_tags.this.tags.System` }}-task-{{ tfstate `data.aws_default_tags.this.tags.Env` }}",
+  "networkMode": "bridge",
+  "placementConstraints": [],
+  "requiresCompatibilities": [],
+  "tags": [
+    {
+      "key": "Env",
+      "value": "{{ tfstate `data.aws_default_tags.this.tags.Env` }}"
+    },
+    {
+      "key": "System",
+      "value": "{{ tfstate `data.aws_default_tags.this.tags.System` }}"
+    }
+  ],
+  "volumes": []
+}

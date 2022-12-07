@@ -1,0 +1,39 @@
+{
+  "deploymentConfiguration": {
+    "deploymentCircuitBreaker": {
+      "enable": false,
+      "rollback": false
+    },
+    "maximumPercent": 200,
+    "minimumHealthyPercent": 100
+  },
+  "deploymentController": {
+    "type": "ECS"
+  },
+  "desiredCount": 1,
+  "enableECSManagedTags": false,
+  "enableExecuteCommand": false,
+  "healthCheckGracePeriodSeconds": 30,
+  "launchType": "EC2",
+  "loadBalancers": [
+    {
+      "containerName": "web",
+      "containerPort": 80,
+      "targetGroupArn": "{{ tfstate `data.aws_lb_target_group.this.arn` }}"
+    }
+  ],
+  "placementConstraints": [],
+  "placementStrategy": [],
+  "schedulingStrategy": "REPLICA",
+  "serviceRegistries": [],
+  "tags": [
+    {
+      "key": "Env",
+      "value": "{{ tfstate `data.aws_default_tags.this.tags.Env` }}"
+    },
+    {
+      "key": "System",
+      "value": "{{ tfstate `data.aws_default_tags.this.tags.System` }}"
+    }
+  ]
+}
