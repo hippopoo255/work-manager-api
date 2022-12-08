@@ -131,11 +131,6 @@
       "Value": "${db_user}"
     },
     {
-      "Name": "/${namespace}/LOG_CHANNNEL",
-      "Type": "SecureString",
-      "Value": ""
-    },
-    {
       "Name": "/${namespace}/MAIL_ENCRYPTION",
       "Type": "SecureString",
       "Value": ""
