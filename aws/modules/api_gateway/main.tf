@@ -49,3 +49,24 @@ resource "aws_lambda_permission" "api_gateway_trigger" {
 
   depends_on = [aws_api_gateway_deployment.this["app"]]
 }
+
+resource "aws_api_gateway_account" "this" {
+  cloudwatch_role_arn = aws_iam_role.push_cloudwatch.arn
+}
+
+resource "aws_api_gateway_method_settings" "this" {
+  for_each = { for endpoint in local.endpoints : endpoint.name => endpoint }
+
+  depends_on = [
+    aws_api_gateway_account.this,
+  ]
+
+  rest_api_id = "${aws_api_gateway_rest_api.this[each.key].id}"
+  stage_name  = data.aws_default_tags.this.tags.Env
+  method_path = "*/*"
+
+  settings {
+    data_trace_enabled     = true
+    logging_level          = "INFO"
+  }
+}
