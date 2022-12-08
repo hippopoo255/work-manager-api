@@ -109,7 +109,7 @@ jobs:
       - setup_remote_docker
       - when:
           condition:
-            equal: [feature/setup-ecspresso, << pipeline.git.branch >>]
+            equal: [main, << pipeline.git.branch >>]
           steps:
             - run: echo 'export ENV_NAME=prod' >> $BASH_ENV
       - run:
