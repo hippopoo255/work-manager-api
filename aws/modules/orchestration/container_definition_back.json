@@ -8,7 +8,6 @@
         "containerPort": 80
       }
     ],
-
     "image": "${image_urls.0}:latest",
     "cpu": 8,
     "memoryReservation": 128,
@@ -28,7 +27,7 @@
     "name": "app",
     "image": "${image_urls.1}:latest",
     "cpu": 8,
-    "memoryReservation": 256,
+    "memoryReservation": 192,
     "essential": true,
     "logConfiguration": {
       "logDriver": "awslogs",

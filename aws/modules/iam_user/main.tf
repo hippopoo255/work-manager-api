@@ -1,6 +1,6 @@
 # 他のリソースからS3への書き込み等アクセスを行うための汎用的なIAMユーザ
 
-# IAMユーザの作成
+# IAMユーザの作成(modules/ssm/main.tfから呼び出している)
 resource "aws_iam_user" "s3" {
   name = "s3-full-access-user-${data.aws_default_tags.this.tags.Env}"
   path = "/"

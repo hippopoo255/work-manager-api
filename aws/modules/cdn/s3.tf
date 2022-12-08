@@ -1,7 +1,3 @@
-provider "aws" {
-  region = "ap-northeast-1"
-}
-
 data "aws_route53_zone" "default" {
   name = local.domain_name
 }
