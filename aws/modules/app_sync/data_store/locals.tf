@@ -2,21 +2,21 @@ locals {
   tables = [
     {
       name = "sequences",
-      patition_key = {
+      partition_key = {
         name = "table_name",
         type = "S"
       }
     },
     {
       name = "tags",
-      patition_key = {
+      partition_key = {
         name = "id",
         type = "S"
       }
     },
     {
       name = "blogs",
-      patition_key = {
+      partition_key = {
         name = "id",
         type = "S"
       }
