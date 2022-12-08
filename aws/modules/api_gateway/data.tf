@@ -27,3 +27,19 @@ data "template_file" "this" {
     domain_name    = local.domain_name
   }
 }
+
+data "aws_iam_policy" "AmazonAPIGatewayPushToCloudWatchLogs" {
+  arn = "arn:aws:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs"
+}
+
+# assume_role = ロールの「信頼」タブ参照
+data "aws_iam_policy_document" "api_gateway_assume_role_policy" {
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["apigateway.amazonaws.com"]
+    }
+  }
+}
