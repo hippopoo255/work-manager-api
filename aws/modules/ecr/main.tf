@@ -18,6 +18,7 @@ resource "null_resource" "push_images" {
   triggers = {
     repos_url         = md5("${aws_ecr_repository.web[each.key].repository_url}:latest")
     life_cycle_policy = md5(aws_ecr_lifecycle_policy.web[each.key].policy)
+    dockerfile = md5(file("${path.module}/${var.laravel_pj_root_path}docker/${each.value.image_dir}/Dockerfile"))
   }
 
   provisioner "local-exec" {
