@@ -1,4 +1,5 @@
-FROM nginx:1.15.7-alpine
+FROM nginx:stable-alpine
+
 # timezone
 ARG TZ
 COPY ./docker/nginx/conf.d/ /etc/nginx/conf.d/
