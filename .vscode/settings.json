@@ -1,0 +1,8 @@
+{
+  "php-cs-fixer.executable": "~/.vscode/php-cs-fixer-v3.phar",
+  "php-cs-fixer.allowRisky": true,
+  "yaml.maxItemsComputed": 10000,
+  "[yaml|yml]": {
+    "editor.formatOnSave": false
+  }
+}

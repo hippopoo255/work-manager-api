@@ -1,8 +1,3 @@
-# cdn
-# module "cdn" {
-#   source = "../../modules/cdn"
-# }
-
 # RDS
 module "rds" {
   source  = "../../modules/rds"
@@ -23,6 +18,7 @@ module "api_gateway" {
   source                      = "../../modules/api_gateway"
   cognito_user_pool_arn_app   = module.cognito.userpool_arn_app
   cognito_user_pool_arn_admin = module.cognito.userpool_arn_admin
+  laravel_pj_root_path = var.laravel_pj_root_path
 }
 
 # CloudWatch

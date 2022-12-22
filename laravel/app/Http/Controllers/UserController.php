@@ -84,7 +84,7 @@ class UserController extends Controller
   public function withChatRooms()
   {
     $currentUser = $this->service->withChatRooms();
-    return !!$currentUser ? response($currentUser) : response('');
+    return response($currentUser);
   }
 
   public function notifyValidationByUser(User $id)

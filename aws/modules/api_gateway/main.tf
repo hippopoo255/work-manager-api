@@ -31,7 +31,7 @@ resource "aws_api_gateway_deployment" "this" {
   # API gatewayのリソースを更新してもデプロイはされない
   # 再デプロイのトリガーとなる設定
   triggers = {
-    redeployment = md5(file("${path.module}/schema/openapi.${each.key}.yaml"))
+    redeployment = md5(file("${path.module}/${var.laravel_pj_root_path}/openapi/openapi.${each.key}.yaml"))
     userpool_arn = md5(each.value.userpool_arns)
   }
 
