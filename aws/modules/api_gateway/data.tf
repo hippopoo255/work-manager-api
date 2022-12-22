@@ -15,7 +15,7 @@ data "aws_caller_identity" "self" {}
 data "template_file" "this" {
   for_each = { for endpoint in local.endpoints : endpoint.name => endpoint }
 
-  template = file("${path.module}/schema/openapi.${each.key}.yaml")
+  template = file("${path.module}/${var.laravel_pj_root_path}/openapi/openapi.${each.key}.yaml")
   vars = {
     # openapi.admin.yamlファイルに${alb_uri}とあれば、terraformから当該箇所に値を埋め込むことができる
     alb_uri        = "https://${data.terraform_remote_state.init.outputs.http_alb_uri}"
