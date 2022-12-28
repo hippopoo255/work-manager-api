@@ -17,9 +17,9 @@ resource "aws_lb_target_group" "back" {
   health_check {
     path                = "/api"
     healthy_threshold   = 2
-    unhealthy_threshold = 5
-    timeout             = 10
-    interval            = 100
+    unhealthy_threshold = 6
+    timeout             = 30
+    interval            = 300
     matcher             = 200
     port                = "traffic-port"
     protocol            = "HTTP"

@@ -3749,7 +3749,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/OrganizationForm'
+              $ref: '#/components/schemas/RegisterOrganizationForm'
       x-amazon-apigateway-integration:
         httpMethod: POST
         uri: '${alb_uri}/api/organization'
@@ -7980,8 +7980,8 @@ components:
         - recorded_by
         - meeting_date
         - title
-    OrganizationForm:
-      title: OrganizationForm
+    RegisterOrganizationForm:
+      title: RegisterOrganizationForm
       description: 組織情報登録時のフォーム
       type: object
       properties:
@@ -8010,6 +8010,8 @@ components:
         - address
         - tel
         - password
+      x-stoplight:
+        id: 54d22028a639a
     SettingForm:
       title: SettingForm
       description: 設定ページ
